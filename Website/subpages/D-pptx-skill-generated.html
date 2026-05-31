@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pptx-research Skill 协作设计 · AI Workflow Notes</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="brand-mark">●</span>AI Workflow Notes</a>
+    <nav class="nav-anchors">
+      <a href="../index.html#coreweave">CoreWeave Case</a>
+      <a href="../index.html#mapping">Agent Mapping Case</a>
+      <a href="../index.html#cognition">认知层</a>
+      <a href="../index.html#tips">Tips</a>
+    </nav>
+  </div>
+</header>
+
+<div class="subpage-meta">
+  <div class="container">
+    <div class="crumbs">
+      <a href="../index.html">主页</a>
+      <span class="sep">/</span>
+      <a href="../index.html#coreweave">CoreWeave 案例</a><span class="sep">/</span><span>pptx-research Skill</span>
+    </div>
+    <div class="source-tag">
+      <span>source · Coreweave_example/4. pptx-skill-generated.md</span>
+      <button class="copy-btn" data-copy="Coreweave_example/4. pptx-skill-generated.md">复制路径</button>
+    </div>
+  </div>
+</div>
+
+<section class="subpage-title">
+  <div class="container-read">
+    <div class="eyebrow">CoreWeave · Phase 4A · Skill Co-Design</div>
+    <h1>pptx-research Skill 协作设计</h1>
+    <p class="subtitle">与 Claude 共同设计 7-Step State Machine + 9 Global Rules + Resume Protocol，规则化产出 44 页研究 deck。</p><div class="note-bar"><strong>可现场演示</strong>：7-Step State Machine + 9 Global Rules + Resume Protocol，重点看 storyline → chapter-by-chapter rendering → markitdown QA 的循环。</div>
+  </div>
+</section>
+
+<main class="subpage-main">
+  <div class="container-read">
+    <article class="md-article">
+<h1>pptx-research Skill 协作创建会话记录</h1>
+<p><strong>Session ID:</strong> <code>6407135b-b876-43c9-a052-bddffcac9846</code>
+<strong>Time:</strong> 2026-04-18 15:57 -- 21:23 (UTC+8)
+<strong>Participants:</strong> User (zhangxinrui) &amp; Claude (claude-opus-4-6)</p>
+<hr>
+<h2>摘要</h2>
+<p>本次会话记录了 <code>pptx-research</code> skill 的协作创建过程 -- 一个用于生成高密度、信息丰富的投研/咨询场景 PPTX 报告的 Claude Code skill。主要阶段如下：</p>
+<ol>
+<li><strong>Skill 需求定义 (16:08)</strong>: User 提出了完整的 skill 需求，包括 5 步交互式流程（内容输入 -&gt; 语言格式 -&gt; 大纲 -&gt; Storyline -&gt; 渲染），强调内容强管控、高信息密度、非路演型 deck。</li>
+<li><strong>Plan Mode 协作设计 (16:09-16:36)</strong>: Claude 进入 Plan Mode，探索现有 pptx skill 结构，设计新 skill 架构。用户提出三处修正：(1) outliner 是可选副标题而非要点列表；(2) 逻辑审查应在 visual elements 之前；(3) 需要断点恢复机制。</li>
+<li><strong>Skill 编码实现 (16:44-17:06)</strong>: 计划获批后，Claude 创建了完整的 skill 目录结构，编写了 SKILL.md 主文件和 8 个 reference 文件（step-0 到 step-5、chart-patterns、layout-catalog），共 10 个文件。</li>
+<li><strong>首次测试 -- CRWV Module1 (17:07-17:28)</strong>: 用户用&quot;帮我做一个咨询风格ppt&quot;触发 skill，选择 CRWV 行业研究报告作为内容源，选择英文输出、麦肯锡配色（蓝黑色调），生成了 8 页模板预览。</li>
+<li><strong>迭代反馈 Round 1 -- 内容密度 (18:03)</strong>: 用户指出 P5-P8 内容太少，要求每页至少 200-300 词或 100 词+图表；表格样式不好看，边框多余，左右间距不对称。Claude 将这些规则写入 skill 的 G8 和 G9 规则。</li>
+<li><strong>Context 恢复 (18:08)</strong>: Session 因 context 用尽被 continue，Claude 基于 summary 自动恢复工作，重新生成模板。</li>
+<li><strong>迭代反馈 Round 2 -- 内容溢出 (18:13)</strong>: 用户反馈内容严重溢出，提供了一个 BCG 风格的 template.pptx 作为排版参考。Claude 分析了参考文件的布局坐标，校准了 commentary 密度（heading + 3-4 个简洁 bullet points）。</li>
+<li><strong>迭代反馈 Round 3 -- 风格优化 (18:27-18:41)</strong>: 用户提出 PPT 制作原则（字体统一、对称 gap、图表居中），并反馈整体太靠上、专业度不够、风格太偏 roadshow。Claude 将字体最小设为 12pt，去掉巨大数字展示，改为分析评估表格风格。</li>
+<li><strong>Memory 保存 (18:35)</strong>: Claude 将 PPTX 密度校准和设计原则保存到 memory 系统，供未来 session 使用。</li>
+<li><strong>指令回顾 (20:54)</strong>: 用户要求 Claude 拼接所有手动输入的指令返回。</li>
+</ol>
+<p><strong>关键产出:</strong></p>
+<ul>
+<li><code>~/.claude/skills/pptx-research/</code> -- 完整的 skill 目录（10 个文件）</li>
+<li><code>SKILL.md</code> -- 主文件（状态机 + 9 个全局规则 G1-G9 + 断点恢复协议）</li>
+<li>2 条 feedback memory（PPTX 密度校准、PPT 设计原则）</li>
+</ul>
+<hr>
+<h2>Full Conversation Log</h2>
+<h3>[08:08:53 UTC] User -- 核心需求描述</h3>
+<blockquote>
+<p>我们来 create 一个 pptx 文件生成的 skills，你可以打开 plan mode 我们一起协作。这个 pptx skills 适用于用户需要对内容需要强管控，生成投研/咨询场景的高密度（informative），多图表、非路演型 deck 的生成场景。这个 skills 加载之后，需要用户输入完整的报告内容（doc/docx/md 文件，最差也需要一个 prompt）需要先提示用户 pptx 制作依据的内容输入选项，文件上传，如果内容过少需要提示内容 out of control 的风险（你可以用 web-search 自己添加）否则应该告知用户，该 pptx 会严格依照用户提供内容来制作。接下来需要依次和用户确认 1）输出 pptx 语言（支持 中文/english），2）整体大纲（根据用户上传内容，大致分为几个章节/每个章节名称/每个章节估计页数）；3）大纲确认后，每一页的 title 和 outliner 和 key message （title 和 outliner 会实际显示在每一页 slide 的上方，但是 key message 是这一页大致想呈现的内容/核心论点/论据等，不一定是最终在 slide 上的原话，还会被分解成 key visual elements）；4）storyline（整个 deck 每一页的 title/outliners）确定之后，每一页都需要和用户依次敲定 key visual elements（slide 的左右/上下，每个 block/segment 分别放什么内容，是图/表/bullet points/示意图，还是其他）；5）整个 deck 的内容确定后，最后一步是格式/format 的确定和渲染，这一步需要和用户确定色系 / 字体 /font size （正文、标题、source 等）；注意在语言确定好之后先生成 5 到 10 页 template 给用户参考，等用户确认之后再将之前确定的内容渲染到 pptx 中，注意每个章节生成完成之后都得到用户的确定再继续渲染下一个章节，最小化返工和 token 浪费</p>
+</blockquote>
+<h3>[08:09:02 UTC] Claude</h3>
+<blockquote>
+<p>Entered Plan Mode. Launched two sub-agents to explore the existing pptx skill structure and skill architecture patterns.</p>
+</blockquote>
+<p><em>工具调用:</em> <code>EnterPlanMode</code>, <code>Agent(&quot;Explore existing pptx skill&quot;)</code>, <code>Agent(&quot;Explore skill structure patterns&quot;)</code></p>
+<h3>[08:11:15 UTC] Claude</h3>
+<blockquote>
+<p>Read existing pptx SKILL.md, pptxgenjs.md tutorial, and 3-statements-ultra SKILL.md for reference patterns. Then posed four clarifying questions:</p>
+<ol>
+<li>New skill vs extending existing?</li>
+<li>Rendering engine preference?</li>
+<li>Chart data handling?</li>
+<li>User template support?</li>
+</ol>
+</blockquote>
+<h3>[08:16:04 UTC] User -- 回答澄清问题</h3>
+<blockquote>
+<ul>
+<li>New independent skill (pptx-research)</li>
+<li>Support both PptxGenJS and XML editing</li>
+<li>Simple charts use native PPTX (editable), minimize non-editable charts; images for backgrounds</li>
+<li>Support user templates but not required</li>
+</ul>
+</blockquote>
+<h3>[08:16-08:22 UTC] Claude -- Skill 架构设计</h3>
+<blockquote>
+<p>Designed complete skill architecture via sub-agent. Wrote plan file. Key design points:</p>
+<ul>
+<li>6-step state machine (Step 0-5 + Step 3b)</li>
+<li>Storyline logic review + fact-check before visual elements</li>
+<li>State persistence via <code>_deck_state.json</code></li>
+<li>Cross-page consistency check after rendering</li>
+<li>Integration with existing pptx skill&#39;s scripts and QA</li>
+</ul>
+</blockquote>
+<h3>[08:22:24 UTC] Claude -- ExitPlanMode</h3>
+<blockquote>
+<p>Presented plan for approval with two key additions: storyline logic review (Step 3b) and post-render consistency check.</p>
+</blockquote>
+<h3>[08:36:34 UTC] User -- 三处修正</h3>
+<blockquote>
+<p>有几个地方理解的不对，1）outliner 不是 3-5 要点，其实就是标题...outliner 可能可以是个副标题，不需要每一页都有；2）在根据 storyline 确定 key visual element 之前就需要做 4b 的逻辑审查，否则步骤 4 需要重新做；3）要有一个机制是如果整个流程意外中止...每一步的运行状态可以后续重新加载</p>
+</blockquote>
+<h3>[08:36:40 UTC] Claude</h3>
+<blockquote>
+<p>Acknowledged three corrections:</p>
+<ol>
+<li>Outliner = optional subtitle, not bullet points</li>
+<li>Logic review moved to Step 3b (after storyline, before visuals)</li>
+<li>Resume mechanism via <code>_deck_state.json</code> with <code>steps_completed</code> tracking</li>
+</ol>
+<p>Updated plan file with 4 edits.</p>
+</blockquote>
+<h3>[08:38:34 UTC] Claude -- ExitPlanMode (second time)</h3>
+<blockquote>
+<p>Exited Plan Mode with updated plan incorporating all three corrections.</p>
+</blockquote>
+<h3>[08:44:23 UTC] User -- Plan approved</h3>
+<blockquote>
+<p>(Plan approved, proceed to implementation)</p>
+</blockquote>
+<h3>[08:44-09:06 UTC] Claude -- Skill 编码实现</h3>
+<blockquote>
+<p>Created 7 tasks and implemented sequentially:</p>
+<ol>
+<li>Created directory: <code>~/.claude/skills/pptx-research/references/</code></li>
+<li>Wrote <code>SKILL.md</code> (main file with state machine, 7 global rules, resume protocol)</li>
+<li>Wrote <code>step-0-content-input.md</code>, <code>step-1-language-format.md</code>, <code>step-2-outline.md</code></li>
+<li>Wrote <code>step-3-storyline.md</code>, <code>step-3b-storyline-review.md</code></li>
+<li>Wrote <code>step-4-key-visuals.md</code>, <code>step-5-format-render.md</code></li>
+<li>Wrote <code>chart-patterns.md</code> (9 native chart recipes), <code>layout-catalog.md</code> (12 layout archetypes)</li>
+<li>Verified complete structure: 10 files in place, SKILL.md frontmatter correct</li>
+</ol>
+</blockquote>
+<h3>[09:06:26 UTC] Claude -- Skill 创建完成</h3>
+<blockquote>
+<p>Reported completion with full structure listing and key design points table:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>State Machine</td>
+<td>7 steps (0-5 + 3b)</td>
+</tr>
+<tr>
+<td>Global Rules</td>
+<td>G1-G7</td>
+</tr>
+<tr>
+<td>Resume Protocol</td>
+<td><code>_deck_state.json</code> with <code>steps_completed</code></td>
+</tr>
+<tr>
+<td>Chart Patterns</td>
+<td>9 native recipes</td>
+</tr>
+<tr>
+<td>Layout Catalog</td>
+<td>12 archetypes</td>
+</tr>
+<tr>
+<td>Total Files</td>
+<td>10</td>
+</tr>
+</tbody></table>
+</blockquote>
+<h3>[09:07:48 UTC] User -- 首次测试</h3>
+<blockquote>
+<p>帮我做一个咨询风格 ppt</p>
+</blockquote>
+<h3>[09:07:51 UTC] Claude</h3>
+<blockquote>
+<p>Triggered <code>/pptx-research</code> skill. Started Step 0 (Content Input). Prompted user for content source.</p>
+</blockquote>
+<p><em>工具调用:</em> <code>Skill(&quot;pptx-research&quot;)</code></p>
+<h3>[09:09:04 UTC] User -- 文件路径</h3>
+<blockquote>
+<p>/Users/zhangxinrui/Documents/CRWV-Analysis-Report/CRWV_Module1_Industry_Research</p>
+</blockquote>
+<p>(Missing <code>.md</code> extension; Claude located the correct file)</p>
+<h3>[09:09:44 UTC] Claude -- 内容充分性评估</h3>
+<blockquote>
+<p>File: <code>CRWV_Module1_Industry_Research.md</code> (~13,328 chars). Rated: <strong>HIGH</strong>. Covers 5 sections on the Neocloud industry. Informed user that the PPTX will strictly follow provided content.</p>
+</blockquote>
+<h3>[09:10:23 UTC] User</h3>
+<blockquote>
+<ul>
+<li>Output to original report directory, new subfolder</li>
+<li>Module 1 only</li>
+</ul>
+</blockquote>
+<h3>[09:14:02 UTC] User -- 配色方案</h3>
+<blockquote>
+<p>麦肯锡配色（蓝黑色调为主）</p>
+</blockquote>
+<h3>[09:21:01 UTC] User</h3>
+<blockquote>
+<p>Selected Scheme A (classic McKinsey): <code>primary=#003A70</code>, <code>secondary=#0070C0</code>, <code>accent=#00A3E0</code></p>
+</blockquote>
+<h3>[09:21-09:59 UTC] Claude -- 模板预览生成</h3>
+<blockquote>
+<p>Generated 8-page template preview using PptxGenJS. Had to fix <code>NODE_PATH</code> issue. LibreOffice not installed so could not convert to images -- asked user to open the PPTX directly.</p>
+</blockquote>
+<p><em>工具调用:</em> <code>Bash(&quot;node generate_template.js&quot;)</code>, file writes for template scripts</p>
+<h3>[10:03:13 UTC] User -- Feedback Round 1 (内容密度 + 表格样式)</h3>
+<blockquote>
+<p>P5-P8 页分别都有问题，颜色和字体都没什么问题，但是这几页的内容太少了，我们做的是 informative 的 slides 每一页起码包含 200-300 words 的内容 或者 100 words+1/2 张图/表（这个要求需要写入 skills 保证我们是做 informative 的 skills），P6 的表格样式并不好看（好像是 ppt 自带的，边框很多余，以及表格右边有很大的空隙所有内容的左右 gap 都需要对称，这个也要写入 skills）</p>
+</blockquote>
+<h3>[10:03:22 UTC] Claude</h3>
+<blockquote>
+<p>Added two new global rules to <code>SKILL.md</code> and <code>layout-catalog.md</code>:</p>
+<ul>
+<li><strong>G8 (Content Density)</strong>: Each slide must contain at minimum 200-300 words of content, or 100 words + 1-2 charts/tables</li>
+<li><strong>G9 (Layout Symmetry &amp; Table Styling)</strong>: Symmetric left/right gaps, no default borders on tables, content must fill available width proportionally</li>
+</ul>
+</blockquote>
+<p><em>工具调用:</em> <code>Edit(SKILL.md)</code>, <code>Edit(layout-catalog.md)</code>, template regeneration</p>
+<h3>[10:08:35 UTC] -- Context Compaction</h3>
+<blockquote>
+<p>Session ran out of context. Claude resumed from summary and re-executed template generation.</p>
+</blockquote>
+<h3>[10:13:18 UTC] User -- Feedback Round 2 (内容溢出)</h3>
+<blockquote>
+<p>不行，有的页面内容严重溢出了（具体的字数我不做严格限制要求了，让我给你上传一个 pptx 的文档做参考吧）</p>
+</blockquote>
+<h3>[10:27:42 UTC] User -- 参考模板 + 原则</h3>
+<blockquote>
+<p>请牢记几个 ppt 制作的原则，1）字体统一；2）左右上下都需要留 gap（左右 gap 需要相同，尽量对称）图表等文件需要居中，上传的该 ppt 颜色不能作为参考 @template.pptx ，但是内容放置的位置、规范等可以参考</p>
+</blockquote>
+<h3>[10:27-10:30 UTC] Claude -- 参考模板分析</h3>
+<blockquote>
+<p>Unpacked reference <code>template.pptx</code> (BCG consulting style, 13.33&quot; x 7.5&quot;), analyzed XML for exact positioning and sizing. Derived proportional layout patterns for 10&quot; slides.</p>
+<p>Key finding: commentary should be <strong>heading + 3-4 concise bullet points</strong>, not walls of text.</p>
+</blockquote>
+<p><em>工具调用:</em> <code>Bash(&quot;unzip template.pptx&quot;)</code>, XML parsing of slide layouts</p>
+<h3>[10:31-10:36 UTC] Claude -- 密度校准 + Memory 保存</h3>
+<blockquote>
+<p>Rewrote P5-P8 with calibrated density. Updated G8 rule to remove strict word counts. Saved learnings to memory:</p>
+<ul>
+<li><code>feedback_pptx_density.md</code> -- concise bullets not walls of text; 3-4 bullets per commentary block on 10&quot; slides</li>
+<li><code>feedback_pptx_principles.md</code> -- font consistency, symmetric margins, centered charts, no overflow</li>
+</ul>
+</blockquote>
+<p><em>工具调用:</em> <code>Write(feedback_pptx_density.md)</code>, <code>Write(feedback_pptx_principles.md)</code>, <code>Edit(SKILL.md)</code></p>
+<h3>[10:41:40 UTC] User -- Feedback Round 3 (风格优化)</h3>
+<blockquote>
+<p>现在的版本关注到了溢出的问题（所有页面的下方留了空间）但是整体太靠上了，下方的空间留的过大，其实只要跟左右留的空间基本一致（整体不含 title 的内容居中）即可，目前内容提升了密度；但是看起来专业度和高大上程度不够，以及字体是不小于 12pt 但是需要 highlight 的地方（比如 bullet point 和核心观点），现在风格还是太偏向 roadshow（比如巨大的数字展示等）</p>
+</blockquote>
+<h3>[10:42-10:46 UTC] Claude -- 风格修正</h3>
+<blockquote>
+<p>Addressed all issues:</p>
+<ol>
+<li><strong>Vertical centering</strong> -- content extends to y~4.9 (0.5&quot; bottom gap matching sides)</li>
+<li><strong>Font minimum 12pt</strong> with bold/accent highlights for key points</li>
+<li><strong>Removed roadshow-style giant KPI numbers</strong>, replaced with analytical assessment table</li>
+<li>Updated G8 rule with 12pt minimum and anti-roadshow guidance</li>
+</ol>
+<p>Regenerated template, updated skill rules and memory.</p>
+</blockquote>
+<p><em>工具调用:</em> <code>Edit(SKILL.md)</code>, <code>Edit(layout-catalog.md)</code>, template regeneration</p>
+<h3>[10:46:56 UTC] Claude -- 最终模板状态</h3>
+<blockquote>
+<p>Reported all fixes with before/after comparison:</p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Vertical spacing</td>
+<td>Content clustered at top, large bottom gap</td>
+<td>Content centered, 0.5&quot; symmetric bottom gap</td>
+</tr>
+<tr>
+<td>Font size</td>
+<td>Mixed sizes</td>
+<td>Minimum 12pt, bold for highlights</td>
+</tr>
+<tr>
+<td>Style</td>
+<td>Roadshow (giant numbers)</td>
+<td>Analytical (assessment tables)</td>
+</tr>
+<tr>
+<td>Density</td>
+<td>Too sparse or overflowing</td>
+<td>Calibrated 3-4 bullet points per block</td>
+</tr>
+</tbody></table>
+</blockquote>
+<h3>[12:54:25 UTC] User</h3>
+<blockquote>
+<p>你可以把我们上文对话中所有我手动输入的指令拼接起来返回给我吗？</p>
+</blockquote>
+<h3>[12:55-13:14 UTC] Claude</h3>
+<blockquote>
+<p>Read the JSONL transcript to extract all user messages. Compiled and returned the full list of user inputs from the session.</p>
+</blockquote>
+<p><em>工具调用:</em> <code>Bash(&quot;read transcript JSONL&quot;)</code>, message extraction</p>
+<h3>[13:20:26 UTC] User</h3>
+<blockquote>
+<p>always allow（除了类似删除文件等危险操作）</p>
+</blockquote>
+<h3>[13:22:33 UTC] User</h3>
+<blockquote>
+<p>always allow</p>
+</blockquote>
+<h3>[13:23:30 UTC] User</h3>
+<blockquote>
+<p>你什么都没有给我返回？</p>
+</blockquote>
+<h3>[13:23:36 UTC] User</h3>
+<blockquote>
+<p>(Session interrupted)</p>
+</blockquote>
+<hr>
+<h2>后续影响</h2>
+<ul>
+<li><strong>Skill 投入使用</strong>: <code>pptx-research</code> skill 在后续 session 中被用于 CoreWeave (CRWV) 研究报告的 deck 制作，验证了 skill 的完整流程和密度校准规则的有效性。</li>
+<li><strong>Memory 持久化</strong>: 两条 feedback memory (<code>feedback_pptx_density.md</code> 和 <code>feedback_pptx_principles.md</code>) 被保存到 memory 系统中，在后续所有 session 中自动加载，确保 PPTX 制作的一致性标准。</li>
+<li><strong>Skill 迁移</strong>: 该 skill 后续从用户级目录 <code>~/.claude/skills/</code> 迁移到了项目级 skills 目录，使其在特定项目上下文中更加精准地触发和加载。</li>
+</ul>
+
+    </article>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>← <a href="../index.html#coreweave">返回主页</a></span>
+    <span>本地静态站点 · 双击 index.html 即可访问</span>
+  </div>
+</footer>
+
+<script src="../assets/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Workflow Notes · 本地 AI 工作流知识库</title>
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand"><span class="brand-mark">●</span>AI Workflow Notes</a>
+    <nav class="nav-anchors">
+      <a href="#coreweave">CoreWeave Case</a>
+      <a href="#mapping">Agent Mapping Case</a>
+      <a href="#cognition">认知层</a>
+      <a href="#tips">Tips</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Personal Knowledge Base · v1</div>
+    <h1>本地 AI 工作流知识库</h1>
+    <p class="lead">把投资研究中验证可行的 AI 协作链路沉淀为可点击、可演示、可追溯的工作台。两套真实案例 · 一套方法论。</p>
+  </div>
+</section>
+
+<!-- ============================ CoreWeave Case ============================ -->
+<section class="block case" id="coreweave">
+  <div class="container">
+    <div class="section-eyebrow">Case Study 01 · Buyside Research</div>
+    <h2 style="margin-bottom:6px;">Coreweave Case Study</h2>
+    <p class="section-intro">从手写研究框架，到 8 模块并行 Markdown 初稿，到 4 个对抗审阅 Agent，再到 44 页 McKinsey-grade PPT + 10 Tab 三表模型。完整 7 个 Phase 的人机协同链路。</p>
+
+    <details>
+      <summary>
+        <span class="title">▸ 展开完整工作流</span>
+        <span class="meta">7 Phases · 5 跳转节点</span>
+        <span class="toggle">CLICK TO EXPAND</span>
+      </summary>
+      <div class="case-body">
+
+        <div class="workflow-container">
+          <div class="workflow-toolbar">
+            <span class="legend">
+              <span class="lg" style="color: var(--role-human);">     <span class="dot"></span>Human</span>
+              <span class="lg" style="color: var(--role-claude);">    <span class="dot"></span>Claude Code</span>
+              <span class="lg" style="color: var(--role-ai);">        <span class="dot"></span>Other AI</span>
+              <span class="lg" style="color: var(--role-data);">      <span class="dot"></span>Data Source</span>
+              <span class="lg" style="color: var(--role-decision);">  <span class="dot"></span>Human Review</span>
+              <span class="lg" style="color: var(--role-output);">    <span class="dot"></span>Output</span>
+            </span>
+            <span class="spacer"></span>
+            <span class="hint-clickable">↗ 可跳转节点（hover 发光）</span>
+          </div>
+
+          <div class="workflow-viewport">
+
+            <!-- Phase 0 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Phase 0 — Preparation &amp; Task Decomposition</div>
+              <div class="wf-row">
+                <div class="wf-node role-human">
+                  <div class="wf-node-title">IDG Case Study Brief</div>
+                  <div class="wf-node-sub">CoreWeave selected</div>
+                </div>
+                <a class="wf-node role-human is-link" href="subpages/A-research-framework.html">
+                  <div class="wf-node-title">Manual Research &amp; Reading</div>
+                  <div class="wf-node-sub">S-1 / 10-K / Industry Reports → Hand-written Research Plan</div>
+                </a>
+                <div class="wf-node role-human">
+                  <div class="wf-node-title">Task Decomposition</div>
+                  <div class="wf-node-sub">9 Research Modules + Financial Model + PPT</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 1 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Phase 1 — Multi-Source Intelligence Gathering</div>
+              <div class="wf-row">
+                <div class="wf-node role-ai">
+                  <div class="wf-node-title">Tencent Yuanbao</div>
+                  <div class="wf-node-sub">微信文章 50+ sources</div>
+                </div>
+                <div class="wf-node role-ai">
+                  <div class="wf-node-title">Grok / X</div>
+                  <div class="wf-node-sub">投资人观点 50+ sources</div>
+                </div>
+                <div class="wf-node role-ai">
+                  <div class="wf-node-title">Gemini Deep Research</div>
+                  <div class="wf-node-sub">全球 web · 市场共识</div>
+                </div>
+                <div class="wf-node role-ai">
+                  <div class="wf-node-title">Doubao</div>
+                  <div class="wf-node-sub">小红书 · 情绪分析</div>
+                </div>
+              </div>
+              <div class="wf-row">
+                <div class="wf-node role-data">
+                  <div class="wf-node-title">SEC Filings</div>
+                  <div class="wf-node-sub">S-1 / 10-K / 10-Q · HTML</div>
+                </div>
+                <div class="wf-node role-data">
+                  <div class="wf-node-title">Sell-Side Reports</div>
+                  <div class="wf-node-sub">MS / JPM / GS · PDF</div>
+                </div>
+                <div class="wf-node role-data">
+                  <div class="wf-node-title">Other Sources</div>
+                  <div class="wf-node-sub">Kerrisdale Short · Whitepapers · Benchmarks</div>
+                </div>
+              </div>
+              <div class="wf-row">
+                <div class="wf-node role-ai" style="flex-basis:60%;max-width:520px;">
+                  <div class="wf-node-title">Google NotebookLM</div>
+                  <div class="wf-node-sub">30 sources imported · 交叉知识库（节省 Claude tokens）</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Phase 2 — Framework Design &amp; Parallel Research</div>
+              <div class="wf-row">
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Claude Session 1 · Framework</div>
+                  <div class="wf-node-sub">9 modules / 100+ questions</div>
+                </div>
+                <div class="wf-node role-decision">
+                  <div class="wf-node-title">Human Review</div>
+                  <div class="wf-node-sub">框架调整 · 边界确认</div>
+                </div>
+                <a class="wf-node role-claude is-link" href="subpages/B-initial-report.html">
+                  <div class="wf-node-title">Claude Session 2 · Parallel Research</div>
+                  <div class="wf-node-sub">NLM API × 12 + Web × 10</div>
+                </a>
+              </div>
+              <div class="wf-row">
+                <div class="wf-node role-output" style="flex-basis:60%;max-width:520px;">
+                  <div class="wf-node-title">8 Module Reports · Markdown Draft</div>
+                  <div class="wf-node-sub">~23,500 words / 79 tables</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Phase 3 — Adversarial Review &amp; Human Cross-Check</div>
+              <div class="wf-row">
+                <a class="wf-node role-human is-link" href="subpages/C-report-reviewed.html">
+                  <div class="wf-node-title">Human Reads Draft Reports</div>
+                  <div class="wf-node-sub">识别审阅方向 · 关键问题清单</div>
+                </a>
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Claude Review · 4 Parallel Agents</div>
+                  <div class="wf-node-sub">Finance / Contract / Industry / Gov</div>
+                </div>
+              </div>
+              <div class="wf-row">
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Numeric Audit</div>
+                  <div class="wf-node-sub">300+ data points · 3 critical / 7 moderate</div>
+                </div>
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Logic Review</div>
+                  <div class="wf-node-sub">49 audit points · fact + verdict</div>
+                </div>
+              </div>
+              <div class="wf-row">
+                <div class="wf-node role-decision">
+                  <div class="wf-node-title">Human Deep Questions</div>
+                  <div class="wf-node-sub">① 融资负债比例 ② 利率敏感度 ③ 客户级收入</div>
+                </div>
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Valuation Revision</div>
+                  <div class="wf-node-sub">Target $168 → $139 · Distress 5% → 10%</div>
+                </div>
+                <div class="wf-node role-output">
+                  <div class="wf-node-title">Final Research Memo (v2)</div>
+                  <div class="wf-node-sub">Fully Validated</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 4A -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Phase 4A — pptx-research Skill Co-Design</div>
+              <div class="wf-row">
+                <a class="wf-node role-claude is-link" href="subpages/D-pptx-skill-generated.html">
+                  <div class="wf-node-title">Co-design pptx-research Skill</div>
+                  <div class="wf-node-sub">7-Step State Machine · 9 Global Rules · Resume Protocol</div>
+                </a>
+                <div class="wf-node role-decision">
+                  <div class="wf-node-title">Human Feedback × 3</div>
+                  <div class="wf-node-sub">① 内容密度 ② 溢出修复 ③ Analytical 风格而非 Roadshow</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 4B-D 合并 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Phase 4B–4D — Storyline → Rendering → Visual → Data Audit</div>
+              <div class="wf-row">
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Storyline · Outline → Key Visuals</div>
+                  <div class="wf-node-sub">7 章 / 44 页</div>
+                </div>
+                <div class="wf-node role-decision">
+                  <div class="wf-node-title">Human Confirms Storyline</div>
+                  <div class="wf-node-sub">逐页 · 标题 + outliner + key message</div>
+                </div>
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Chapter-by-Chapter Rendering</div>
+                  <div class="wf-node-sub">6 JS Files · ~25 charts + ~18 tables</div>
+                </div>
+              </div>
+              <div class="wf-row">
+                <div class="wf-node role-human">
+                  <div class="wf-node-title">Upload 13 McKinsey Screenshots</div>
+                  <div class="wf-node-sub">识别 5 大系统性差距</div>
+                </div>
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">6-Item Visual Overhaul</div>
+                  <div class="wf-node-sub">字体 · 布局 · 表格 · 层级</div>
+                </div>
+              </div>
+              <div class="wf-row">
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Data Cross-Validation</div>
+                  <div class="wf-node-sub">Deck vs Model 140+ 点 · 内部一致性 44 页</div>
+                </div>
+                <div class="wf-node role-decision">
+                  <div class="wf-node-title">"Find Root Cause Before Fix"</div>
+                  <div class="wf-node-sub">7 个根因 · 15 Must-Fix · 3 Should-Fix</div>
+                </div>
+                <div class="wf-node role-output">
+                  <div class="wf-node-title">44-Page Research Deck</div>
+                  <div class="wf-node-sub">Final PPTX</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 5 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Phase 5 — Financial Model (3-Statement Ultra)</div>
+              <div class="wf-row">
+                <div class="wf-node role-human">
+                  <div class="wf-node-title">Open-Source Skill Discovery</div>
+                  <div class="wf-node-sub">GitHub + 社媒 · PE 专业人士仓库</div>
+                </div>
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Claude + 3-Statements-Ultra</div>
+                  <div class="wf-node-sub">IS / BS / CF / Returns + Scenarios + Cross-Check</div>
+                </div>
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Bug Fix &amp; Enhancement</div>
+                  <div class="wf-node-sub">BS_COL_MAP / Revenue Build-Up / Scenarios / Formatting</div>
+                </div>
+              </div>
+              <div class="wf-row">
+                <div class="wf-node role-decision">
+                  <div class="wf-node-title">Human Verification</div>
+                  <div class="wf-node-sub">关键假设 · 方向 · 数字交叉</div>
+                </div>
+                <a class="wf-node role-output is-link" href="subpages/J-coreweave-3statement-model.html">
+                  <div class="wf-node-title">CRWV_3Statement_Model</div>
+                  <div class="wf-node-sub">10 Tabs · 9/9 QC Passed · XLSX</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Phase 6 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Phase 6 — Model–Deck Alignment &amp; Final Delivery</div>
+              <div class="wf-row">
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Model ↔ Deck Reconciliation</div>
+                  <div class="wf-node-sub">14-Item Cross-Check · 11/11 Match + 3 Explainable</div>
+                </div>
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">Thesis Tone Alignment</div>
+                  <div class="wf-node-sub">Bullish → Cautious · 对齐 Deck</div>
+                </div>
+                <div class="wf-node role-decision">
+                  <div class="wf-node-title">Human Final Sign-Off</div>
+                  <div class="wf-node-sub">手工 spot-check</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Final -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Final Deliverables</div>
+              <div class="wf-row">
+                <div class="wf-node role-final">
+                  <div class="wf-node-title">44-Page Research Deck</div>
+                  <div class="wf-node-sub">PPTX</div>
+                </div>
+                <div class="wf-node role-final">
+                  <div class="wf-node-title">3-Statement Model</div>
+                  <div class="wf-node-sub">XLSX</div>
+                </div>
+                <div class="wf-node role-final">
+                  <div class="wf-node-title">AI Collaboration Report</div>
+                  <div class="wf-node-sub">Markdown</div>
+                </div>
+                <div class="wf-node role-final">
+                  <div class="wf-node-title">Workflow Diagram</div>
+                  <div class="wf-node-sub">PNG</div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /workflow-viewport -->
+          <div class="wf-scroll-hint">↕ 滚动查看完整流程</div>
+        </div>
+
+        <p class="case-hint">▲ 高亮 <span style="color:var(--accent);font-weight:600;">↗</span> 节点（hover 边框发光）可跳转到对应素材子页。</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============================ Agent Mapping Case ============================ -->
+<section class="block case" id="mapping">
+  <div class="container">
+    <div class="section-eyebrow">Case Study 02 · Market Mapping</div>
+    <h2 style="margin-bottom:6px;">AI Agent 赛道扫描 Agent Mapping Case Study</h2>
+    <p class="section-intro">Perplexity Deep Research × Pitchbook MCP × Claude Code 模板复刻，做出 Long list → Short list → 投资报告的全流程。强调"人定方向、AI 并行、模型互审"。</p>
+
+    <details>
+      <summary>
+        <span class="title">▸ 展开完整工作流</span>
+        <span class="meta">8 Steps · 5 跳转节点 · 2 hover 提示</span>
+        <span class="toggle">CLICK TO EXPAND</span>
+      </summary>
+      <div class="case-body">
+
+        <div class="workflow-container">
+          <div class="workflow-toolbar">
+            <span class="legend">
+              <span class="lg" style="color: var(--role-human);">     <span class="dot"></span>Human</span>
+              <span class="lg" style="color: var(--role-ai);">        <span class="dot"></span>Perplexity / AI</span>
+              <span class="lg" style="color: var(--role-claude);">    <span class="dot"></span>Claude Code</span>
+              <span class="lg" style="color: var(--role-decision);">  <span class="dot"></span>Review</span>
+              <span class="lg" style="color: var(--role-output);">    <span class="dot"></span>Output</span>
+            </span>
+            <span class="spacer"></span>
+            <span class="hint-clickable">↗ 可跳转节点</span>
+          </div>
+
+          <div class="workflow-viewport">
+
+            <!-- Step 1 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Step 1 — Tool Selection</div>
+              <div class="wf-row">
+                <div class="wf-node role-human" style="flex-basis:90%;max-width:680px;">
+                  <div class="wf-node-title">人工选取工具</div>
+                  <div class="wf-node-sub">Perplexity 连接 Pitchbook / Statista 等原生 MCP，更适合一级扫描；人 + perplexity deep research 同步明确研究对象和定义。</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2 · Human Frame -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Step 2 — Human Defines Direction</div>
+              <div class="wf-row">
+                <a class="wf-node role-human is-link" href="subpages/E-mapping-research-outline.html" style="flex-basis:90%;max-width:680px;">
+                  <div class="wf-node-title">Human · 明确研究赛道 &amp; 核心投资问题</div>
+                  <div class="wf-node-sub">边界 · 变量 · 评估框架（3 个核心问题清单）</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Step 3 · Parallel branches -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Step 3 — Parallel Research</div>
+              <div class="wf-branch">
+                <div class="wf-col">
+                  <div class="wf-col-label">3A · 深度研究（按章节）</div>
+                  <div class="wf-row">
+                    <div class="wf-node role-ai">
+                      <div class="wf-node-title">人工撰写报告提纲</div>
+                      <div class="wf-node-sub">分 session perplexity 分步 deep research</div>
+                    </div>
+                  </div>
+                  <div class="wf-row" style="margin-top:14px;">
+                    <a class="wf-node role-output is-link" href="subpages/F-mapping-deep-research.html">
+                      <div class="wf-node-title">OUTPUT · 多章节 .md 报告初稿</div>
+                      <div class="wf-node-sub">通用 / 垂类 / 投资建议</div>
+                    </a>
+                  </div>
+                </div>
+                <div class="wf-col">
+                  <div class="wf-col-label">3B · 市场 Mapping</div>
+                  <div class="wf-row">
+                    <div class="wf-node role-ai">
+                      <div class="wf-node-title">Perplexity Customize Workflow</div>
+                      <div class="wf-node-sub">Pitchbook / CB Insights · 175 家公司系统对比</div>
+                    </div>
+                  </div>
+                  <div class="wf-row" style="margin-top:14px;">
+                    <a class="wf-node role-output is-link" href="subpages/G-mapping-longlist.html">
+                      <div class="wf-node-title">OUTPUT · Long List Excel</div>
+                      <div class="wf-node-sub">公司 / 产品 / 融资 / 差异化维度</div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Step 4 — Hands-on Validation</div>
+              <div class="wf-row">
+                <div class="wf-node role-human has-tip" style="flex-basis:90%;max-width:680px;">
+                  <div class="wf-node-title">产品试用 / Social Hearing</div>
+                  <div class="wf-node-sub">看产品 / 公司 · 部分试用 → 输入 investment thesis → shortlist</div>
+                  <div class="wf-node-tip">AI 可以阅读评测，但"体感"必须自己获取 — 可用 playwright 看社区氛围 / 深度用户访谈。这一步无法 outsource 给模型。</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Step 5 — Synthesis &amp; Adversarial Review</div>
+              <div class="wf-row">
+                <div class="wf-node role-claude">
+                  <div class="wf-node-title">合并 md · Review · 质疑追问</div>
+                  <div class="wf-node-sub">Model Council · 多模型 cross-check</div>
+                </div>
+                <a class="wf-node role-decision is-link" href="subpages/F-mapping-deep-research.html#question-verification">
+                  <div class="wf-node-title">观点稳健？无重大漏洞？</div>
+                  <div class="wf-node-sub">查看质疑与验证图示</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Step 6 — Template Wiring</div>
+              <div class="wf-row">
+                <a class="wf-node role-human is-link" href="subpages/H-mapping-template.html" style="flex-basis:90%;max-width:680px;">
+                  <div class="wf-node-title">Human · Word / PPT 模板套用</div>
+                  <div class="wf-node-sub">品牌格式 · 图表占位（仅复用排版骨架，不复用旧内容）</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Step 7 -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Step 7 — AI-Assisted Rendering</div>
+              <div class="wf-row">
+                <a class="wf-node role-claude is-link" href="subpages/I-mapping-final-report.html" style="flex-basis:90%;max-width:680px;">
+                  <div class="wf-node-title">AI 辅助图表生成 &amp; 数据可视化</div>
+                  <div class="wf-node-sub">Perplexity / Python / Flourish → Agent_report.pdf</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Step 8 (methodology note, hover for full tip) -->
+            <div class="wf-phase">
+              <div class="wf-phase-label">Step 8 — Multi-Agent Practice · Methodology</div>
+              <div class="wf-row">
+                <div class="wf-node role-decision has-tip" style="flex-basis:90%;max-width:680px;">
+                  <div class="wf-node-title">Human × Model · 新开 Session</div>
+                  <div class="wf-node-sub">multi-agent 思路（hover 看完整说明）</div>
+                  <div class="wf-node-tip">人 + 模型（新开 session）= multi-agent 思路：需要新的 context / 视角 / 目标，跳出原 session 的认知惯性。让"质疑者"扮演一个干净的反方角色，比在原 session 里追问更有效。</div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /workflow-viewport -->
+          <div class="wf-scroll-hint">↕ 滚动查看完整流程</div>
+        </div>
+
+        <p class="case-hint">▲ 高亮 <span style="color:var(--accent);font-weight:600;">↗</span> 节点（hover 边框发光）可跳转到对应素材子页。</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============================ Cognition ============================ -->
+<section class="block" id="cognition">
+  <div class="container">
+    <div class="section-eyebrow">Cognition · 认知层</div>
+    <h2 style="margin-bottom:6px;">理解和认知层</h2>
+    <p class="section-intro">用 AI 之前先想清楚：什么任务该外包、什么任务必须留在自己手上。</p>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>1 · 应该用 AI 来做什么？目前能力边界如何？<span class="plus">+</span></summary>
+        <div class="faq-body">
+          <ul>
+            <li><strong>工作流的流程化、标准化、proofread 与审阅流程</strong>：把研究、撰写、<span class="inline-tip">校对<span class="inline-tip-content">number-verification skill</span></span>、交叉审阅这些可重复的环节固化成一条可执行的流水线交给 AI 串起来跑；<strong>人来负责定义这条流水线，并确保它持续符合专业工作的标准与要求</strong>。</li>
+            <li><strong>个人知识沉淀</strong>：embedding RAG / 或者直接存 md 文件，做自己的 Agent 友好型数据库。</li>
+            <li><strong>能 vs 不能</strong>：以前需要找 vendor 写的爬虫、需要专家访谈才能 cover 的技术性部分（架构理解、技术栈对比、benchmark 解读），现在都可以通过 AI 推进 — 边界在被持续推开。</li>
+            <li><strong>快 vs 慢</strong>：以前需要"搬运 + 重复性"的搜集资料工作（多源信息抓取、表格清洗、初稿撰写、长文 summarize）都可以自动化完成，把时间留给真正不可替代的判断与决策。</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>2 · 从 Agent 的结构，来理解 Agent 的能力边界？<span class="plus">+</span></summary>
+        <div class="faq-body">
+          <ul>
+            <li><strong>执行环境</strong>：Claude Code 能直接读 / 写本地文件，有完整的文件系统权限 + 命令执行权限。</li>
+            <li><strong>权限 / 工具链</strong>：可以接 GitHub、MCP、Skills 等扩展工具链 — <a href="https://github.com/" target="_blank" rel="noopener">GitHub →</a></li>
+            <li><strong>上下文管理</strong>：可以自己写 projects 里的 md 文件记录进度，也可以 <code>/compact</code> 主动压缩。</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>3 · AI 目前明显不能替代的部分，如何人机协同？<span class="plus">+</span></summary>
+        <div class="faq-body">
+          <ul>
+            <li>提供信息源、寻找资源，包括寻找工具本身。</li>
+            <li><strong>判断</strong>（尤其是方向性的、需要体感的、不一定是在语言边界里的判断，例如投资）。所以人无法从这个过程里 off 出去。</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ Tips ============================ -->
+<section class="block" id="tips">
+  <div class="container">
+    <div class="section-eyebrow">Tips · 其他经验</div>
+    <h2 style="margin-bottom:6px;">其他 Tips</h2>
+    <p class="section-intro">长期使用 AI 写研究稿和做 Mapping 沉淀下来的工程化小经验。</p>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>1 · 输入多比输出多更重要<span class="plus">+</span></summary>
+        <div class="faq-body">
+          要提高 AI 产出质量，需要的是输入更多信息（包括问能够提升置信空间的问题），包括更相关的参考文献和思路更清晰的提纲，还有人看到产出物后给出的具体修改意见。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>2 · 每一步可拆解、有中间结果<span class="plus">+</span></summary>
+        <div class="faq-body">每一步可拆解、有中间结果，才能控制 context 上下文和方向。</div>
+      </details>
+
+      <details class="faq-item">
+        <summary>3 · 先让 AI 生成 requirement prompt，再用它去执行<span class="plus">+</span></summary>
+        <div class="faq-body">
+          想清楚功能 / 目标，让 AI 生成 requirement prompt；然后用此 prompt 去发起任务。对于渲染 rendering 类工作，最好是有模板来复刻，否则需要写很长的 PRD 才能 harness 住格式。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>4 · 没有什么工程问题是 Codex 开十几个子代理解决不了的<span class="plus">+</span></summary>
+        <div class="faq-body">
+          没有什么工程问题是 Codex 开十几个子代理解决不了，而非得在一个群聊里 @ 好几个 Agent 来完成的（吐槽 Slack）。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>5 · 一些喜欢调用、用来延展 Agent 能力的工具<span class="plus">+</span></summary>
+        <div class="faq-body">
+          <p>对于通用类需求，我会优先找合适的产品 / 插件 / skills 接进来，让 Agent 的能力被自然延展。</p>
+          <ul>
+            <li>信息来源：<a href="https://aihot.virxact.com/" target="_blank" rel="noopener">https://aihot.virxact.com/</a></li>
+            <li><strong>PPT</strong>：把 Grid、边距、占位符、字体、色值规定在 skills 里，让 python-pptx 等引擎去执行。</li>
+            <li><strong>Word</strong>：python-docx 去执行，核心是格式 — 已经通过 perplexity 验证过它可以做模板复刻。</li>
+            <li>对个人来说，"收集 / 处理信息" 和 "做判断 / 思考" 才是真正核心的工作，这部分的延展工具我会持续收集与替换。</li>
+          </ul>
+
+          <div class="github-card">
+            <a href="https://github.com/zhangxinrui127-stack" target="_blank" rel="noopener">
+              <img src="https://github.com/zhangxinrui127-stack.png?size=96" alt="zhangxinrui127-stack on GitHub" loading="lazy"
+                   onerror="this.style.display='none';">
+              <div>
+                <div class="g-name">zhangxinrui127-stack</div>
+                <div class="g-sub">GitHub · 我常用 / fork 的工具与 skills →</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </details>
+
+      <a class="faq-link" href="subpages/K-how-this-site-was-made.html">
+        <span>
+          6 · 本网页是如何制作的？
+          <span class="faq-link-sub">从一份 ai.md 草稿到当前站点 · 11 轮 user × AI 协作时间线</span>
+        </span>
+        <span class="faq-link-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>本地 AI 工作流知识库 · Personal · Last sync 2026-05-30</span>
+    <span>纯静态站点 · 双击 index.html 即可访问</span>
+  </div>
+</footer>
+
+<script src="assets/js/common.js"></script>
+
+</body>
+</html>

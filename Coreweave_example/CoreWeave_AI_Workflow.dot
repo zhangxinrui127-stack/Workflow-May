@@ -1,0 +1,291 @@
+digraph CoreWeave_AI_Workflow {
+	bgcolor=white dpi=300 fontname="Helvetica Neue" fontsize=11 margin=0.3 nodesep=0.4 pad=0.5 rankdir=TB ranksep=0.6 ratio=auto size="16,24"
+	node [fontname="Helvetica Neue" fontsize=10 penwidth=1.2 style="filled,rounded"]
+	edge [arrowsize=0.7 color="#4A4A4A" fontname="Helvetica Neue" fontsize=8 penwidth=1.0]
+	subgraph cluster_phase0 {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 0 — Preparation & Task Decomposition" labeljust=l style="dashed,rounded"
+		idg_brief [label="IDG Case Study Brief
+(CoreWeave selected)" color="#2196F3" fillcolor="#E8F4FD" fontcolor="#1565C0" shape=note]
+		human_prep [label="Manual Research & Reading
+S-1 / 10-K / Industry Reports
+→ Hand-written Research Plan" color="#2196F3" fillcolor="#E8F4FD" fontcolor="#1565C0" shape=box]
+		task_decomp [label="Task Decomposition
+9 Research Modules +
+Financial Model + PPT" color="#2196F3" fillcolor="#E8F4FD" fontcolor="#1565C0" shape=box]
+	}
+	subgraph cluster_phase1 {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 1 — Multi-Source Intelligence Gathering" labeljust=l style="dashed,rounded"
+		yuanbao [label="Tencent Yuanbao
+(WeChat Articles
+50+ sources)" color="#9C27B0" fillcolor="#F3E5F5" fontcolor="#6A1B9A" shape=box]
+		grok [label="Grok / X
+(Investor Opinions
+50+ sources)" color="#9C27B0" fillcolor="#F3E5F5" fontcolor="#6A1B9A" shape=box]
+		gemini [label="Gemini Deep Research
+(Global Web Penetration
+Market Consensus)" color="#9C27B0" fillcolor="#F3E5F5" fontcolor="#6A1B9A" shape=box]
+		doubao [label="Doubao
+(Xiaohongshu Posts
+Sentiment Analysis)" color="#9C27B0" fillcolor="#F3E5F5" fontcolor="#6A1B9A" shape=box]
+		sec_filings [label="SEC Filings
+S-1 / 10-K / 10-Q
+(HTML)" color="#4CAF50" fillcolor="#E8F5E9" fontcolor="#2E7D32" shape=cylinder]
+		sell_side [label="Sell-Side Reports
+MS / JPM / GS
+(PDF)" color="#4CAF50" fillcolor="#E8F5E9" fontcolor="#2E7D32" shape=cylinder]
+		other_src [label="Other Sources
+Kerrisdale Short Report
+Whitepapers / Benchmarks" color="#4CAF50" fillcolor="#E8F5E9" fontcolor="#2E7D32" shape=cylinder]
+		nlm [label="Google NotebookLM
+30 Sources Imported
+Cross-Reference Knowledge Base
+(Save Claude Tokens)" color="#9C27B0" fillcolor="#F3E5F5" fontcolor="#6A1B9A" shape=box3d]
+	}
+	subgraph cluster_phase2 {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 2 — Framework Design & Parallel Research" labeljust=l style="dashed,rounded"
+		claude_fw [label="Claude Session 1
+Research Framework
+9 Modules / 100+ Questions" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		human_fw_review [label="Human Review
+& Framework Adjustment" color="#FBC02D" fillcolor="#FFF9C4" fontcolor="#F57F17" shape=diamond]
+		claude_research [label="Claude Session 2
+Parallel Research
+(NLM API × 12 + Web × 10)" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		report_draft [label="8 Module Reports
+(Markdown Draft)
+~23,500 words / 79 tables" color="#E91E63" fillcolor="#FCE4EC" fontcolor="#AD1457" shape=note]
+	}
+	subgraph cluster_phase3 {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 3 — Adversarial Review & Human Cross-Check" labeljust=l style="dashed,rounded"
+		human_read_report [label="Human Reads Draft Reports
+Identifies Review Direction
+& Key Issues to Investigate" color="#2196F3" fillcolor="#E8F4FD" fontcolor="#1565C0" shape=box]
+		claude_review [label="Claude Review Session
+4 Parallel Agents
+(Finance / Contract / Industry / Gov)" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		num_check [label="Numeric Audit
+300+ Data Points
+3 Critical / 7 Moderate Errors" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		logic_check [label="Logic Review
+49 Audit Points
+Fact Collection + Verdict" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		human_questions [label="Human Deep Questions
+① Debt Financing Ratio
+② Fed Rate Sensitivity
+③ Customer-Level Revenue" color="#FBC02D" fillcolor="#FFF9C4" fontcolor="#F57F17" shape=diamond]
+		val_update [label="Valuation Revision
+Target $168 → $139
+Distress Prob 5% → 10%" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		final_report [label="Final Research Memo
+(v2, Fully Validated)" color="#E91E63" fillcolor="#FCE4EC" fontcolor="#AD1457" shape=note]
+	}
+	subgraph cluster_phase4a {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 4A — pptx-research Skill Co-Design" labeljust=l style="dashed,rounded"
+		skill_design [label="Co-design pptx-research Skill
+7-Step State Machine
+9 Global Rules + Resume Protocol" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		pptx_feedback [label="Human Feedback × 3
+① Content Density
+② Overflow Fix (BCG Template)
+③ Style: Analytical not Roadshow" color="#FBC02D" fillcolor="#FFF9C4" fontcolor="#F57F17" shape=diamond]
+	}
+	subgraph cluster_phase4b {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 4B — Storyline + Chapter-by-Chapter Rendering" labeljust=l style="dashed,rounded"
+		storyline [label="Skill Step 2-4 Execution
+Outline (7 Ch / 44p) → Storyline
+→ Logic Review (3b) → Key Visuals" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		human_storyline [label="Human Confirms
+Storyline Page-by-Page
+(title + outliner + key message)" color="#FBC02D" fillcolor="#FFF9C4" fontcolor="#F57F17" shape=diamond]
+		chapter_render [label="Chapter-by-Chapter Rendering
+6 JS Files (eval() Architecture)
+~25 Charts + ~18 Tables" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		human_chapter_qa [label="Human Confirms
+Each Chapter After Rendering
+(markitdown QA → approve)" color="#FBC02D" fillcolor="#FFF9C4" fontcolor="#F57F17" shape=diamond]
+		pptx_v1 [label="44-Page Deck v1
+(CRWV_Full_Deck.pptx)" color="#E91E63" fillcolor="#FCE4EC" fontcolor="#AD1457" shape=note]
+	}
+	subgraph cluster_phase4c {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 4C — McKinsey-Grade Visual Optimization" labeljust=l style="dashed,rounded"
+		human_mckinsey [label="Human Uploads 13 Screenshots
+McKinsey Reports vs AI Deck
+Identifies 5 Systematic Gaps" color="#2196F3" fillcolor="#E8F4FD" fontcolor="#1565C0" shape=box]
+		visual_fix [label="Claude 6-Item Visual Overhaul
+Font System / Layout Rebalance
+Table McKinsey-ify / Hierarchy" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		pptx_v2 [label="Deck v2
+(Visual-Enhanced)" color="#E91E63" fillcolor="#FCE4EC" fontcolor="#AD1457" shape=note]
+	}
+	subgraph cluster_phase4d {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 4D — Data Cross-Validation & Correction" labeljust=l style="dashed,rounded"
+		data_audit [label="2 Parallel Agents
+① Deck vs Model (140+ data points)
+② Internal Consistency (44 pages)" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		human_rootcause [label="Human Instructs:
+\"Find Root Cause Before Fix\"
+→ 7 Root Causes Identified" color="#FBC02D" fillcolor="#FFF9C4" fontcolor="#F57F17" shape=diamond]
+		data_fix [label="Upstream-to-Downstream Fix
+15 Must-Fix + 3 Should-Fix
+Cascade: P28 → P39-P43" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		human_pptx_polish [label="Human Manual Polish
+Format / Wording / Alignment
+Footnote Caliber Annotations" color="#2196F3" fillcolor="#E8F4FD" fontcolor="#1565C0" shape=box]
+		pptx_output [label="44-Page Research Deck
+(Final PPTX)" color="#E91E63" fillcolor="#FCE4EC" fontcolor="#AD1457" shape=note]
+	}
+	subgraph cluster_phase5 {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 5 — Financial Model (3-Statement Ultra)" labeljust=l style="dashed,rounded"
+		skill_source [label="Open-Source Skill Discovery
+GitHub + Social Media
+(PE Professional's Repo)" color="#2196F3" fillcolor="#E8F4FD" fontcolor="#1565C0" shape=box]
+		model_build [label="Claude + 3-Statements-Ultra
+(Open-Source Skill)
+IS / BS / CF / Returns
++ Scenarios + Cross_Check" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		model_fix [label="Bug Fix & Enhancement
+① BS_COL_MAP off-by-one
+② Revenue Build-Up
+③ Scenarios Tab
+④ Formatting Overhaul" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		human_model_review [label="Human Verification
+① Key Assumptions
+② Direction / Thesis
+③ Cross-Check Numbers" color="#FBC02D" fillcolor="#FFF9C4" fontcolor="#F57F17" shape=diamond]
+		model_output [label="CRWV_3Statement_Model
+10 Tabs / 9/9 QC Passed
+(XLSX)" color="#E91E63" fillcolor="#FCE4EC" fontcolor="#AD1457" shape=note]
+	}
+	subgraph cluster_phase6 {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 6 — Model-Deck Alignment & Final Delivery" labeljust=l style="dashed,rounded"
+		model_deck_reconcile [label="Model ↔ Deck Reconciliation
+14-Item Cross-Check
+11/11 Match + 3 Explainable Gaps" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		thesis_align [label="Thesis Tone Alignment
+Model Summary: Bullish → Cautious
+Matched Deck Conclusion" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		human_final [label="Human Final Sign-Off
+& Manual Spot-Check" color="#FBC02D" fillcolor="#FFF9C4" fontcolor="#F57F17" shape=diamond]
+	}
+	subgraph cluster_phase7 {
+		color="#BDBDBD" fontcolor="#616161" fontsize=12 label="PHASE 7 — AI Collaboration Report & Workflow Diagram" labeljust=l style="dashed,rounded"
+		read_sessions [label="Claude Reads 5 Session Logs
++ IDG Brief (docx)
+Reconstructs Full Workflow" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		gen_diagram [label="Generate Workflow Diagram
+(Graphviz / Python)
+7 Phases / ~35 Nodes" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		gen_report [label="Generate AI Collaboration Report
+(7 Chapters / ~600 Lines)" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		human_iterate [label="Human Feedback × 5 Rounds
+① Add human review nodes
+② Mark open-source skill origin
+③ Expand Phase 4 (4A-4D)
+④ Polish prompt wording" color="#FBC02D" fillcolor="#FFF9C4" fontcolor="#F57F17" shape=diamond]
+	}
+	deliverables [label="Final Deliverables
+━━━━━━━━━━━━━━━━━━━━━━━━
+✦ 44-Page Research Deck (PPTX)
+✦ 3-Statement Model (XLSX)
+✦ AI Collaboration Report (MD)
+✦ Workflow Diagram (PNG)" color="#263238" fillcolor="#263238" fontcolor=white fontsize=11 penwidth=2 shape=box style="filled,bold,rounded"]
+	idg_brief -> human_prep [label="Choose
+CoreWeave"]
+	human_prep -> task_decomp [label="Hand-written
+research plan"]
+	task_decomp -> yuanbao [color="#9C27B0" style=dashed]
+	task_decomp -> grok [color="#9C27B0" style=dashed]
+	task_decomp -> gemini [color="#9C27B0" style=dashed]
+	task_decomp -> doubao [color="#9C27B0" style=dashed]
+	human_prep -> sec_filings [color="#4CAF50" style=dashed]
+	human_prep -> sell_side [color="#4CAF50" style=dashed]
+	human_prep -> other_src [color="#4CAF50" style=dashed]
+	yuanbao -> nlm [label="MD export"]
+	grok -> nlm [label="MD export"]
+	gemini -> nlm [label="MD export"]
+	doubao -> nlm [label="MD export"]
+	sec_filings -> nlm [label="HTML/PDF
+import"]
+	sell_side -> nlm [label="PDF import"]
+	other_src -> nlm [label="PDF import"]
+	task_decomp -> claude_fw [label="Research
+questions" color="#FF9800"]
+	claude_fw -> human_fw_review
+	human_fw_review -> claude_research [label="Approved
+framework"]
+	nlm -> claude_research [label="NLM API
+(12 queries)" color="#9C27B0" style=bold]
+	claude_research -> report_draft
+	report_draft -> human_read_report [label="Human reads
+draft first"]
+	human_read_report -> claude_review [label="Review direction
+& key issues"]
+	claude_review -> num_check
+	claude_review -> logic_check
+	num_check -> human_questions [label="13 errors
+found & fixed"]
+	logic_check -> human_questions [label="49 points
+validated"]
+	human_questions -> val_update [label="2 critical
+follow-ups"]
+	val_update -> final_report
+	final_report -> skill_design [label="Content
+for deck"]
+	final_report -> skill_source [label="Assumptions
+for model"]
+	skill_source -> model_build [label="Install &
+configure skill"]
+	skill_design -> pptx_feedback
+	pptx_feedback -> storyline [label="Skill rules
+calibrated"]
+	storyline -> human_storyline
+	human_storyline -> chapter_render [label="Storyline
+approved"]
+	chapter_render -> human_chapter_qa
+	human_chapter_qa -> pptx_v1 [label="All chapters
+confirmed"]
+	pptx_v1 -> human_mckinsey
+	human_mckinsey -> visual_fix [label="5 systematic
+gaps identified"]
+	visual_fix -> pptx_v2
+	pptx_v2 -> data_audit
+	data_audit -> human_rootcause [label="15 Must-Fix
+3 Should-Fix"]
+	human_rootcause -> data_fix [label="Root causes
+confirmed"]
+	data_fix -> human_pptx_polish [label="Data corrected"]
+	human_pptx_polish -> pptx_output
+	model_build -> model_fix
+	model_fix -> human_model_review
+	human_model_review -> model_output [label="Assumptions
+& direction OK"]
+	pptx_output -> model_deck_reconcile
+	model_output -> model_deck_reconcile
+	model_deck_reconcile -> thesis_align [label="Tone gap
+identified"]
+	thesis_align -> human_final
+	human_final -> read_sessions [label="All materials
+finalized"]
+	read_sessions -> gen_diagram
+	read_sessions -> gen_report
+	gen_diagram -> human_iterate
+	gen_report -> human_iterate
+	human_iterate -> deliverables [label="5 rounds
+iteration"]
+	subgraph cluster_legend {
+		color="#E0E0E0" fontcolor="#757575" fontsize=10 label=Legend labeljust=l style=rounded
+		leg_h [label="Human Action" color="#2196F3" fillcolor="#E8F4FD" fontcolor="#1565C0" shape=box]
+		leg_c [label="Claude Code
+(Opus 4.6)" color="#FF9800" fillcolor="#FFF3E0" fontcolor="#E65100" shape=box]
+		leg_a [label="Other AI Tools" color="#9C27B0" fillcolor="#F3E5F5" fontcolor="#6A1B9A" shape=box]
+		leg_d [label="Data Source" color="#4CAF50" fillcolor="#E8F5E9" fontcolor="#2E7D32" shape=cylinder]
+		leg_r [label="Human Review
+& Decision" color="#FBC02D" fillcolor="#FFF9C4" fontcolor="#F57F17" shape=diamond]
+		leg_o [label=Output color="#E91E63" fillcolor="#FCE4EC" fontcolor="#AD1457" shape=note]
+		leg_h -> leg_c [style=invis]
+		leg_c -> leg_a [style=invis]
+		leg_a -> leg_d [style=invis]
+		leg_d -> leg_r [style=invis]
+		leg_r -> leg_o [style=invis]
+	}
+}

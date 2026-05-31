@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>本网页是如何制作的 · AI Workflow Notes</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="brand-mark">●</span>AI Workflow Notes</a>
+    <nav class="nav-anchors">
+      <a href="../index.html#coreweave">CoreWeave Case</a>
+      <a href="../index.html#mapping">Agent Mapping Case</a>
+      <a href="../index.html#cognition">认知层</a>
+      <a href="../index.html#tips">Tips</a>
+    </nav>
+  </div>
+</header>
+
+<div class="subpage-meta">
+  <div class="container">
+    <div class="crumbs">
+      <a href="../index.html">主页</a>
+      <span class="sep">/</span>
+      <a href="../index.html#tips">Tips</a><span class="sep">/</span><span>制作过程</span>
+    </div>
+    <div class="source-tag">
+      <span>source · inline · 还原自当前 session 的 prompt/response</span>
+      
+    </div>
+  </div>
+</div>
+
+<section class="subpage-title">
+  <div class="container-read">
+    <div class="eyebrow">Meta · How this site was made</div>
+    <h1>本网页是如何制作的</h1>
+    <p class="subtitle">从一份手写 <code>ai.md</code> 草稿到当前这个站点 · 11 轮 user × AI 协作的时间线还原。</p>
+  </div>
+</section>
+
+<main class="subpage-main">
+  <div class="container-read">
+    <article class="md-article">
+
+<p class="muted small">这一页本身就是一个 meta-case：<strong>这个网站从一份手写的 <code>ai.md</code> 需求草稿，到当前你正在看到的样子</strong>，整个过程同样是按"人定方向 + AI 并行实现 + 多轮 review"的链路做的。下面把<strong>每一轮 user prompt 的原文</strong>与对应 AI 产出按时间线还原，并把两份关键文档（<code>ai.md</code> / <code>PRD.md</code>）的全文也嵌进来。</p>
+
+<div class="note-bar">
+  <strong>核心原则</strong>：① 用自然语言把意图写清楚，让 AI 先产出一份 PRD 反过来对齐；② 每一轮反馈只动一小块，控制 context；③ 把"工具的工具"（build.js、common.js）也作为产出物固化下来，下一次迭代直接复用。
+</div>
+
+<h2>两份原始文档</h2>
+<p class="muted small">这两份文件构成了整个项目的"地基"。点击展开可以看完整原文（带滚动条，避免淹没整页）。</p>
+
+<details class="doc-embed">
+  <summary>
+    <span>📄 <strong>ai.md</strong> · 最初手写的自然语言需求草稿 <span class="de-tag">(7.4 KB · 原文嵌入)</span></span>
+    <span class="de-toggle">EXPAND</span>
+  </summary>
+  <div class="doc-content">
+    <div class="doc-actions">
+      <button class="copy-btn" data-copy="# AI 
+
+# AI 工作流（2类案例）
+
+### 【Coreweave\_example】文件夹里：Coreweave\_case\_study  放主html页面里，点击标题可以展开这个case study完成的流程图（能够滑动观察，参考 CoreWeave\_AI\_Workflow\.png 和CoreWeave\_AI\_Workflow\.dot 文件） 如下文描述，部分方框点击可以跳转，应该使得边框发光/加粗以提示用户
+
+1. 提纲 \(人对方向的掌握\)  点击 Manual Research \&amp;amp; ReadingS\-1 /10\-K /Industry ReportsHand\-written Research Plan 这个框可以跳转到下面这个文字 做成sub\-html页面A
+
+&gt; 当时的提纲和prompt如下
+&gt; 
+&gt; 1. 问claude：我打算分几个module来拆分当研究“是否投资coreweave”这个专业buyside hedge fund 命题的时候，有什么研究需要做，最终输出报告需要包含（*Investment Thesis（投/不投的原因），Industry Research，AI Implication（AI对公司业务的影响，利多/利空的逻辑，有什么facts），Moat，Financial Model，Risk，Further Questions（关注可比公司））*
+&gt; 
+&gt;     1. 请先帮我完善这个问题清单（需要非常solid sharp的研究框架）
+&gt; 
+&gt;     2. 【完善好问题清单之后】请结合NotebookLM中的source/gemini deep reasoning返回结果，和你的逻辑推演能力做针对每个模块问题的深度思考 （可以分不同session去做）
+&gt; 
+&gt;     
+&gt; 
+&gt;     * [ ] 静态行业研究 \(fact\-based industry research\)
+&gt; 
+&gt;         * [ ] Coreweave 目前的所在的行业的主要商业模式是什么？（上游供应商、下游客户有哪些？客户为什么有该需求？）
+&gt; 
+&gt;         * [ ] 该市场空间、过去3年和未来3年的增速如何？
+&gt; 
+&gt;         * [ ] 该行业除了coreweave 还有什么玩家（该行业是一个区域型行业还是全球化的行业？中国美国玩家是否在同一市场中竞争？）
+&gt; 
+&gt;         * [ ] 各个玩家大致的市场排名/份额如何？分别有什么区别/优劣势？
+&gt; 
+&gt;         * [ ] 该行业的核心竞争力是什么？为什么？
+&gt; 
+&gt;         * [ ] 该行业的核心压力来自什么（比如大客户自建算力中心？高杠杆业务模式等）
+&gt; 
+&gt;     * [ ] 静态Coreweave 公司研究（fact\-based company research）
+&gt; 
+&gt;         * [ ] 公司的主营业务是什么？有哪几个板块的收入，2024至今by quarter 各板块收入分别是多少（先检索年报/earnings call 一级可信，如果没有则利用其他二级可靠信息源？）
+&gt; 
+&gt;         * [ ] 每个板块的收入可以如何拆分？（比如GPU租赁收入是GPU块数\*单GPU租赁价格）
+&gt; 
+&gt;         * [ ] 每个板块业务的portfolio是怎么样的，核心的业务指标是什么（请帮我罗列尽可能多的业务指标数据和变化情况，比如各型号GPU现有量、租赁的capacity利用率、各型号GPU租赁费率……）？
+&gt; 
+&gt;         * [ ] 业务收入的客户集中度是怎么样的，从2023至今每年的前五大客户分别是谁？
+&gt; 
+&gt;     * [ ] AI implication
+&gt; 
+&gt;         * [ ] 从第一性原理出发，AI发展对于公司业务的直接影响是什么（如何作用于公司的P\&amp;amp;L和EBIT）？
+&gt; 
+&gt;         * [ ] 根据AI发展的最新动态（比如token消耗量的增速、Anthropic /OpenAI ARR的增速 、CSP 自建AIDC的进度和速度）来判断目前AI 对公司业务分别有什么利多和利空的逻辑？核心最关键的变量是什么？
+&gt; 
+&gt;         * [ ] 公司自身在AI业务中拓展方向是什么？进度如何？管理层意图是什么？
+&gt; 
+&gt;     * [ ] Moat 
+&gt; 
+&gt;         * [ ] 公司在AI产业链内的生态位置是如何的
+&gt; 
+&gt;         * [ ] 最核心的壁垒是什么？
+&gt; 
+&gt;         * [ ] 针对这些壁垒最大的威胁是什么？
+&gt; 
+&gt;     * [ ] Risk：最核心的风险（包括但不限于 宏观利率、AI行业整体景气度、neocloud行业生态位、公司运营落实订单能力，股价敏感度从高到低做分析
+&gt; 
+&gt;     * [ ] Other questions：coreweave 创始人的履历、领导力、学习能力、思考方式与执行力如何（有什么案例）
+&gt; 
+&gt; 
+&gt; 
+&gt; 2. 先做完上述的研究，然后问claude关于投资方向的问题\+自己思考 ==\&amp;gt; 迭代报告
+&gt; 
+&gt; * [ ] **动态公司叙事的bet 差异**
+&gt; 
+&gt;     * [ ] 目前针对该公司，市场的核心共识是什么？分歧在哪里？ \(what the market sees; what the market misses\) 股价增长/下跌的catalyst分别是什么 
+&gt; 
+&gt;     * [ ] 目前多方和空方不同的叙事里面，核心差异是什么？（各自坚定自己position的bet是什么？\)
+&gt; 
+&gt;     * [ ] 我们机构的投资风格/哲学/taste是：1）\&amp;\#34;投资实际上是不需要共识的，能达成共识的项目一般投不出特别好的结果来\&amp;\#34;；2）极度重视创始人的领导力、学习能力、思考方式与执行力； 3）在技术确定性与市场不确定性之间寻找平衡，风险评估更注重技术壁垒与商业化周期（比如利润回正时间点）；针对这一哲学，给出对CRWV的综合评估
+&gt; 
+&gt; 
+
+2. 主页面点击 Claude Session 2Parallel Research （NLM APIx 12 \+ Web x 10\) 方框跳转 initial\-report\-8modules\.md 内容（做成sub\-html 页面B / 同时可以页面上有个小提示：可以现场演示）
+
+&gt; 因为网页有登录状态 \(现在很多AI爬虫工具也是利用这一点\) 连接notebooklm  解释 web\-access  skills \(如果需要管控source 但source很多直接用cc很麻烦\) 写好的报告存md文档
+&gt; 
+&gt; 
+
+3. 主页面点击 Human Reads Draft ReportsIdentifies Review Direction\&amp;amp; Key Issues to Investigate 方框跳 report\-reviewed\.md 文件 （做成sub\-html 页面C / 同时可以页面上有个小提示：可以现场演示）
+
+4. 渲染PPT（产出格式文件），主页面点击Co\-design pptx\-research Skill7\-Step State Machine9 Global Rules \+ Resume Protocol 方框跳转 pptx\-skill\-generated\.md 文件 （做成sub\-html 页面D / 同时可以页面上有个小提示：可以现场演示）
+
+    
+
+### 【Mapping\_example文件夹】赛道扫描 mapping 案例（AI agent）放主html页面里，点击标题可以展开workflow（参考 perplexity\_workflow\_v3\.png 同上，能够滑动观察） 如下文描述，部分方框点击可以跳转，应该使得边框发光/加粗以提示用户
+
+&gt; 人工选取工具：考虑perplexity连接的pitchbook/statista等数据库原生MCP，更适合一级扫描；
+&gt; 人\+perplexity deep research同步明确研究对象和定义、初步了解
+&gt; 3A\. 人工撰写核心研究问题/报告提纲→ 分session perplexity分步deep research 产出md文档
+&gt; 3B\. 并行 perplexity customize workflow \(market map\) 通过pitchbook/CB insights mapping Long list 并根据数据库里的信息系统对比产品和公司（同时也可以websearch获得初步产品信息，还可以并行定制化研究核心问题） 产出 long list 的excel
+&gt; 看产品/公司，部分进行试用/social hearing/研究差异，输入核心investment thesis，得到shortlist，撰写md文件
+&gt; 合并md文件 / review \+ 质疑追问 \+ model council
+&gt; word模板\+渲染产出
+&gt; 
+&gt; 
+
+1. 提纲 \(人对方向的掌握\)  点击 【Human:明确研究赛道\&amp;amp;核心投资问题\(边界/变量/框架\) 】这个框可以跳转到下面这个文字 做成sub\-html页面E 
+
+&gt; 细化问题提纲：
+&gt; 
+&gt; 1. Mapping AI Agent 赛道中8\-10家国内及海外第三方创业公司，对比其技术架构、产品能力和使用场景的差异；在Mapping的公司中，最看好的1\-2家投资标的是什么？阐述投资逻辑及潜在风险
+&gt; 
+&gt; 2. 如何选取/定义一个可量化的Agent成熟度指标，评估当前的技术水位；技术演进将解锁哪些应用场景，解锁的时间窗口是什么？
+&gt; 
+&gt; 3. 如何看待2C及2B Agent/Agent OS类产品与模型公司的长期竞争？创业公司的关键成功要素是什么？
+&gt; 
+&gt; 
+
+2. 点击【OUTPUT:多章节\.md研究报告初稿】 跳转 deep research的md文件 （做成sub\-html F）
+
+3. 点击【OUTPUT:Long List Excel\(公司/产品/融资/差异化维度\)】 跳转 excel mapping结果 （做成sub\-html G，上面加文字 写 perplexity原session的url：https://www\.perplexity\.ai/computer/tasks/6325c6aa\-8cac\-4d7e\-86fb\-a17ea49d3229）可以加文字 提示用claude 去浏览器自动化检索product hunt上的产品
+
+4. 【无跳转】标注在 【产品试用/social hearing】框旁边：去试用产品（AI可以阅读别人的评测，但是体感需要自己获取）➕social hearing  \(这一步可以用playwright来看社区 / 访谈深度用户）
+
+5. 点击【观点稳健?无重大漏洞?】框跳转：question\&amp;amp;verification\.png图片
+
+6. 点击 【Human:Word/PPT 模板套用品牌格式/图表占位】跳转 模板\.docx文件 （sub\-html H，上面加文字 写perplexity 源网页https://www\.perplexity\.ai/search/a62e91e2\-3089\-448e\-8c61\-b1f5a2dcf93b
+
+7. 点击 【AI辅助图表生成\&amp;amp;数据可视化Perplexity / Python / Flourish】跳转 Agent\_report\.pdf 文件 （sub\-html I，并在上面标清楚 以下prompt）
+
+    &gt; Prompt：请帮我生成一个格式完整的研究分析投资报告（docx文件）1\. 读取当前目录下的【投资报告书标准模板\.docx】作为固定文档骨架，模板里所有标题、段落、格式、文字、占位符都可以修改、删除、新增、调整顺序与层级，但不要参考任何内容，只把它当作排版框架使用。2\. 生成一个AI\_agent\_report\.docx文件，将md里面的提纲内容完整精准填入模板占位位置（但是字体修改成STKaiti）3\. 在完成这个任务之后，请重新 review 一遍生成的 docx 文件，检查其逻辑与md参考文件是否一致
+    &gt; 
+    &gt; 
+
+8. 【无跳转】标注在 最后的 框旁边人工\+模型（新开session）是一种multi\-agent的思路，需要新的context/视角/目标
+
+
+
+### **理解和认知层 放在主html页面，点击可展开下文**
+
+1. 应该用AI来做什么？目前能力边界如何？
+
+    - 工作流的流程化 （outsource 认知带宽和重复性工作给它 **但是自己要把握关键问题和判断能力 **
+
+    - 个人知识 沉淀（embedding RAG / 或者直接存md文件）  做自己的Agent友好型数据库
+
+2. 从Agent的结构，来理解 Agent的能力边界？
+
+    - 执行环境（claude code 能直接读 / 写本地文件、有完整的文件系统权限 \+ 命令执行权限）
+
+    - 权限 / 工具链 \- 展示 Github 
+
+![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=ZjBmMWI1MjM5YmI3MzM5MzMwZGVlYzc4Yjg0MDI0MzZfYTFiODdjM2ZjYzgyNWZiNjA3MGJkNjA5MGE4MTI2ZDhfSUQ6NzY0NTUyODg4NDg1MDc0MDQyMF8xNzgwMTUzMjgxOjE3ODAyMzk2ODFfVjM)
+
+    - 上下文管理 （可以自己写projects 里的md文件记录进度，也可以/compact）
+
+3. AI目前明显不能替代的部分，如何人机协同？
+
+    - 提供信息源 寻找资源 包括寻找工具
+
+    - 判断（尤其是方向性的、需要体感的、不一定是在语言边界里的判断，例如投资），所以人无法从这个过程里off 出去
+
+
+
+### **其他tips 放在主html页面，点击可展开下文**
+
+1. 要提高AI产出质量，需要的是输入更多信息（包括问能够提升置信空间的问题），包括更相关的参考文献和思路更清晰的提纲，还有人看到产出物后，给出的具体修改意见
+
+2. 每一步可拆解 有中间结果 控制context上下文和方向
+
+3. 想清楚功能/目标，让AI生成requirement prompt；然后用此prompt去发起任务；对于渲染rendering类工作，最好是有模板来复刻，否则需要写很长的PRD才能harness住格式
+
+4. 没有什么工程问题是Codex开十几个子代理解决不了，而非得在一个群聊里@好几个Agent来完成的（吐槽Slock
+
+5. 寻找工具 AI （word excel ppt 小工具/产品 三大件的skills）其余的一些需求我会找合适的产品
+
+    - 信息：https://aihot\.virxact\.com/
+
+    - PPT：最后希望把要求的Grid、边距、占位符、字体、色值全部规定在skills里面，python\-pptx等引擎去执行
+
+    - word：也是python\-docx去做执行，核心是格式，但已经通过perplexity试验过它可以执行复刻动作
+
+    - 其他工具我暂时是不做的，不是很喜欢重复造轮子，收集/处理信息和做判断/思考是我最重要的工作，如果有通用类型的工具，我会找合适的产品/插件/skills；没有足够的时间打磨的情况下，自己做一些玩具
+
+
+
+
+
+### 网页呈现 初步PRD
+
+- 关于网页去除AI味道的skills（群里 可以点开看一下）
+
+&gt; 以下是网页呈现部分工作流
+&gt; 
+&gt; 
+
+
+
+![Image](https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MGViZmIyOGEzZDQzMTBhZjgzMzMyMmFkMzVlYzI0YTZfYzE3MGEzNTgwZWFlNmU4MTRjMjhhMmZiMzU3NDA4MzVfSUQ6NzY0NTYzMTI4MTQxNzc2ODE0NV8xNzgwMTUzMjgxOjE3ODAyMzk2ODFfVjM)
+
+## 项目名称
+
+本地 AI 工作流知识库网页
+
+## 核心目标
+
+创建一个本地运行的静态 HTML 主页，作为个人 AI 工作流、方法论、技巧 Tips 的统一展示入口，通过跳转链接整合关联资料。
+
+## 功能需求
+
+1. **主页面**：纯 HTML/CSS 编写，核心展示 AI 工作流步骤、方法论总结、小技巧清单；
+
+2. **页面整体风格：**参考 https://idgcapital\.com/
+
+3. **跳转交互**：主页面所有关联内容支持点击跳转，分为两类：
+
+    - 外部跳转：点击链接直接打开 GitHub 主页等外部网址；
+
+    - 本地跳转：点击链接打开本地存放的文本文件、Markdown \(\.md\) 文件、Excel 表格文件；
+
+4. **特殊文件展示**：针对本地markdown/excel/PPTX 演示文件，**不能直接下载打开**，必须实现**网页端预览展示**（转换为 HTML/PDF 网页形式呈现）；
+
+## 运行环境
+
+纯本地环境，无需后端、无需服务器、无需联网，双击主 HTML 文件即可在浏览器正常运行。
+
+## 技术要求
+
+使用基础前端技术（HTML\+CSS），文件采用**相对路径**管理，保证本地移动文件夹后链接不失效。
+
+">复制 ai.md 全文</button>
+      <a class="copy-btn" href="../../ai.md" target="_blank" rel="noopener" style="text-decoration:none;">在新标签页打开源文件 →</a>
+    </div>
+    <div class="doc-scroll">
+      <article class="md-article">
+        <h1>AI</h1>
+<h1>AI 工作流（2类案例）</h1>
+<h3>【Coreweave_example】文件夹里：Coreweave_case_study  放主html页面里，点击标题可以展开这个case study完成的流程图（能够滑动观察，参考 CoreWeave_AI_Workflow.png 和CoreWeave_AI_Workflow.dot 文件） 如下文描述，部分方框点击可以跳转，应该使得边框发光/加粗以提示用户</h3>
+<ol>
+<li>提纲 (人对方向的掌握)  点击 Manual Research &amp;amp; ReadingS-1 /10-K /Industry ReportsHand-written Research Plan 这个框可以跳转到下面这个文字 做成sub-html页面A</li>
+</ol>
+<blockquote>
+<p>当时的提纲和prompt如下</p>
+<ol>
+<li><p>问claude：我打算分几个module来拆分当研究“是否投资coreweave”这个专业buyside hedge fund 命题的时候，有什么研究需要做，最终输出报告需要包含（<em>Investment Thesis（投/不投的原因），Industry Research，AI Implication（AI对公司业务的影响，利多/利空的逻辑，有什么facts），Moat，Financial Model，Risk，Further Questions（关注可比公司））</em></p>
+<ol>
+<li><p>请先帮我完善这个问题清单（需要非常solid sharp的研究框架）</p>
+</li>
+<li><p>【完善好问题清单之后】请结合NotebookLM中的source/gemini deep reasoning返回结果，和你的逻辑推演能力做针对每个模块问题的深度思考 （可以分不同session去做）</p>
+</li>
+</ol>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+静态行业研究 (fact-based industry research)</p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+Coreweave 目前的所在的行业的主要商业模式是什么？（上游供应商、下游客户有哪些？客户为什么有该需求？）</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+该市场空间、过去3年和未来3年的增速如何？</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+该行业除了coreweave 还有什么玩家（该行业是一个区域型行业还是全球化的行业？中国美国玩家是否在同一市场中竞争？）</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+各个玩家大致的市场排名/份额如何？分别有什么区别/优劣势？</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+该行业的核心竞争力是什么？为什么？</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+该行业的核心压力来自什么（比如大客户自建算力中心？高杠杆业务模式等）</p>
+</li>
+</ul>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+静态Coreweave 公司研究（fact-based company research）</p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+公司的主营业务是什么？有哪几个板块的收入，2024至今by quarter 各板块收入分别是多少（先检索年报/earnings call 一级可信，如果没有则利用其他二级可靠信息源？）</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+每个板块的收入可以如何拆分？（比如GPU租赁收入是GPU块数*单GPU租赁价格）</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+每个板块业务的portfolio是怎么样的，核心的业务指标是什么（请帮我罗列尽可能多的业务指标数据和变化情况，比如各型号GPU现有量、租赁的capacity利用率、各型号GPU租赁费率……）？</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+业务收入的客户集中度是怎么样的，从2023至今每年的前五大客户分别是谁？</p>
+</li>
+</ul>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+AI implication</p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+从第一性原理出发，AI发展对于公司业务的直接影响是什么（如何作用于公司的P&amp;amp;L和EBIT）？</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+根据AI发展的最新动态（比如token消耗量的增速、Anthropic /OpenAI ARR的增速 、CSP 自建AIDC的进度和速度）来判断目前AI 对公司业务分别有什么利多和利空的逻辑？核心最关键的变量是什么？</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+公司自身在AI业务中拓展方向是什么？进度如何？管理层意图是什么？</p>
+</li>
+</ul>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+Moat </p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+公司在AI产业链内的生态位置是如何的</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+最核心的壁垒是什么？</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+针对这些壁垒最大的威胁是什么？</p>
+</li>
+</ul>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+Risk：最核心的风险（包括但不限于 宏观利率、AI行业整体景气度、neocloud行业生态位、公司运营落实订单能力，股价敏感度从高到低做分析</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+Other questions：coreweave 创始人的履历、领导力、学习能力、思考方式与执行力如何（有什么案例）</p>
+</li>
+</ul>
+</li>
+<li><p>先做完上述的研究，然后问claude关于投资方向的问题+自己思考 ==&amp;gt; 迭代报告</p>
+</li>
+</ol>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>动态公司叙事的bet 差异</strong></p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+目前针对该公司，市场的核心共识是什么？分歧在哪里？ (what the market sees; what the market misses) 股价增长/下跌的catalyst分别是什么 </p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+目前多方和空方不同的叙事里面，核心差异是什么？（各自坚定自己position的bet是什么？)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+我们机构的投资风格/哲学/taste是：1）&amp;#34;投资实际上是不需要共识的，能达成共识的项目一般投不出特别好的结果来&amp;#34;；2）极度重视创始人的领导力、学习能力、思考方式与执行力； 3）在技术确定性与市场不确定性之间寻找平衡，风险评估更注重技术壁垒与商业化周期（比如利润回正时间点）；针对这一哲学，给出对CRWV的综合评估</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<ol start="2">
+<li>主页面点击 Claude Session 2Parallel Research （NLM APIx 12 + Web x 10) 方框跳转 initial-report-8modules.md 内容（做成sub-html 页面B / 同时可以页面上有个小提示：可以现场演示）</li>
+</ol>
+<blockquote>
+<p>因为网页有登录状态 (现在很多AI爬虫工具也是利用这一点) 连接notebooklm  解释 web-access  skills (如果需要管控source 但source很多直接用cc很麻烦) 写好的报告存md文档</p>
+</blockquote>
+<ol start="3">
+<li><p>主页面点击 Human Reads Draft ReportsIdentifies Review Direction&amp;amp; Key Issues to Investigate 方框跳 report-reviewed.md 文件 （做成sub-html 页面C / 同时可以页面上有个小提示：可以现场演示）</p>
+</li>
+<li><p>渲染PPT（产出格式文件），主页面点击Co-design pptx-research Skill7-Step State Machine9 Global Rules + Resume Protocol 方框跳转 pptx-skill-generated.md 文件 （做成sub-html 页面D / 同时可以页面上有个小提示：可以现场演示）</p>
+</li>
+</ol>
+<h3>【Mapping_example文件夹】赛道扫描 mapping 案例（AI agent）放主html页面里，点击标题可以展开workflow（参考 perplexity_workflow_v3.png 同上，能够滑动观察） 如下文描述，部分方框点击可以跳转，应该使得边框发光/加粗以提示用户</h3>
+<blockquote>
+<p>人工选取工具：考虑perplexity连接的pitchbook/statista等数据库原生MCP，更适合一级扫描；
+人+perplexity deep research同步明确研究对象和定义、初步了解
+3A. 人工撰写核心研究问题/报告提纲→ 分session perplexity分步deep research 产出md文档
+3B. 并行 perplexity customize workflow (market map) 通过pitchbook/CB insights mapping Long list 并根据数据库里的信息系统对比产品和公司（同时也可以websearch获得初步产品信息，还可以并行定制化研究核心问题） 产出 long list 的excel
+看产品/公司，部分进行试用/social hearing/研究差异，输入核心investment thesis，得到shortlist，撰写md文件
+合并md文件 / review + 质疑追问 + model council
+word模板+渲染产出</p>
+</blockquote>
+<ol>
+<li>提纲 (人对方向的掌握)  点击 【Human:明确研究赛道&amp;amp;核心投资问题(边界/变量/框架) 】这个框可以跳转到下面这个文字 做成sub-html页面E</li>
+</ol>
+<blockquote>
+<p>细化问题提纲：</p>
+<ol>
+<li><p>Mapping AI Agent 赛道中8-10家国内及海外第三方创业公司，对比其技术架构、产品能力和使用场景的差异；在Mapping的公司中，最看好的1-2家投资标的是什么？阐述投资逻辑及潜在风险</p>
+</li>
+<li><p>如何选取/定义一个可量化的Agent成熟度指标，评估当前的技术水位；技术演进将解锁哪些应用场景，解锁的时间窗口是什么？</p>
+</li>
+<li><p>如何看待2C及2B Agent/Agent OS类产品与模型公司的长期竞争？创业公司的关键成功要素是什么？</p>
+</li>
+</ol>
+</blockquote>
+<ol start="2">
+<li><p>点击【OUTPUT:多章节.md研究报告初稿】 跳转 deep research的md文件 （做成sub-html F）</p>
+</li>
+<li><p>点击【OUTPUT:Long List Excel(公司/产品/融资/差异化维度)】 跳转 excel mapping结果 （做成sub-html G，上面加文字 写 perplexity原session的url：<a href="https://www%5C.perplexity%5C.ai/computer/tasks/6325c6aa%5C-8cac%5C-4d7e%5C-86fb%5C-a17ea49d3229%EF%BC%89%E5%8F%AF%E4%BB%A5%E5%8A%A0%E6%96%87%E5%AD%97">https://www\.perplexity\.ai/computer/tasks/6325c6aa\-8cac\-4d7e\-86fb\-a17ea49d3229）可以加文字</a> 提示用claude 去浏览器自动化检索product hunt上的产品</p>
+</li>
+<li><p>【无跳转】标注在 【产品试用/social hearing】框旁边：去试用产品（AI可以阅读别人的评测，但是体感需要自己获取）➕social hearing  (这一步可以用playwright来看社区 / 访谈深度用户）</p>
+</li>
+<li><p>点击【观点稳健?无重大漏洞?】框跳转：question&amp;amp;verification.png图片</p>
+</li>
+<li><p>点击 【Human:Word/PPT 模板套用品牌格式/图表占位】跳转 模板.docx文件 （sub-html H，上面加文字 写perplexity 源网页<a href="https://www%5C.perplexity%5C.ai/search/a62e91e2%5C-3089%5C-448e%5C-8c61%5C-b1f5a2dcf93b">https://www\.perplexity\.ai/search/a62e91e2\-3089\-448e\-8c61\-b1f5a2dcf93b</a></p>
+</li>
+<li><p>点击 【AI辅助图表生成&amp;amp;数据可视化Perplexity / Python / Flourish】跳转 Agent_report.pdf 文件 （sub-html I，并在上面标清楚 以下prompt）</p>
+<blockquote>
+<p>Prompt：请帮我生成一个格式完整的研究分析投资报告（docx文件）1. 读取当前目录下的【投资报告书标准模板.docx】作为固定文档骨架，模板里所有标题、段落、格式、文字、占位符都可以修改、删除、新增、调整顺序与层级，但不要参考任何内容，只把它当作排版框架使用。2. 生成一个AI_agent_report.docx文件，将md里面的提纲内容完整精准填入模板占位位置（但是字体修改成STKaiti）3. 在完成这个任务之后，请重新 review 一遍生成的 docx 文件，检查其逻辑与md参考文件是否一致</p>
+</blockquote>
+</li>
+<li><p>【无跳转】标注在 最后的 框旁边人工+模型（新开session）是一种multi-agent的思路，需要新的context/视角/目标</p>
+</li>
+</ol>
+<h3><strong>理解和认知层 放在主html页面，点击可展开下文</strong></h3>
+<ol>
+<li><p>应该用AI来做什么？目前能力边界如何？</p>
+<ul>
+<li><p>工作流的流程化 （outsource 认知带宽和重复性工作给它 **但是自己要把握关键问题和判断能力 **</p>
+</li>
+<li><p>个人知识 沉淀（embedding RAG / 或者直接存md文件）  做自己的Agent友好型数据库</p>
+</li>
+</ul>
+</li>
+<li><p>从Agent的结构，来理解 Agent的能力边界？</p>
+<ul>
+<li><p>执行环境（claude code 能直接读 / 写本地文件、有完整的文件系统权限 + 命令执行权限）</p>
+</li>
+<li><p>权限 / 工具链 - 展示 Github</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=ZjBmMWI1MjM5YmI3MzM5MzMwZGVlYzc4Yjg0MDI0MzZfYTFiODdjM2ZjYzgyNWZiNjA3MGJkNjA5MGE4MTI2ZDhfSUQ6NzY0NTUyODg4NDg1MDc0MDQyMF8xNzgwMTUzMjgxOjE3ODAyMzk2ODFfVjM" alt="Image"></p>
+<pre><code>- 上下文管理 （可以自己写projects 里的md文件记录进度，也可以/compact）
+</code></pre>
+<ol start="3">
+<li><p>AI目前明显不能替代的部分，如何人机协同？</p>
+<ul>
+<li><p>提供信息源 寻找资源 包括寻找工具</p>
+</li>
+<li><p>判断（尤其是方向性的、需要体感的、不一定是在语言边界里的判断，例如投资），所以人无法从这个过程里off 出去</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3><strong>其他tips 放在主html页面，点击可展开下文</strong></h3>
+<ol>
+<li><p>要提高AI产出质量，需要的是输入更多信息（包括问能够提升置信空间的问题），包括更相关的参考文献和思路更清晰的提纲，还有人看到产出物后，给出的具体修改意见</p>
+</li>
+<li><p>每一步可拆解 有中间结果 控制context上下文和方向</p>
+</li>
+<li><p>想清楚功能/目标，让AI生成requirement prompt；然后用此prompt去发起任务；对于渲染rendering类工作，最好是有模板来复刻，否则需要写很长的PRD才能harness住格式</p>
+</li>
+<li><p>没有什么工程问题是Codex开十几个子代理解决不了，而非得在一个群聊里@好几个Agent来完成的（吐槽Slock</p>
+</li>
+<li><p>寻找工具 AI （word excel ppt 小工具/产品 三大件的skills）其余的一些需求我会找合适的产品</p>
+<ul>
+<li><p>信息：<a href="https://aihot%5C.virxact%5C.com/">https://aihot\.virxact\.com/</a></p>
+</li>
+<li><p>PPT：最后希望把要求的Grid、边距、占位符、字体、色值全部规定在skills里面，python-pptx等引擎去执行</p>
+</li>
+<li><p>word：也是python-docx去做执行，核心是格式，但已经通过perplexity试验过它可以执行复刻动作</p>
+</li>
+<li><p>其他工具我暂时是不做的，不是很喜欢重复造轮子，收集/处理信息和做判断/思考是我最重要的工作，如果有通用类型的工具，我会找合适的产品/插件/skills；没有足够的时间打磨的情况下，自己做一些玩具</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3>网页呈现 初步PRD</h3>
+<ul>
+<li>关于网页去除AI味道的skills（群里 可以点开看一下）</li>
+</ul>
+<blockquote>
+<p>以下是网页呈现部分工作流</p>
+</blockquote>
+<p><img src="https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=MGViZmIyOGEzZDQzMTBhZjgzMzMyMmFkMzVlYzI0YTZfYzE3MGEzNTgwZWFlNmU4MTRjMjhhMmZiMzU3NDA4MzVfSUQ6NzY0NTYzMTI4MTQxNzc2ODE0NV8xNzgwMTUzMjgxOjE3ODAyMzk2ODFfVjM" alt="Image"></p>
+<h2>项目名称</h2>
+<p>本地 AI 工作流知识库网页</p>
+<h2>核心目标</h2>
+<p>创建一个本地运行的静态 HTML 主页，作为个人 AI 工作流、方法论、技巧 Tips 的统一展示入口，通过跳转链接整合关联资料。</p>
+<h2>功能需求</h2>
+<ol>
+<li><p><strong>主页面</strong>：纯 HTML/CSS 编写，核心展示 AI 工作流步骤、方法论总结、小技巧清单；</p>
+</li>
+<li><p>**页面整体风格：**参考 <a href="https://idgcapital%5C.com/">https://idgcapital\.com/</a></p>
+</li>
+<li><p><strong>跳转交互</strong>：主页面所有关联内容支持点击跳转，分为两类：</p>
+<ul>
+<li><p>外部跳转：点击链接直接打开 GitHub 主页等外部网址；</p>
+</li>
+<li><p>本地跳转：点击链接打开本地存放的文本文件、Markdown (.md) 文件、Excel 表格文件；</p>
+</li>
+</ul>
+</li>
+<li><p><strong>特殊文件展示</strong>：针对本地markdown/excel/PPTX 演示文件，<strong>不能直接下载打开</strong>，必须实现<strong>网页端预览展示</strong>（转换为 HTML/PDF 网页形式呈现）；</p>
+</li>
+</ol>
+<h2>运行环境</h2>
+<p>纯本地环境，无需后端、无需服务器、无需联网，双击主 HTML 文件即可在浏览器正常运行。</p>
+<h2>技术要求</h2>
+<p>使用基础前端技术（HTML+CSS），文件采用<strong>相对路径</strong>管理，保证本地移动文件夹后链接不失效。</p>
+
+      </article>
+    </div>
+  </div>
+</details>
+
+<details class="doc-embed">
+  <summary>
+    <span>📄 <strong>PRD.md</strong> · AI 反过来生成的结构化 PRD <span class="de-tag">(15.9 KB · 原文嵌入)</span></span>
+    <span class="de-toggle">EXPAND</span>
+  </summary>
+  <div class="doc-content">
+    <div class="doc-actions">
+      <button class="copy-btn" data-copy="# PRD：本地 AI 工作流知识库网页
+
+&gt; 目标读者：AI Coding Agent（如 Claude Code、Codex）。本 PRD 是**实现规范**，不是需求草稿；任何&quot;看起来可以省略&quot;的细节都已经被考虑过，请按字面意思实现。
+
+---
+
+## 0. 项目元信息
+
+| 字段 | 值 |
+|---|---|
+| 项目名 | 本地 AI 工作流知识库网页 |
+| 部署形态 | **纯静态站点，无后端、无构建工具、无 npm**。双击 `index.html` 即可在浏览器跑起来。 |
+| 工作目录（绝对路径） | `/Users/liuzhiyuan/Documents/rb/idg/` |
+| 浏览器目标 | 最新版 Chrome / Safari / Edge（macOS 优先）。**不需要兼容 IE/旧版 Edge。** |
+| 联网要求 | 默认离线可用。允许引用 1 个 CDN（仅 marked.js 用于 markdown 渲染，见 §6）。 |
+| 路径规范 | **所有引用一律相对路径**。禁止出现 `file://`、绝对路径、`http://localhost`。 |
+
+---
+
+## 1. 目录结构（**严格保留所有现有文件名，不得改名、不得移动**）
+
+实现完成后整体目录如下：
+
+```
+/Users/liuzhiyuan/Documents/rb/idg/
+├── ai.md                            # 原始素材，勿动
+├── PRD.md                           # 本文件
+│
+├── index.html                       # ★ 主页面（新建）
+│
+├── assets/                          # ★ 新建目录
+│   ├── css/
+│   │   └── main.css                 # 主样式（IDG Capital 风格）
+│   ├── js/
+│   │   ├── md-renderer.js           # 通用 markdown 子页渲染器
+│   │   ├── image-viewer.js          # 工作流大图可拖拽/缩放查看器
+│   │   └── xlsx-viewer.js           # 仅 G 子页需要（见 §6.3）
+│   └── lib/
+│       ├── marked.min.js            # 本地缓存的 markdown 解析器
+│       ├── highlight.min.js         # 代码高亮（可选）
+│       └── xlsx.full.min.js         # SheetJS（仅 G 子页用）
+│
+├── subpages/                        # ★ 9 个子页（新建）
+│   ├── A-research-framework.html
+│   ├── B-initial-report.html
+│   ├── C-report-reviewed.html
+│   ├── D-pptx-skill-generated.html
+│   ├── E-mapping-research-outline.html
+│   ├── F-mapping-deep-research.html
+│   ├── G-mapping-longlist.html
+│   ├── H-mapping-template.html
+│   └── I-mapping-final-report.html
+│
+├── Coreweave_example/               # 原文件夹，文件名禁止修改
+│   ├── 1. research-framework.md
+│   ├── 2. initial-report-8modules.md
+│   ├── 3. report-reviewed.md
+│   ├── 4. pptx-skill-generated.md
+│   ├── 5. workflow-and-report-session.md
+│   ├── 6. full-model.md
+│   ├── 7. phase4-pptx.md
+│   ├── 8. AI_Collaboration_Report.md
+│   ├── CoreWeave_AI_Workflow.dot
+│   └── CoreWeave_AI_Workflow.png
+│
+└── Mapping_example/                 # 原文件夹，文件名禁止修改
+    ├── Agent_report.docx
+    ├── Agent_report.pdf
+    ├── AI_Agent_175_深度投研.xlsx
+    ├── perplexity_workflow_v3.png
+    ├── question&amp;verification.png
+    ├── 垂类agent.md
+    ├── 通用agent标的.md
+    ├── 投资报告书标准模板.docx
+    └── 投资建议_通用Agent章节.md
+```
+
+&gt; ⚠️ **文件名包含中文、空格、`&amp;` 符号、点号开头数字（如 `1. research-framework.md`）。所有 HTML/JS 中引用路径必须做 `encodeURI()` 处理**，否则 fetch 会 404。
+
+---
+
+## 2. 视觉风格指南（参考 https://idgcapital.com/）
+
+### 2.1 设计调性
+- **机构投资风**：克制、留白多、版面理性、几乎不用阴影/渐变。
+- **去 AI 味**：不要 emoji 海、不要彩色卡片堆叠、不要&quot;赛博朋克&quot;/&quot;霓虹光晕&quot;/&quot;玻璃拟态&quot;。
+- **学术报告感**：让人想到 BCG / McKinsey / Bridgewater 的内部报告，而不是 SaaS 落地页。
+
+### 2.2 颜色 token
+```css
+:root {
+  --bg:           #FFFFFF;
+  --bg-soft:      #F7F6F2;   /* 大面积浅米色衬底，IDG 同款 */
+  --ink:          #111111;   /* 主文字 */
+  --ink-soft:     #4A4A4A;   /* 次要文字 */
+  --ink-mute:     #8A8A8A;   /* 注释/元信息 */
+  --rule:         #E5E2DA;   /* 分割线 */
+  --accent:       #C8102E;   /* IDG 红，仅用于强调/hover/激活态 */
+  --accent-soft:  #F3DADE;   /* accent 8% 衬底 */
+  --link:         #111111;   /* 链接默认色与正文一致，靠下划线区分 */
+}
+```
+
+### 2.3 排版
+- 中文：`&quot;PingFang SC&quot;, &quot;Noto Sans SC&quot;, &quot;Hiragino Sans GB&quot;, sans-serif`
+- 英文/数字：`&quot;Inter&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif`
+- 标题字重 600，正文 400，行高 1.7，正文字号 16px，段间距 1em。
+- 网页最大宽度 1180px，居中。区块之间用 96px 大间距区隔（IDG 同款节奏）。
+
+### 2.4 交互细节
+- 链接 hover：颜色变 `--accent`，下划线加粗。
+- 卡片 hover：仅 1px 边框颜色变 `--accent`，**不允许 transform/scale/shadow 动画**。
+- 折叠区域展开：用 `&lt;details&gt;&lt;summary&gt;`，开合带 200ms 高度过渡。
+
+---
+
+## 3. 主页面 `index.html` 结构
+
+### 3.1 页面骨架
+
+```
+┌─────────────────────────────────────────────────┐
+│ Header（粘顶，48px 高，白底+下边框）             │
+│  Logo文字&quot;AI Workflow Notes&quot;        锚点导航     │
+├─────────────────────────────────────────────────┤
+│ Hero（满宽，米色衬底 --bg-soft）                 │
+│  H1: 本地 AI 工作流知识库                        │
+│  Lead: 一行副标题，描述本页用途                  │
+├─────────────────────────────────────────────────┤
+│ §1 案例：CoreWeave 深度研究（可点击展开 workflow）│
+├─────────────────────────────────────────────────┤
+│ §2 案例：AI Agent 赛道扫描（可点击展开 workflow）│
+├─────────────────────────────────────────────────┤
+│ §3 理解和认知层（可点击展开）                    │
+├─────────────────────────────────────────────────┤
+│ §4 其他 Tips（可点击展开）                       │
+├─────────────────────────────────────────────────┤
+│ Footer：最后更新时间 + 一句免责声明              │
+└─────────────────────────────────────────────────┘
+```
+
+### 3.2 §1 CoreWeave 案例区块（**核心交互**）
+
+**容器**：标题行 + 一段引导文字 + 一张可点击展开的工作流大图。
+
+**标题行**：`&lt;h2&gt;` 文案为 `Coreweave Case Study`，**点击 H2 整行**触发&quot;展开工作流大图&quot;（不是单独的按钮，整行可点）。展开/收起用 `&lt;details&gt;` 元素。
+
+**展开后内容**：
+- 渲染 `Coreweave_example/CoreWeave_AI_Workflow.png`（图片高 7380px，宽 2676px，非常长）。
+- **必须用 `assets/js/image-viewer.js` 包裹**：
+  - 在固定高度 720px 的窗口里展示，**可上下滑动**（overflow-y: auto）；
+  - 顶部一行工具条：`[− 缩小] [当前缩放%] [+ 放大] [⤢ 全屏] [⟲ 复位]`；
+  - 鼠标滚轮缩放（按住 Ctrl/⌘ 触发，避免误触发页面滚动）；
+  - 鼠标拖拽平移（press-drag）；
+  - 双击图片重置到 100%。
+- 图片下方提示：&quot;点击下方高亮节点可跳转到对应素材&quot;。
+
+**关键热区（可点击跳转的节点）**：
+
+参考 `Coreweave_example/CoreWeave_AI_Workflow.dot` 中的节点坐标，**在图片上层叠 4 个绝对定位的透明热区 `&lt;a&gt;`**（位置需肉眼对齐 PNG 中对应方框；首次实现时，先用红色半透明 `rgba(200,16,46,0.15)` 填充帮助调位，确认后再调成透明）：
+
+| 节点 ID（在 .dot 中） | 节点显示文案（截取） | 热区目标 |
+|---|---|---|
+| `human_prep` | Manual Research &amp; Reading / S-1 / 10-K / Industry Reports / Hand-written Research Plan | `subpages/A-research-framework.html` |
+| `claude_research` | Claude Session 2 / Parallel Research / (NLM API × 12 + Web × 10) | `subpages/B-initial-report.html` |
+| `human_read_report` | Human Reads Draft Reports / Identifies Review Direction / &amp; Key Issues to Investigate | `subpages/C-report-reviewed.html` |
+| `skill_design` | Co-design pptx-research Skill / 7-Step State Machine / 9 Global Rules + Resume Protocol | `subpages/D-pptx-skill-generated.html` |
+
+**热区视觉反馈**（鼠标悬停时）：
+- 节点边框&quot;发光/加粗&quot;：用 `box-shadow: 0 0 0 3px var(--accent), 0 0 16px 4px rgba(200,16,46,0.45);`
+- 鼠标 cursor: pointer
+- 配合 `title` 属性给出 hover tooltip：&quot;点击查看 → 研究框架&quot;等
+
+&gt; 实现细节：因为热区是 absolute 定位在 PNG 上层，必须用百分比定位（`top: x%; left: y%; width: w%; height: h%`），保证图片缩放时热区跟随。
+
+### 3.3 §2 Mapping 案例区块
+
+结构与 §1 一致，**点击 H2 `AI Agent 赛道扫描 Mapping Case Study` 整行展开**工作流大图。
+
+**展开后内容**：
+- 渲染 `Mapping_example/perplexity_workflow_v3.png`（2193 × 6660）。
+- 同样使用 `image-viewer.js`，同样的工具条 + 缩放 + 拖拽。
+
+**关键热区**（共 7 个，5 个跳转 + 2 个仅文字标注无跳转）：
+
+| 节点文案（在 PNG 中）| 行为 |
+|---|---|
+| `Human:明确研究赛道 &amp; 核心投资问题（边界/变量/框架）` | 跳转 `subpages/E-mapping-research-outline.html` |
+| `OUTPUT: 多章节 .md 研究报告初稿` | 跳转 `subpages/F-mapping-deep-research.html` |
+| `OUTPUT: Long List Excel（公司/产品/融资/差异化维度）` | 跳转 `subpages/G-mapping-longlist.html` |
+| `产品试用 / social hearing` 旁边 | **无跳转**，在节点右侧贴一个永久可见的灰色小标签：&quot;去试用产品（AI 可读评测，但体感需自己获取）+ social hearing（可用 playwright 看社区 / 访谈深度用户）&quot; |
+| `观点稳健? 无重大漏洞?` | 跳转 `subpages/F-mapping-deep-research.html#question-verification`，该子页内嵌 `Mapping_example/question&amp;verification.png`（**注意 URL encode `&amp;` 为 `%26`**） |
+| `Human: Word/PPT 模板套用品牌格式/图表占位` | 跳转 `subpages/H-mapping-template.html` |
+| `AI 辅助图表生成 &amp; 数据可视化 Perplexity / Python / Flourish` | 跳转 `subpages/I-mapping-final-report.html` |
+| 流程最后一个节点旁边 | **无跳转**，贴标签：&quot;人 + 模型（新开 session）是一种 multi-agent 的思路，需要新的 context / 视角 / 目标&quot; |
+
+### 3.4 §3 理解和认知层
+
+使用 `&lt;details&gt;` 三段折叠，全部默认收起。文案严格按 ai.md 第 133–157 行：
+
+1. **应该用 AI 来做什么？目前能力边界如何？**
+   - 工作流的流程化（outsource 认知带宽和重复性工作给它，但是自己要把握关键问题和判断能力）
+   - 个人知识沉淀（embedding RAG / 或者直接存 md 文件）做自己的 Agent 友好型数据库
+
+2. **从 Agent 的结构，来理解 Agent 的能力边界？**
+   - 执行环境（Claude Code 能直接读/写本地文件、有完整的文件系统权限 + 命令执行权限）
+   - 权限/工具链 — 展示 GitHub（这里放一个外链按钮，跳转到 `https://github.com/`，target=&quot;_blank&quot; rel=&quot;noopener&quot;）
+   - 上下文管理（可以自己写 projects 里的 md 文件记录进度，也可以 /compact）
+
+3. **AI 目前明显不能替代的部分，如何人机协同？**
+   - 提供信息源、寻找资源、包括寻找工具
+   - 判断（尤其是方向性的、需要体感的、不一定是在语言边界里的判断，例如投资），所以人无法从这个过程里 off 出去
+
+### 3.5 §4 其他 Tips
+
+同样用 `&lt;details&gt;` 折叠，5 条编号列表，文案严格按 ai.md 第 159–177 行原文：
+
+1. 要提高 AI 产出质量，需要的是输入更多信息（包括问能够提升置信空间的问题），包括更相关的参考文献和思路更清晰的提纲，还有人看到产出物后，给出的具体修改意见
+2. 每一步可拆解、有中间结果、控制 context 上下文和方向
+3. 想清楚功能/目标，让 AI 生成 requirement prompt；然后用此 prompt 去发起任务；对于渲染 rendering 类工作，最好是有模板来复刻，否则需要写很长的 PRD 才能 harness 住格式
+4. 没有什么工程问题是 Codex 开十几个子代理解决不了的，而非得在一个群聊里 @ 好几个 Agent 来完成的（吐槽 Slack）
+5. 寻找工具 AI（word/excel/ppt 小工具 / 产品三大件的 skills），其余的一些需求我会找合适的产品
+   - 信息：[https://aihot.virxact.com/](https://aihot.virxact.com/)（外链，新窗口）
+   - PPT：最后希望把要求的 Grid、边距、占位符、字体、色值全部规定在 skills 里面，python-pptx 等引擎去执行
+   - word：也是 python-docx 去做执行，核心是格式，但已经通过 perplexity 试验过它可以执行复刻动作
+   - 其他工具暂时不做……
+
+### 3.6 锚点导航
+
+Header 右侧放 4 个锚点：`#coreweave`、`#mapping`、`#cognition`、`#tips`。点击平滑滚动到对应区块。
+
+---
+
+## 4. 子页面（subpages/*.html）通用规范
+
+### 4.1 公共模板（所有子页都遵循）
+
+```
+┌─────────────────────────────────────────────────┐
+│ Header（与主页一致，含&quot;← 返回主页&quot;链接到 index.html#锚点）│
+├─────────────────────────────────────────────────┤
+│ 子页 Meta 条（米色衬底）                          │
+│  面包屑：主页 / CoreWeave 案例 / 研究框架        │
+│  右侧：源文件路径 + &quot;📋 复制路径&quot;按钮             │
+├─────────────────────────────────────────────────┤
+│ 标题区                                           │
+│  H1：本子页标题                                  │
+│  可选 Note 条（黄色细边框）：现场演示提示等       │
+├─────────────────────────────────────────────────┤
+│ 主体（最大宽度 880px，居中，正文优先阅读）        │
+│  根据子页类型渲染：md / 图片 / Excel / PDF       │
+├─────────────────────────────────────────────────┤
+│ Footer（同主页）                                 │
+└─────────────────────────────────────────────────┘
+```
+
+### 4.2 共九个子页明细
+
+| 子页文件 | 标题 | 主体内容 | 顶部提示条 |
+|---|---|---|---|
+| `A-research-framework.html` | 研究框架与初始 Prompt | 渲染 `Coreweave_example/1. research-framework.md` | — |
+| `B-initial-report.html` | 8 Modules 初稿报告 | 渲染 `Coreweave_example/2. initial-report-8modules.md` | &quot;💡 可以现场演示：演示 Claude Session 2 并行研究、NotebookLM + web-access skill 的工作机制&quot; |
+| `C-report-reviewed.html` | 审阅与修订后报告 | 渲染 `Coreweave_example/3. report-reviewed.md` | &quot;💡 可以现场演示：演示 4 Parallel Agents 的对抗式审阅过程&quot; |
+| `D-pptx-skill-generated.html` | pptx-research Skill 协作设计 | 渲染 `Coreweave_example/4. pptx-skill-generated.md` | &quot;💡 可以现场演示：演示 7-Step State Machine + 9 Global Rules + Resume Protocol&quot; |
+| `E-mapping-research-outline.html` | Mapping 案例：研究提纲 | **不读外部文件**，直接在 HTML 中硬编码渲染 ai.md 第 103–110 行的 3 条核心研究问题 | — |
+| `F-mapping-deep-research.html` | Mapping 案例：深度研究 .md 初稿 | **同时渲染两份 md，用 Tab 切换**：①`Mapping_example/通用agent标的.md` ②`Mapping_example/垂类agent.md`。**页面底部**追加一个 `&lt;section id=&quot;question-verification&quot;&gt;`，标题&quot;观点稳健 &amp; 无重大漏洞？审阅图示&quot;，下方插入 `Mapping_example/question&amp;verification.png`（最大宽度 100%，可点击放大） | — |
+| `G-mapping-longlist.html` | Mapping 案例：Long List Excel | 用 `xlsx-viewer.js` + SheetJS 读取并渲染 `Mapping_example/AI_Agent_175_深度投研.xlsx`。**Tab 切换 sheet**。 | **顶部黄色提示条**：&quot;Perplexity 原 session：https://www.perplexity.ai/computer/tasks/6325c6aa-8cac-4d7e-86fb-a17ea49d3229（可点击外链）&quot; + 第二行：&quot;💡 可让 Claude 浏览器自动化检索 Product Hunt 上的产品&quot; |
+| `H-mapping-template.html` | Mapping 案例：投资报告书模板 | 显示模板封面截图（**这一步需要执行实现时把 docx 第一页转 png，存到 `assets/img/template-cover.png`；若无法转换，则显示一个&quot;打开 docx 文件&quot;链接**，链接到 `Mapping_example/投资报告书标准模板.docx`）。同时显示一段说明文字：&quot;此 docx 模板被用作排版骨架，AI 仅复用其格式不复用其内容。&quot; | **顶部黄色提示条**：&quot;Perplexity 原网页：https://www.perplexity.ai/search/a62e91e2-3089-448e-8c61-b1f5a2dcf93b&quot; |
+| `I-mapping-final-report.html` | Mapping 案例：Agent 行研最终报告 | **PDF 内嵌预览**：`&lt;iframe src=&quot;../Mapping_example/Agent_report.pdf&quot; width=&quot;100%&quot; height=&quot;900&quot;&gt;`；上方放一个 Prompt 卡片（米色背景、等宽字体），原文如下： | &quot;💡 渲染 docx 的 Prompt（点击复制按钮可复制）&quot; |
+
+I 子页的 Prompt 原文（**严格复制**，禁止改写、禁止精简）：
+
+&gt; Prompt：请帮我生成一个格式完整的研究分析投资报告（docx 文件）
+&gt; 1. 读取当前目录下的【投资报告书标准模板.docx】作为固定文档骨架，模板里所有标题、段落、格式、文字、占位符都可以修改、删除、新增、调整顺序与层级，但不要参考任何内容，只把它当作排版框架使用。
+&gt; 2. 生成一个 AI_agent_report.docx 文件，将 md 里面的提纲内容完整精准填入模板占位位置（但是字体修改成 STKaiti）
+&gt; 3. 在完成这个任务之后，请重新 review 一遍生成的 docx 文件，检查其逻辑与 md 参考文件是否一致
+
+---
+
+## 5. JavaScript 模块规范
+
+### 5.1 `assets/js/md-renderer.js`
+
+**职责**：在子页中通过 `fetch()` 读取本地 md，转 HTML 渲染。
+
+**接口**：
+```js
+// 在子页 HTML 末尾调用
+renderMarkdown({
+  source: &#39;../Coreweave_example/1. research-framework.md&#39;,  // 必须 encodeURI
+  target: &#39;#content&#39;,
+  highlight: true   // 是否启用代码高亮
+});
+```
+
+**关键约束**：
+- 用 `marked.js`（本地化在 `assets/lib/marked.min.js`）。
+- 渲染前对路径做 `encodeURI()`，避免中文/空格 404。
+- 渲染失败时显示友好提示：&quot;无法加载 {path}。请确认双击 `index.html` 打开（部分浏览器在 file:// 协议下禁用 fetch，此时请用 `python3 -m http.server` 起一个本地服务）。&quot;
+- **fetch 失败兜底**：在错误提示下方提供&quot;打开源文件&quot;链接（直接 a 标签 + download 属性）。
+
+&gt; ⚠️ **浏览器 file:// 协议下 fetch 本地文件会被 Chrome 阻止**。在主页 footer 和每个子页的错误提示里都要给出兜底指引：
+&gt; ```
+&gt; 推荐启动方式：在项目根目录执行 `python3 -m http.server 8000`，浏览器访问 http://localhost:8000
+&gt; ```
+
+### 5.2 `assets/js/image-viewer.js`
+
+**职责**：把一张超长 PNG 包装成可滚、可缩、可拖、可热区点击的查看器。
+
+**接口**：
+```js
+new ImageViewer({
+  container: &#39;#coreweave-workflow&#39;,
+  src: &#39;Coreweave_example/CoreWeave_AI_Workflow.png&#39;,
+  viewportHeight: 720,
+  hotspots: [
+    { top: &#39;8.2%&#39;,  left: &#39;12.5%&#39;, width: &#39;22%&#39;, height: &#39;4.5%&#39;,
+      href: &#39;subpages/A-research-framework.html&#39;, label: &#39;研究框架&#39; },
+    // ...
+  ]
+});
+```
+
+**实现要点**：
+- 缩放范围 0.25× – 4×，步进 0.25。
+- 拖拽用 pointer events，移动端兼容。
+- 热区是 absolute 定位在 `&lt;img&gt;` 上层的 `&lt;a&gt;` 标签；hover 时通过 ::after 伪元素画一个发光边框（`box-shadow` 见 §3.2）。
+- **首次实现时把热区背景设为 `rgba(200,16,46,0.15)` 方便对位**，PRD 完成后改回 `transparent`。
+
+### 5.3 `assets/js/xlsx-viewer.js`
+
+**职责**：仅供 G 子页用。用 SheetJS (`xlsx.full.min.js`) 读取 xlsx 并渲染成 HTML table，Tab 切换 sheet。
+
+**实现要点**：
+- 单元格保留数字格式（货币、百分比、日期）。
+- 表头吸顶（`position: sticky; top: 0`）。
+- 表格行 hover 高亮。
+- 大数据量时分页（每页 200 行）。
+
+---
+
+## 6. 文件类型 → 渲染方式 决策表
+
+| 文件类型 | 渲染方式 | 库 |
+|---|---|---|
+| `.md` | fetch → marked.js → 注入 `#content` | marked.js |
+| `.png` | `&lt;img&gt;` 或 image-viewer.js | 原生 |
+| `.xlsx` | SheetJS → HTML table，Tab 切 sheet | xlsx.full.min.js |
+| `.pdf` | `&lt;iframe&gt;` 内嵌 | 浏览器原生 |
+| `.docx` | **不直接渲染**。提供下载链接 + 封面截图占位（见 §4.2 H 子页） | — |
+| `.dot` (Graphviz) | 仅用于查阅，不需要在网页上渲染 | — |
+
+---
+
+## 7. 内容硬编码：E 子页正文（不依赖外部文件）
+
+E 子页 `&lt;main id=&quot;content&quot;&gt;` 内直接写入：
+
+```html
+&lt;h1&gt;Mapping 案例：核心研究问题与提纲&lt;/h1&gt;
+&lt;p class=&quot;lead&quot;&gt;本提纲是人对研究方向的掌握，决定了后续 AI 并行研究的边界与质量。&lt;/p&gt;
+
+&lt;ol class=&quot;numbered-questions&quot;&gt;
+  &lt;li&gt;
+    &lt;h3&gt;Q1 · 赛道 Mapping 与投资标的&lt;/h3&gt;
+    &lt;p&gt;Mapping AI Agent 赛道中 8–10 家国内及海外第三方创业公司，对比其技术架构、产品能力和使用场景的差异；在 Mapping 的公司中，最看好的 1–2 家投资标的是什么？阐述投资逻辑及潜在风险。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h3&gt;Q2 · Agent 成熟度与时间窗口&lt;/h3&gt;
+    &lt;p&gt;如何选取/定义一个可量化的 Agent 成熟度指标，评估当前的技术水位；技术演进将解锁哪些应用场景，解锁的时间窗口是什么？&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h3&gt;Q3 · 创业公司 vs 模型公司的长期竞争&lt;/h3&gt;
+    &lt;p&gt;如何看待 2C 及 2B Agent / Agent OS 类产品与模型公司的长期竞争？创业公司的关键成功要素是什么？&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+```
+
+---
+
+## 8. 验收 Checklist（实现完成后逐条勾选）
+
+### 8.1 主页功能
+- [ ] 双击 `index.html` 或在 `python3 -m http.server` 下访问，主页正常显示
+- [ ] 4 个区块都存在、锚点导航可滚动
+- [ ] §1、§2 标题行可点击展开/收起工作流大图
+- [ ] 大图可滚动、可缩放、可拖拽、可全屏、可复位
+- [ ] CoreWeave 图上 4 个热区悬停时边框发光，点击跳转正确子页
+- [ ] Mapping 图上 5 个热区跳转正确，2 个仅文字标注不可点
+- [ ] §3、§4 的 details 折叠区可展开
+
+### 8.2 子页功能
+- [ ] 9 个子页全部可从主页直达
+- [ ] 子页左上角&quot;← 返回主页&quot;能回到对应锚点
+- [ ] A/B/C/D 子页能正确渲染对应 Coreweave_example md
+- [ ] B/C/D 有&quot;现场演示&quot;黄色提示条
+- [ ] E 子页硬编码 3 条研究问题
+- [ ] F 子页有 Tab 切换两份 mapping md + 底部 question&amp;verification.png
+- [ ] G 子页 xlsx 完整渲染 + Tab 切 sheet + 顶部 Perplexity URL 提示条
+- [ ] H 子页显示 docx 提示 + Perplexity URL
+- [ ] I 子页 PDF 内嵌预览 + Prompt 卡片（带&quot;复制&quot;按钮）
+
+### 8.3 视觉与代码质量
+- [ ] 配色严格使用 §2.2 token，没出现 emoji / 玻璃拟态 / 霓虹
+- [ ] 所有文件路径都是相对路径，跨电脑/移动文件夹后仍可工作
+- [ ] 中文/空格/`&amp;` 文件名通过 `encodeURI` 处理
+- [ ] 全站打开 DevTools，console 无报错
+- [ ] 文件夹整体打包发给别人，对方按 README 指引能跑起来
+
+### 8.4 文档
+- [ ] 项目根目录补一个 `README.md`（**仅本条允许新建 md 文件**），3 行说明：
+  - 如何启动（`python3 -m http.server`）
+  - 文件夹结构
+  - 已知限制（file:// 下 fetch 受限）
+
+---
+
+## 9. 给实现 Agent 的开发顺序建议
+
+1. **先搭骨架**：创建目录、写 `main.css` 的 token + 基础排版，做出 `index.html` 的纯静态版（不带交互）。
+2. **再做主页区块 §3 §4**：纯文本折叠最简单，先把&quot;非交互内容&quot;打通跑顺。
+3. **做 9 个子页**：A、B、C、D（都是 md 渲染，复用 `md-renderer.js`）→ E（硬编码）→ F（双 md + 图片）→ G（xlsx）→ H（docx 提示）→ I（PDF iframe + Prompt 卡）。
+4. **最后做 §1 §2 的图片热区**：这一步最复杂、需要肉眼对位。建议先让热区有半透明背景，对完位再清空背景。
+5. **回归测试**：按 §8 验收 checklist 跑一遍。
+
+---
+
+## 10. 明确的&quot;不要做&quot;清单
+
+- ❌ 不要引入 React / Vue / Vite / Tailwind / 任何构建工具
+- ❌ 不要给文件改名、不要移动 `Coreweave_example/` 和 `Mapping_example/` 内的文件
+- ❌ 不要把 md 内容复制到 HTML 里硬编码（除 E 子页明确要求外），始终通过 fetch 读取，保证内容更新时网页自动同步
+- ❌ 不要给页面加 emoji 表情装饰（PRD 中本身的 💡 黄色提示条除外）
+- ❌ 不要做&quot;AI 风&quot;动效（粒子背景、霓虹流光、3D 倾斜卡片）
+- ❌ 不要写注释解释代码做什么（命名足够清晰即可）
+- ❌ 不要为 IE / 旧 Edge / 移动端做兼容（桌面端 macOS Chrome / Safari 即可）
+
+---
+
+## 附录 A：热区坐标参考（基于 .dot 节点顺序的人眼估算，实现时需在浏览器中微调）
+
+&gt; 坐标格式：`top% / left% / width% / height%`（相对图片完整尺寸）。
+&gt; CoreWeave PNG 尺寸 2676 × 7380。
+
+| 子页 | 节点 | 估算坐标（首次实现时参考，需视觉对齐后微调）|
+|---|---|---|
+| A | human_prep (Manual Research) | top ≈ 5%, left ≈ 35%, w ≈ 28%, h ≈ 3% |
+| B | claude_research (Session 2) | top ≈ 25%, left ≈ 5%, w ≈ 28%, h ≈ 3% |
+| C | human_read_report (Reads Draft) | top ≈ 33%, left ≈ 5%, w ≈ 28%, h ≈ 3.5% |
+| D | skill_design (pptx-research) | top ≈ 50%, left ≈ 5%, w ≈ 28%, h ≈ 3.5% |
+
+Mapping PNG 同理，建议实现时先把热区背景设为半透明红，肉眼对齐后再清空。
+
+---
+
+**PRD 结束。请按上述规范开始实现，遇到 PRD 未覆盖的边界情况，按&quot;最克制、最不打扰用户阅读&quot;的原则决策。**
+">复制 PRD.md 全文</button>
+      <a class="copy-btn" href="../../PRD.md" target="_blank" rel="noopener" style="text-decoration:none;">在新标签页打开源文件 →</a>
+    </div>
+    <div class="doc-scroll">
+      <article class="md-article">
+        <h1>PRD：本地 AI 工作流知识库网页</h1>
+<blockquote>
+<p>目标读者：AI Coding Agent（如 Claude Code、Codex）。本 PRD 是<strong>实现规范</strong>，不是需求草稿；任何&quot;看起来可以省略&quot;的细节都已经被考虑过，请按字面意思实现。</p>
+</blockquote>
+<hr>
+<h2>0. 项目元信息</h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>项目名</td>
+<td>本地 AI 工作流知识库网页</td>
+</tr>
+<tr>
+<td>部署形态</td>
+<td><strong>纯静态站点，无后端、无构建工具、无 npm</strong>。双击 <code>index.html</code> 即可在浏览器跑起来。</td>
+</tr>
+<tr>
+<td>工作目录（绝对路径）</td>
+<td><code>/Users/liuzhiyuan/Documents/rb/idg/</code></td>
+</tr>
+<tr>
+<td>浏览器目标</td>
+<td>最新版 Chrome / Safari / Edge（macOS 优先）。<strong>不需要兼容 IE/旧版 Edge。</strong></td>
+</tr>
+<tr>
+<td>联网要求</td>
+<td>默认离线可用。允许引用 1 个 CDN（仅 marked.js 用于 markdown 渲染，见 §6）。</td>
+</tr>
+<tr>
+<td>路径规范</td>
+<td><strong>所有引用一律相对路径</strong>。禁止出现 <code>file://</code>、绝对路径、<code>http://localhost</code>。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>1. 目录结构（<strong>严格保留所有现有文件名，不得改名、不得移动</strong>）</h2>
+<p>实现完成后整体目录如下：</p>
+<pre><code>/Users/liuzhiyuan/Documents/rb/idg/
+├── ai.md                            # 原始素材，勿动
+├── PRD.md                           # 本文件
+│
+├── index.html                       # ★ 主页面（新建）
+│
+├── assets/                          # ★ 新建目录
+│   ├── css/
+│   │   └── main.css                 # 主样式（IDG Capital 风格）
+│   ├── js/
+│   │   ├── md-renderer.js           # 通用 markdown 子页渲染器
+│   │   ├── image-viewer.js          # 工作流大图可拖拽/缩放查看器
+│   │   └── xlsx-viewer.js           # 仅 G 子页需要（见 §6.3）
+│   └── lib/
+│       ├── marked.min.js            # 本地缓存的 markdown 解析器
+│       ├── highlight.min.js         # 代码高亮（可选）
+│       └── xlsx.full.min.js         # SheetJS（仅 G 子页用）
+│
+├── subpages/                        # ★ 9 个子页（新建）
+│   ├── A-research-framework.html
+│   ├── B-initial-report.html
+│   ├── C-report-reviewed.html
+│   ├── D-pptx-skill-generated.html
+│   ├── E-mapping-research-outline.html
+│   ├── F-mapping-deep-research.html
+│   ├── G-mapping-longlist.html
+│   ├── H-mapping-template.html
+│   └── I-mapping-final-report.html
+│
+├── Coreweave_example/               # 原文件夹，文件名禁止修改
+│   ├── 1. research-framework.md
+│   ├── 2. initial-report-8modules.md
+│   ├── 3. report-reviewed.md
+│   ├── 4. pptx-skill-generated.md
+│   ├── 5. workflow-and-report-session.md
+│   ├── 6. full-model.md
+│   ├── 7. phase4-pptx.md
+│   ├── 8. AI_Collaboration_Report.md
+│   ├── CoreWeave_AI_Workflow.dot
+│   └── CoreWeave_AI_Workflow.png
+│
+└── Mapping_example/                 # 原文件夹，文件名禁止修改
+    ├── Agent_report.docx
+    ├── Agent_report.pdf
+    ├── AI_Agent_175_深度投研.xlsx
+    ├── perplexity_workflow_v3.png
+    ├── question&amp;verification.png
+    ├── 垂类agent.md
+    ├── 通用agent标的.md
+    ├── 投资报告书标准模板.docx
+    └── 投资建议_通用Agent章节.md
+</code></pre>
+<blockquote>
+<p>⚠️ <strong>文件名包含中文、空格、<code>&amp;</code> 符号、点号开头数字（如 <code>1. research-framework.md</code>）。所有 HTML/JS 中引用路径必须做 <code>encodeURI()</code> 处理</strong>，否则 fetch 会 404。</p>
+</blockquote>
+<hr>
+<h2>2. 视觉风格指南（参考 <a href="https://idgcapital.com/%EF%BC%89">https://idgcapital.com/）</a></h2>
+<h3>2.1 设计调性</h3>
+<ul>
+<li><strong>机构投资风</strong>：克制、留白多、版面理性、几乎不用阴影/渐变。</li>
+<li><strong>去 AI 味</strong>：不要 emoji 海、不要彩色卡片堆叠、不要&quot;赛博朋克&quot;/&quot;霓虹光晕&quot;/&quot;玻璃拟态&quot;。</li>
+<li><strong>学术报告感</strong>：让人想到 BCG / McKinsey / Bridgewater 的内部报告，而不是 SaaS 落地页。</li>
+</ul>
+<h3>2.2 颜色 token</h3>
+<pre><code class="language-css">:root {
+  --bg:           #FFFFFF;
+  --bg-soft:      #F7F6F2;   /* 大面积浅米色衬底，IDG 同款 */
+  --ink:          #111111;   /* 主文字 */
+  --ink-soft:     #4A4A4A;   /* 次要文字 */
+  --ink-mute:     #8A8A8A;   /* 注释/元信息 */
+  --rule:         #E5E2DA;   /* 分割线 */
+  --accent:       #C8102E;   /* IDG 红，仅用于强调/hover/激活态 */
+  --accent-soft:  #F3DADE;   /* accent 8% 衬底 */
+  --link:         #111111;   /* 链接默认色与正文一致，靠下划线区分 */
+}
+</code></pre>
+<h3>2.3 排版</h3>
+<ul>
+<li>中文：<code>&quot;PingFang SC&quot;, &quot;Noto Sans SC&quot;, &quot;Hiragino Sans GB&quot;, sans-serif</code></li>
+<li>英文/数字：<code>&quot;Inter&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif</code></li>
+<li>标题字重 600，正文 400，行高 1.7，正文字号 16px，段间距 1em。</li>
+<li>网页最大宽度 1180px，居中。区块之间用 96px 大间距区隔（IDG 同款节奏）。</li>
+</ul>
+<h3>2.4 交互细节</h3>
+<ul>
+<li>链接 hover：颜色变 <code>--accent</code>，下划线加粗。</li>
+<li>卡片 hover：仅 1px 边框颜色变 <code>--accent</code>，<strong>不允许 transform/scale/shadow 动画</strong>。</li>
+<li>折叠区域展开：用 <code>&lt;details&gt;&lt;summary&gt;</code>，开合带 200ms 高度过渡。</li>
+</ul>
+<hr>
+<h2>3. 主页面 <code>index.html</code> 结构</h2>
+<h3>3.1 页面骨架</h3>
+<pre><code>┌─────────────────────────────────────────────────┐
+│ Header（粘顶，48px 高，白底+下边框）             │
+│  Logo文字&quot;AI Workflow Notes&quot;        锚点导航     │
+├─────────────────────────────────────────────────┤
+│ Hero（满宽，米色衬底 --bg-soft）                 │
+│  H1: 本地 AI 工作流知识库                        │
+│  Lead: 一行副标题，描述本页用途                  │
+├─────────────────────────────────────────────────┤
+│ §1 案例：CoreWeave 深度研究（可点击展开 workflow）│
+├─────────────────────────────────────────────────┤
+│ §2 案例：AI Agent 赛道扫描（可点击展开 workflow）│
+├─────────────────────────────────────────────────┤
+│ §3 理解和认知层（可点击展开）                    │
+├─────────────────────────────────────────────────┤
+│ §4 其他 Tips（可点击展开）                       │
+├─────────────────────────────────────────────────┤
+│ Footer：最后更新时间 + 一句免责声明              │
+└─────────────────────────────────────────────────┘
+</code></pre>
+<h3>3.2 §1 CoreWeave 案例区块（<strong>核心交互</strong>）</h3>
+<p><strong>容器</strong>：标题行 + 一段引导文字 + 一张可点击展开的工作流大图。</p>
+<p><strong>标题行</strong>：<code>&lt;h2&gt;</code> 文案为 <code>Coreweave Case Study</code>，<strong>点击 H2 整行</strong>触发&quot;展开工作流大图&quot;（不是单独的按钮，整行可点）。展开/收起用 <code>&lt;details&gt;</code> 元素。</p>
+<p><strong>展开后内容</strong>：</p>
+<ul>
+<li>渲染 <code>Coreweave_example/CoreWeave_AI_Workflow.png</code>（图片高 7380px，宽 2676px，非常长）。</li>
+<li><strong>必须用 <code>assets/js/image-viewer.js</code> 包裹</strong>：<ul>
+<li>在固定高度 720px 的窗口里展示，<strong>可上下滑动</strong>（overflow-y: auto）；</li>
+<li>顶部一行工具条：<code>[− 缩小] [当前缩放%] [+ 放大] [⤢ 全屏] [⟲ 复位]</code>；</li>
+<li>鼠标滚轮缩放（按住 Ctrl/⌘ 触发，避免误触发页面滚动）；</li>
+<li>鼠标拖拽平移（press-drag）；</li>
+<li>双击图片重置到 100%。</li>
+</ul>
+</li>
+<li>图片下方提示：&quot;点击下方高亮节点可跳转到对应素材&quot;。</li>
+</ul>
+<p><strong>关键热区（可点击跳转的节点）</strong>：</p>
+<p>参考 <code>Coreweave_example/CoreWeave_AI_Workflow.dot</code> 中的节点坐标，<strong>在图片上层叠 4 个绝对定位的透明热区 <code>&lt;a&gt;</code></strong>（位置需肉眼对齐 PNG 中对应方框；首次实现时，先用红色半透明 <code>rgba(200,16,46,0.15)</code> 填充帮助调位，确认后再调成透明）：</p>
+<table>
+<thead>
+<tr>
+<th>节点 ID（在 .dot 中）</th>
+<th>节点显示文案（截取）</th>
+<th>热区目标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>human_prep</code></td>
+<td>Manual Research &amp; Reading / S-1 / 10-K / Industry Reports / Hand-written Research Plan</td>
+<td><code>subpages/A-research-framework.html</code></td>
+</tr>
+<tr>
+<td><code>claude_research</code></td>
+<td>Claude Session 2 / Parallel Research / (NLM API × 12 + Web × 10)</td>
+<td><code>subpages/B-initial-report.html</code></td>
+</tr>
+<tr>
+<td><code>human_read_report</code></td>
+<td>Human Reads Draft Reports / Identifies Review Direction / &amp; Key Issues to Investigate</td>
+<td><code>subpages/C-report-reviewed.html</code></td>
+</tr>
+<tr>
+<td><code>skill_design</code></td>
+<td>Co-design pptx-research Skill / 7-Step State Machine / 9 Global Rules + Resume Protocol</td>
+<td><code>subpages/D-pptx-skill-generated.html</code></td>
+</tr>
+</tbody></table>
+<p><strong>热区视觉反馈</strong>（鼠标悬停时）：</p>
+<ul>
+<li>节点边框&quot;发光/加粗&quot;：用 <code>box-shadow: 0 0 0 3px var(--accent), 0 0 16px 4px rgba(200,16,46,0.45);</code></li>
+<li>鼠标 cursor: pointer</li>
+<li>配合 <code>title</code> 属性给出 hover tooltip：&quot;点击查看 → 研究框架&quot;等</li>
+</ul>
+<blockquote>
+<p>实现细节：因为热区是 absolute 定位在 PNG 上层，必须用百分比定位（<code>top: x%; left: y%; width: w%; height: h%</code>），保证图片缩放时热区跟随。</p>
+</blockquote>
+<h3>3.3 §2 Mapping 案例区块</h3>
+<p>结构与 §1 一致，<strong>点击 H2 <code>AI Agent 赛道扫描 Mapping Case Study</code> 整行展开</strong>工作流大图。</p>
+<p><strong>展开后内容</strong>：</p>
+<ul>
+<li>渲染 <code>Mapping_example/perplexity_workflow_v3.png</code>（2193 × 6660）。</li>
+<li>同样使用 <code>image-viewer.js</code>，同样的工具条 + 缩放 + 拖拽。</li>
+</ul>
+<p><strong>关键热区</strong>（共 7 个，5 个跳转 + 2 个仅文字标注无跳转）：</p>
+<table>
+<thead>
+<tr>
+<th>节点文案（在 PNG 中）</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Human:明确研究赛道 &amp; 核心投资问题（边界/变量/框架）</code></td>
+<td>跳转 <code>subpages/E-mapping-research-outline.html</code></td>
+</tr>
+<tr>
+<td><code>OUTPUT: 多章节 .md 研究报告初稿</code></td>
+<td>跳转 <code>subpages/F-mapping-deep-research.html</code></td>
+</tr>
+<tr>
+<td><code>OUTPUT: Long List Excel（公司/产品/融资/差异化维度）</code></td>
+<td>跳转 <code>subpages/G-mapping-longlist.html</code></td>
+</tr>
+<tr>
+<td><code>产品试用 / social hearing</code> 旁边</td>
+<td><strong>无跳转</strong>，在节点右侧贴一个永久可见的灰色小标签：&quot;去试用产品（AI 可读评测，但体感需自己获取）+ social hearing（可用 playwright 看社区 / 访谈深度用户）&quot;</td>
+</tr>
+<tr>
+<td><code>观点稳健? 无重大漏洞?</code></td>
+<td>跳转 <code>subpages/F-mapping-deep-research.html#question-verification</code>，该子页内嵌 <code>Mapping_example/question&amp;verification.png</code>（<strong>注意 URL encode <code>&amp;</code> 为 <code>%26</code></strong>）</td>
+</tr>
+<tr>
+<td><code>Human: Word/PPT 模板套用品牌格式/图表占位</code></td>
+<td>跳转 <code>subpages/H-mapping-template.html</code></td>
+</tr>
+<tr>
+<td><code>AI 辅助图表生成 &amp; 数据可视化 Perplexity / Python / Flourish</code></td>
+<td>跳转 <code>subpages/I-mapping-final-report.html</code></td>
+</tr>
+<tr>
+<td>流程最后一个节点旁边</td>
+<td><strong>无跳转</strong>，贴标签：&quot;人 + 模型（新开 session）是一种 multi-agent 的思路，需要新的 context / 视角 / 目标&quot;</td>
+</tr>
+</tbody></table>
+<h3>3.4 §3 理解和认知层</h3>
+<p>使用 <code>&lt;details&gt;</code> 三段折叠，全部默认收起。文案严格按 ai.md 第 133–157 行：</p>
+<ol>
+<li><p><strong>应该用 AI 来做什么？目前能力边界如何？</strong></p>
+<ul>
+<li>工作流的流程化（outsource 认知带宽和重复性工作给它，但是自己要把握关键问题和判断能力）</li>
+<li>个人知识沉淀（embedding RAG / 或者直接存 md 文件）做自己的 Agent 友好型数据库</li>
+</ul>
+</li>
+<li><p><strong>从 Agent 的结构，来理解 Agent 的能力边界？</strong></p>
+<ul>
+<li>执行环境（Claude Code 能直接读/写本地文件、有完整的文件系统权限 + 命令执行权限）</li>
+<li>权限/工具链 — 展示 GitHub（这里放一个外链按钮，跳转到 <code>https://github.com/</code>，target=&quot;_blank&quot; rel=&quot;noopener&quot;）</li>
+<li>上下文管理（可以自己写 projects 里的 md 文件记录进度，也可以 /compact）</li>
+</ul>
+</li>
+<li><p><strong>AI 目前明显不能替代的部分，如何人机协同？</strong></p>
+<ul>
+<li>提供信息源、寻找资源、包括寻找工具</li>
+<li>判断（尤其是方向性的、需要体感的、不一定是在语言边界里的判断，例如投资），所以人无法从这个过程里 off 出去</li>
+</ul>
+</li>
+</ol>
+<h3>3.5 §4 其他 Tips</h3>
+<p>同样用 <code>&lt;details&gt;</code> 折叠，5 条编号列表，文案严格按 ai.md 第 159–177 行原文：</p>
+<ol>
+<li>要提高 AI 产出质量，需要的是输入更多信息（包括问能够提升置信空间的问题），包括更相关的参考文献和思路更清晰的提纲，还有人看到产出物后，给出的具体修改意见</li>
+<li>每一步可拆解、有中间结果、控制 context 上下文和方向</li>
+<li>想清楚功能/目标，让 AI 生成 requirement prompt；然后用此 prompt 去发起任务；对于渲染 rendering 类工作，最好是有模板来复刻，否则需要写很长的 PRD 才能 harness 住格式</li>
+<li>没有什么工程问题是 Codex 开十几个子代理解决不了的，而非得在一个群聊里 @ 好几个 Agent 来完成的（吐槽 Slack）</li>
+<li>寻找工具 AI（word/excel/ppt 小工具 / 产品三大件的 skills），其余的一些需求我会找合适的产品<ul>
+<li>信息：<a href="https://aihot.virxact.com/">https://aihot.virxact.com/</a>（外链，新窗口）</li>
+<li>PPT：最后希望把要求的 Grid、边距、占位符、字体、色值全部规定在 skills 里面，python-pptx 等引擎去执行</li>
+<li>word：也是 python-docx 去做执行，核心是格式，但已经通过 perplexity 试验过它可以执行复刻动作</li>
+<li>其他工具暂时不做……</li>
+</ul>
+</li>
+</ol>
+<h3>3.6 锚点导航</h3>
+<p>Header 右侧放 4 个锚点：<code>#coreweave</code>、<code>#mapping</code>、<code>#cognition</code>、<code>#tips</code>。点击平滑滚动到对应区块。</p>
+<hr>
+<h2>4. 子页面（subpages/*.html）通用规范</h2>
+<h3>4.1 公共模板（所有子页都遵循）</h3>
+<pre><code>┌─────────────────────────────────────────────────┐
+│ Header（与主页一致，含&quot;← 返回主页&quot;链接到 index.html#锚点）│
+├─────────────────────────────────────────────────┤
+│ 子页 Meta 条（米色衬底）                          │
+│  面包屑：主页 / CoreWeave 案例 / 研究框架        │
+│  右侧：源文件路径 + &quot;📋 复制路径&quot;按钮             │
+├─────────────────────────────────────────────────┤
+│ 标题区                                           │
+│  H1：本子页标题                                  │
+│  可选 Note 条（黄色细边框）：现场演示提示等       │
+├─────────────────────────────────────────────────┤
+│ 主体（最大宽度 880px，居中，正文优先阅读）        │
+│  根据子页类型渲染：md / 图片 / Excel / PDF       │
+├─────────────────────────────────────────────────┤
+│ Footer（同主页）                                 │
+└─────────────────────────────────────────────────┘
+</code></pre>
+<h3>4.2 共九个子页明细</h3>
+<table>
+<thead>
+<tr>
+<th>子页文件</th>
+<th>标题</th>
+<th>主体内容</th>
+<th>顶部提示条</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>A-research-framework.html</code></td>
+<td>研究框架与初始 Prompt</td>
+<td>渲染 <code>Coreweave_example/1. research-framework.md</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>B-initial-report.html</code></td>
+<td>8 Modules 初稿报告</td>
+<td>渲染 <code>Coreweave_example/2. initial-report-8modules.md</code></td>
+<td>&quot;💡 可以现场演示：演示 Claude Session 2 并行研究、NotebookLM + web-access skill 的工作机制&quot;</td>
+</tr>
+<tr>
+<td><code>C-report-reviewed.html</code></td>
+<td>审阅与修订后报告</td>
+<td>渲染 <code>Coreweave_example/3. report-reviewed.md</code></td>
+<td>&quot;💡 可以现场演示：演示 4 Parallel Agents 的对抗式审阅过程&quot;</td>
+</tr>
+<tr>
+<td><code>D-pptx-skill-generated.html</code></td>
+<td>pptx-research Skill 协作设计</td>
+<td>渲染 <code>Coreweave_example/4. pptx-skill-generated.md</code></td>
+<td>&quot;💡 可以现场演示：演示 7-Step State Machine + 9 Global Rules + Resume Protocol&quot;</td>
+</tr>
+<tr>
+<td><code>E-mapping-research-outline.html</code></td>
+<td>Mapping 案例：研究提纲</td>
+<td><strong>不读外部文件</strong>，直接在 HTML 中硬编码渲染 ai.md 第 103–110 行的 3 条核心研究问题</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>F-mapping-deep-research.html</code></td>
+<td>Mapping 案例：深度研究 .md 初稿</td>
+<td><strong>同时渲染两份 md，用 Tab 切换</strong>：①<code>Mapping_example/通用agent标的.md</code> ②<code>Mapping_example/垂类agent.md</code>。<strong>页面底部</strong>追加一个 <code>&lt;section id=&quot;question-verification&quot;&gt;</code>，标题&quot;观点稳健 &amp; 无重大漏洞？审阅图示&quot;，下方插入 <code>Mapping_example/question&amp;verification.png</code>（最大宽度 100%，可点击放大）</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>G-mapping-longlist.html</code></td>
+<td>Mapping 案例：Long List Excel</td>
+<td>用 <code>xlsx-viewer.js</code> + SheetJS 读取并渲染 <code>Mapping_example/AI_Agent_175_深度投研.xlsx</code>。<strong>Tab 切换 sheet</strong>。</td>
+<td><strong>顶部黄色提示条</strong>：&quot;Perplexity 原 session：<a href="https://www.perplexity.ai/computer/tasks/6325c6aa-8cac-4d7e-86fb-a17ea49d3229%EF%BC%88%E5%8F%AF%E7%82%B9%E5%87%BB%E5%A4%96%E9%93%BE%EF%BC%89">https://www.perplexity.ai/computer/tasks/6325c6aa-8cac-4d7e-86fb-a17ea49d3229（可点击外链）</a>&quot; + 第二行：&quot;💡 可让 Claude 浏览器自动化检索 Product Hunt 上的产品&quot;</td>
+</tr>
+<tr>
+<td><code>H-mapping-template.html</code></td>
+<td>Mapping 案例：投资报告书模板</td>
+<td>显示模板封面截图（<strong>这一步需要执行实现时把 docx 第一页转 png，存到 <code>assets/img/template-cover.png</code>；若无法转换，则显示一个&quot;打开 docx 文件&quot;链接</strong>，链接到 <code>Mapping_example/投资报告书标准模板.docx</code>）。同时显示一段说明文字：&quot;此 docx 模板被用作排版骨架，AI 仅复用其格式不复用其内容。&quot;</td>
+<td><strong>顶部黄色提示条</strong>：&quot;Perplexity 原网页：<a href="https://www.perplexity.ai/search/a62e91e2-3089-448e-8c61-b1f5a2dcf93b">https://www.perplexity.ai/search/a62e91e2-3089-448e-8c61-b1f5a2dcf93b</a>&quot;</td>
+</tr>
+<tr>
+<td><code>I-mapping-final-report.html</code></td>
+<td>Mapping 案例：Agent 行研最终报告</td>
+<td><strong>PDF 内嵌预览</strong>：<code>&lt;iframe src=&quot;../Mapping_example/Agent_report.pdf&quot; width=&quot;100%&quot; height=&quot;900&quot;&gt;</code>；上方放一个 Prompt 卡片（米色背景、等宽字体），原文如下：</td>
+<td>&quot;💡 渲染 docx 的 Prompt（点击复制按钮可复制）&quot;</td>
+</tr>
+</tbody></table>
+<p>I 子页的 Prompt 原文（<strong>严格复制</strong>，禁止改写、禁止精简）：</p>
+<blockquote>
+<p>Prompt：请帮我生成一个格式完整的研究分析投资报告（docx 文件）</p>
+<ol>
+<li>读取当前目录下的【投资报告书标准模板.docx】作为固定文档骨架，模板里所有标题、段落、格式、文字、占位符都可以修改、删除、新增、调整顺序与层级，但不要参考任何内容，只把它当作排版框架使用。</li>
+<li>生成一个 AI_agent_report.docx 文件，将 md 里面的提纲内容完整精准填入模板占位位置（但是字体修改成 STKaiti）</li>
+<li>在完成这个任务之后，请重新 review 一遍生成的 docx 文件，检查其逻辑与 md 参考文件是否一致</li>
+</ol>
+</blockquote>
+<hr>
+<h2>5. JavaScript 模块规范</h2>
+<h3>5.1 <code>assets/js/md-renderer.js</code></h3>
+<p><strong>职责</strong>：在子页中通过 <code>fetch()</code> 读取本地 md，转 HTML 渲染。</p>
+<p><strong>接口</strong>：</p>
+<pre><code class="language-js">// 在子页 HTML 末尾调用
+renderMarkdown({
+  source: &#39;../Coreweave_example/1. research-framework.md&#39;,  // 必须 encodeURI
+  target: &#39;#content&#39;,
+  highlight: true   // 是否启用代码高亮
+});
+</code></pre>
+<p><strong>关键约束</strong>：</p>
+<ul>
+<li>用 <code>marked.js</code>（本地化在 <code>assets/lib/marked.min.js</code>）。</li>
+<li>渲染前对路径做 <code>encodeURI()</code>，避免中文/空格 404。</li>
+<li>渲染失败时显示友好提示：&quot;无法加载 {path}。请确认双击 <code>index.html</code> 打开（部分浏览器在 file:// 协议下禁用 fetch，此时请用 <code>python3 -m http.server</code> 起一个本地服务）。&quot;</li>
+<li><strong>fetch 失败兜底</strong>：在错误提示下方提供&quot;打开源文件&quot;链接（直接 a 标签 + download 属性）。</li>
+</ul>
+<blockquote>
+<p>⚠️ <strong>浏览器 file:// 协议下 fetch 本地文件会被 Chrome 阻止</strong>。在主页 footer 和每个子页的错误提示里都要给出兜底指引：</p>
+<pre><code>推荐启动方式：在项目根目录执行 `python3 -m http.server 8000`，浏览器访问 http://localhost:8000
+</code></pre>
+</blockquote>
+<h3>5.2 <code>assets/js/image-viewer.js</code></h3>
+<p><strong>职责</strong>：把一张超长 PNG 包装成可滚、可缩、可拖、可热区点击的查看器。</p>
+<p><strong>接口</strong>：</p>
+<pre><code class="language-js">new ImageViewer({
+  container: &#39;#coreweave-workflow&#39;,
+  src: &#39;Coreweave_example/CoreWeave_AI_Workflow.png&#39;,
+  viewportHeight: 720,
+  hotspots: [
+    { top: &#39;8.2%&#39;,  left: &#39;12.5%&#39;, width: &#39;22%&#39;, height: &#39;4.5%&#39;,
+      href: &#39;subpages/A-research-framework.html&#39;, label: &#39;研究框架&#39; },
+    // ...
+  ]
+});
+</code></pre>
+<p><strong>实现要点</strong>：</p>
+<ul>
+<li>缩放范围 0.25× – 4×，步进 0.25。</li>
+<li>拖拽用 pointer events，移动端兼容。</li>
+<li>热区是 absolute 定位在 <code>&lt;img&gt;</code> 上层的 <code>&lt;a&gt;</code> 标签；hover 时通过 ::after 伪元素画一个发光边框（<code>box-shadow</code> 见 §3.2）。</li>
+<li><strong>首次实现时把热区背景设为 <code>rgba(200,16,46,0.15)</code> 方便对位</strong>，PRD 完成后改回 <code>transparent</code>。</li>
+</ul>
+<h3>5.3 <code>assets/js/xlsx-viewer.js</code></h3>
+<p><strong>职责</strong>：仅供 G 子页用。用 SheetJS (<code>xlsx.full.min.js</code>) 读取 xlsx 并渲染成 HTML table，Tab 切换 sheet。</p>
+<p><strong>实现要点</strong>：</p>
+<ul>
+<li>单元格保留数字格式（货币、百分比、日期）。</li>
+<li>表头吸顶（<code>position: sticky; top: 0</code>）。</li>
+<li>表格行 hover 高亮。</li>
+<li>大数据量时分页（每页 200 行）。</li>
+</ul>
+<hr>
+<h2>6. 文件类型 → 渲染方式 决策表</h2>
+<table>
+<thead>
+<tr>
+<th>文件类型</th>
+<th>渲染方式</th>
+<th>库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.md</code></td>
+<td>fetch → marked.js → 注入 <code>#content</code></td>
+<td>marked.js</td>
+</tr>
+<tr>
+<td><code>.png</code></td>
+<td><code>&lt;img&gt;</code> 或 image-viewer.js</td>
+<td>原生</td>
+</tr>
+<tr>
+<td><code>.xlsx</code></td>
+<td>SheetJS → HTML table，Tab 切 sheet</td>
+<td>xlsx.full.min.js</td>
+</tr>
+<tr>
+<td><code>.pdf</code></td>
+<td><code>&lt;iframe&gt;</code> 内嵌</td>
+<td>浏览器原生</td>
+</tr>
+<tr>
+<td><code>.docx</code></td>
+<td><strong>不直接渲染</strong>。提供下载链接 + 封面截图占位（见 §4.2 H 子页）</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>.dot</code> (Graphviz)</td>
+<td>仅用于查阅，不需要在网页上渲染</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. 内容硬编码：E 子页正文（不依赖外部文件）</h2>
+<p>E 子页 <code>&lt;main id=&quot;content&quot;&gt;</code> 内直接写入：</p>
+<pre><code class="language-html">&lt;h1&gt;Mapping 案例：核心研究问题与提纲&lt;/h1&gt;
+&lt;p class=&quot;lead&quot;&gt;本提纲是人对研究方向的掌握，决定了后续 AI 并行研究的边界与质量。&lt;/p&gt;
+
+&lt;ol class=&quot;numbered-questions&quot;&gt;
+  &lt;li&gt;
+    &lt;h3&gt;Q1 · 赛道 Mapping 与投资标的&lt;/h3&gt;
+    &lt;p&gt;Mapping AI Agent 赛道中 8–10 家国内及海外第三方创业公司，对比其技术架构、产品能力和使用场景的差异；在 Mapping 的公司中，最看好的 1–2 家投资标的是什么？阐述投资逻辑及潜在风险。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h3&gt;Q2 · Agent 成熟度与时间窗口&lt;/h3&gt;
+    &lt;p&gt;如何选取/定义一个可量化的 Agent 成熟度指标，评估当前的技术水位；技术演进将解锁哪些应用场景，解锁的时间窗口是什么？&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h3&gt;Q3 · 创业公司 vs 模型公司的长期竞争&lt;/h3&gt;
+    &lt;p&gt;如何看待 2C 及 2B Agent / Agent OS 类产品与模型公司的长期竞争？创业公司的关键成功要素是什么？&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</code></pre>
+<hr>
+<h2>8. 验收 Checklist（实现完成后逐条勾选）</h2>
+<h3>8.1 主页功能</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 双击 <code>index.html</code> 或在 <code>python3 -m http.server</code> 下访问，主页正常显示</li>
+<li><input disabled="" type="checkbox"> 4 个区块都存在、锚点导航可滚动</li>
+<li><input disabled="" type="checkbox"> §1、§2 标题行可点击展开/收起工作流大图</li>
+<li><input disabled="" type="checkbox"> 大图可滚动、可缩放、可拖拽、可全屏、可复位</li>
+<li><input disabled="" type="checkbox"> CoreWeave 图上 4 个热区悬停时边框发光，点击跳转正确子页</li>
+<li><input disabled="" type="checkbox"> Mapping 图上 5 个热区跳转正确，2 个仅文字标注不可点</li>
+<li><input disabled="" type="checkbox"> §3、§4 的 details 折叠区可展开</li>
+</ul>
+<h3>8.2 子页功能</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 9 个子页全部可从主页直达</li>
+<li><input disabled="" type="checkbox"> 子页左上角&quot;← 返回主页&quot;能回到对应锚点</li>
+<li><input disabled="" type="checkbox"> A/B/C/D 子页能正确渲染对应 Coreweave_example md</li>
+<li><input disabled="" type="checkbox"> B/C/D 有&quot;现场演示&quot;黄色提示条</li>
+<li><input disabled="" type="checkbox"> E 子页硬编码 3 条研究问题</li>
+<li><input disabled="" type="checkbox"> F 子页有 Tab 切换两份 mapping md + 底部 question&amp;verification.png</li>
+<li><input disabled="" type="checkbox"> G 子页 xlsx 完整渲染 + Tab 切 sheet + 顶部 Perplexity URL 提示条</li>
+<li><input disabled="" type="checkbox"> H 子页显示 docx 提示 + Perplexity URL</li>
+<li><input disabled="" type="checkbox"> I 子页 PDF 内嵌预览 + Prompt 卡片（带&quot;复制&quot;按钮）</li>
+</ul>
+<h3>8.3 视觉与代码质量</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 配色严格使用 §2.2 token，没出现 emoji / 玻璃拟态 / 霓虹</li>
+<li><input disabled="" type="checkbox"> 所有文件路径都是相对路径，跨电脑/移动文件夹后仍可工作</li>
+<li><input disabled="" type="checkbox"> 中文/空格/<code>&amp;</code> 文件名通过 <code>encodeURI</code> 处理</li>
+<li><input disabled="" type="checkbox"> 全站打开 DevTools，console 无报错</li>
+<li><input disabled="" type="checkbox"> 文件夹整体打包发给别人，对方按 README 指引能跑起来</li>
+</ul>
+<h3>8.4 文档</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 项目根目录补一个 <code>README.md</code>（<strong>仅本条允许新建 md 文件</strong>），3 行说明：<ul>
+<li>如何启动（<code>python3 -m http.server</code>）</li>
+<li>文件夹结构</li>
+<li>已知限制（file:// 下 fetch 受限）</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>9. 给实现 Agent 的开发顺序建议</h2>
+<ol>
+<li><strong>先搭骨架</strong>：创建目录、写 <code>main.css</code> 的 token + 基础排版，做出 <code>index.html</code> 的纯静态版（不带交互）。</li>
+<li><strong>再做主页区块 §3 §4</strong>：纯文本折叠最简单，先把&quot;非交互内容&quot;打通跑顺。</li>
+<li><strong>做 9 个子页</strong>：A、B、C、D（都是 md 渲染，复用 <code>md-renderer.js</code>）→ E（硬编码）→ F（双 md + 图片）→ G（xlsx）→ H（docx 提示）→ I（PDF iframe + Prompt 卡）。</li>
+<li><strong>最后做 §1 §2 的图片热区</strong>：这一步最复杂、需要肉眼对位。建议先让热区有半透明背景，对完位再清空背景。</li>
+<li><strong>回归测试</strong>：按 §8 验收 checklist 跑一遍。</li>
+</ol>
+<hr>
+<h2>10. 明确的&quot;不要做&quot;清单</h2>
+<ul>
+<li>❌ 不要引入 React / Vue / Vite / Tailwind / 任何构建工具</li>
+<li>❌ 不要给文件改名、不要移动 <code>Coreweave_example/</code> 和 <code>Mapping_example/</code> 内的文件</li>
+<li>❌ 不要把 md 内容复制到 HTML 里硬编码（除 E 子页明确要求外），始终通过 fetch 读取，保证内容更新时网页自动同步</li>
+<li>❌ 不要给页面加 emoji 表情装饰（PRD 中本身的 💡 黄色提示条除外）</li>
+<li>❌ 不要做&quot;AI 风&quot;动效（粒子背景、霓虹流光、3D 倾斜卡片）</li>
+<li>❌ 不要写注释解释代码做什么（命名足够清晰即可）</li>
+<li>❌ 不要为 IE / 旧 Edge / 移动端做兼容（桌面端 macOS Chrome / Safari 即可）</li>
+</ul>
+<hr>
+<h2>附录 A：热区坐标参考（基于 .dot 节点顺序的人眼估算，实现时需在浏览器中微调）</h2>
+<blockquote>
+<p>坐标格式：<code>top% / left% / width% / height%</code>（相对图片完整尺寸）。
+CoreWeave PNG 尺寸 2676 × 7380。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>子页</th>
+<th>节点</th>
+<th>估算坐标（首次实现时参考，需视觉对齐后微调）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>human_prep (Manual Research)</td>
+<td>top ≈ 5%, left ≈ 35%, w ≈ 28%, h ≈ 3%</td>
+</tr>
+<tr>
+<td>B</td>
+<td>claude_research (Session 2)</td>
+<td>top ≈ 25%, left ≈ 5%, w ≈ 28%, h ≈ 3%</td>
+</tr>
+<tr>
+<td>C</td>
+<td>human_read_report (Reads Draft)</td>
+<td>top ≈ 33%, left ≈ 5%, w ≈ 28%, h ≈ 3.5%</td>
+</tr>
+<tr>
+<td>D</td>
+<td>skill_design (pptx-research)</td>
+<td>top ≈ 50%, left ≈ 5%, w ≈ 28%, h ≈ 3.5%</td>
+</tr>
+</tbody></table>
+<p>Mapping PNG 同理，建议实现时先把热区背景设为半透明红，肉眼对齐后再清空。</p>
+<hr>
+<p><strong>PRD 结束。请按上述规范开始实现，遇到 PRD 未覆盖的边界情况，按&quot;最克制、最不打扰用户阅读&quot;的原则决策。</strong></p>
+
+      </article>
+    </div>
+  </div>
+</details>
+
+<hr>
+
+<h2>时间线 · 每一轮交互</h2>
+<p class="muted small">下面每个 step 都包含两部分：左侧编号 + 简短说明，下方折叠的当时 user prompt 原文（可逐字复制）。</p>
+
+<ol class="timeline">
+  <li>
+    <div class="t-mark">00</div>
+    <div class="t-body">
+      <h3>Step 0 · 起点：手写 <code>ai.md</code></h3>
+      <p class="t-meta">User · 自然语言需求（无 prompt）</p>
+      <p>把脑子里希望呈现的两个案例（CoreWeave / Agent Mapping）+ 认知层 + Tips + 页面交互期望全部用自然语言写到 <code>ai.md</code>。<strong>不画 wireframe、不写 PRD，直接描述意图、跳转、约束</strong>。</p>
+      <p class="small muted">↑ 这一份文档的完整原文已嵌入在上方"两份原始文档"区块。</p>
+    </div>
+  </li>
+
+  <li>
+    <div class="t-mark">01</div>
+    <div class="t-body">
+      <h3>Step 1 · 让 AI 把 <code>ai.md</code> 转成正式 PRD</h3>
+      <p class="t-meta">User → AI · 让 AI 反过来对齐需求</p>
+      <p>AI 输出 <code>PRD.md</code>（27 KB）— 含目录结构、视觉 token、子页清单、决策表、验收 checklist、不要做清单。这一步把"潜在歧义"显化，方便下一步实施的 AI 直接按字面执行。</p>
+      <details class="prompt-detail">
+  <summary>📋 当时的 user prompt（点击展开 · 原文逐字）</summary>
+  <div class="prompt-wrap">
+    <button class="copy-btn prompt-copy" data-copy="读取文件夹下面的ai.md文件，请你参考（按照我里面初步写的prd（请你进行深度理解）输出一个真正可以给AI工具（比如claude 理解的）网页制作PRD markdown文件 （这个link里面所有的文件名我都已经存放在本地了，给AI阅读的跳转sub-html参考文件名不要更改）">复制 Prompt</button>
+    <pre class="prompt-card">读取文件夹下面的ai.md文件，请你参考（按照我里面初步写的prd（请你进行深度理解）输出一个真正可以给AI工具（比如claude 理解的）网页制作PRD markdown文件 （这个link里面所有的文件名我都已经存放在本地了，给AI阅读的跳转sub-html参考文件名不要更改）</pre>
+  </div>
+  <div class="ai-summary"><strong>AI 产出：</strong>生成 <strong>PRD.md</strong>（全文已嵌入在上方）— 把 ai.md 中的散点叙述转成 11 个章节 + 表格 + 验收 checklist 的结构化文档</div>
+</details>
+    </div>
+  </li>
+
+  <li>
+    <div class="t-mark">02</div>
+    <div class="t-body">
+      <h3>Step 2 · AI 按 PRD 实现 v1</h3>
+      <p class="t-meta">User → AI · 第一轮交付</p>
+      <p>第一版交付：主页 + 9 个子页 + image viewer（直接嵌入 PNG 工作流图 + 半透明热区做跳转）+ md/xlsx fetch 渲染。<strong>可工作但有两个根本问题</strong>：① 把流程图当 PNG 嵌入热区，对位麻烦；② 用 fetch 读本地 md/xlsx，<code>file://</code> 下浏览器禁用，必须起 HTTP 服务。</p>
+      <details class="prompt-detail">
+  <summary>📋 当时的 user prompt（点击展开 · 原文逐字）</summary>
+  <div class="prompt-wrap">
+    <button class="copy-btn prompt-copy" data-copy="@PRD.md 严格遵循prd文件，参考 此文件夹中的其他文件（所有需要做sub-html的source文件都可以找到索引，也需要制作相应的与主页面一致的网页风格）">复制 Prompt</button>
+    <pre class="prompt-card">@PRD.md 严格遵循prd文件，参考 此文件夹中的其他文件（所有需要做sub-html的source文件都可以找到索引，也需要制作相应的与主页面一致的网页风格）</pre>
+  </div>
+  <div class="ai-summary"><strong>AI 产出：</strong>产出 v1：<code>index.html</code> + <code>subpages/A–I</code> + <code>image-viewer.js</code> + <code>md-renderer.js</code> + <code>xlsx-viewer.js</code></div>
+</details>
+    </div>
+  </li>
+
+  <li>
+    <div class="t-mark">03</div>
+    <div class="t-body">
+      <h3>Step 3 · 三个根本性修改：Website 目录 / HTML 流程图 / 预渲染</h3>
+      <p class="t-meta">User · 重构性反馈</p>
+      <p>这一轮反馈是最关键的转折点。它把 v1 的两个根本问题一次性堵掉：流程图从"嵌图 + 热区"改成"纯 HTML 卡片"；运行方式从"必须起服务"改成"双击即用"。</p>
+      <details class="prompt-detail">
+  <summary>📋 当时的 user prompt（点击展开 · 原文逐字）</summary>
+  <div class="prompt-wrap">
+    <button class="copy-btn prompt-copy" data-copy="首先请你把整个 HTML 相关的文件，在当前的目录里面生成一个新的文件夹，就叫做 Website，然后把这些全部放进去，不要跟之前的文件夹混在一起。现在最显著的问题，就是我要求展示的这个流程图。
+
+其实我是希望你重新把它做成适应这个页面风格的流程图，而不是直接把图片粘贴进去。所以我希望你根据图片里的内容，可以稍微简化一下图表，但要满足以下要求：
+
+1. 保证保留那些需要跳转的部分
+2. 把它做成一个自适应页面大小和风格、可滑动的流程图
+
+另外就是你说的关于运行方式的问题。我并不希望在网页里点击这些 MD 文件时，是直接进入 Markdown 文件或者 Excel 文件。
+
+我是希望你也把 Markdown 文件和 Excel 文件直接做成 HTML 页面，这些源文件只是作为一个参考。">复制 Prompt</button>
+    <pre class="prompt-card">首先请你把整个 HTML 相关的文件，在当前的目录里面生成一个新的文件夹，就叫做 Website，然后把这些全部放进去，不要跟之前的文件夹混在一起。现在最显著的问题，就是我要求展示的这个流程图。
+
+其实我是希望你重新把它做成适应这个页面风格的流程图，而不是直接把图片粘贴进去。所以我希望你根据图片里的内容，可以稍微简化一下图表，但要满足以下要求：
+
+1. 保证保留那些需要跳转的部分
+2. 把它做成一个自适应页面大小和风格、可滑动的流程图
+
+另外就是你说的关于运行方式的问题。我并不希望在网页里点击这些 MD 文件时，是直接进入 Markdown 文件或者 Excel 文件。
+
+我是希望你也把 Markdown 文件和 Excel 文件直接做成 HTML 页面，这些源文件只是作为一个参考。</pre>
+  </div>
+  <div class="ai-summary"><strong>AI 产出：</strong>① 建 <code>Website/</code> 目录把 HTML 隔离；② 用 CSS 卡片 + 虚线连接重制两个工作流图（节点按角色配色 / 可滑动）；③ 写 <code>build.js</code>，用 node + marked + SheetJS 一次性把所有 md/xlsx 预渲染为 HTML 字符串嵌到子页里。从此双击 <code>index.html</code> 就能用。</div>
+</details>
+    </div>
+  </li>
+
+  <li>
+    <div class="t-mark">04</div>
+    <div class="t-body">
+      <h3>Step 4 · A 子页精简 / hover tooltip / Tips 软化 + GitHub</h3>
+      <p class="t-meta">User · 三处微调</p>
+      <p>开始进入"内容打磨"阶段。这一轮把 A 子页从"md 全文"改回"提纲 + Prompt"；把流程图旁边的小字注释改成 hover 整框时弹出的 tooltip（视觉更干净）；Tips 第 5 条措辞从硬变软，加上 GitHub 卡片。</p>
+      <details class="prompt-detail">
+  <summary>📋 当时的 user prompt（点击展开 · 原文逐字）</summary>
+  <div class="prompt-wrap">
+    <button class="copy-btn prompt-copy" data-copy="我发现有几个核心的小问题。
+
+首先第一个问题是，我原来的那个 AI.md 文件里，其实是要求在点击&quot;Manual Research Readings&quot;这一部分时，我只想显示当时的提纲和 prompt。其实不需要把其他的那个 MD 文件里的交互写在跳转之后的页面里，就只写当时的提纲和 prompt。
+
+具体如下：
+&quot;问 Claude：我打算分几个 module 来拆分？&quot;
+
+只要这一部分就可以了。 我在原本的文件里还写了：有一些是无跳转但需要标注在框框旁边的内容，也可以在鼠标 hover 到整个框上面的时候，显示相应的一些提示文字。最后这个部分，就是&quot;其他 tips&quot;这里的最后一个部分。
+
+不要写&quot;找工具大于自己造轮子&quot;吧，稍微写得 soft 一点。可以只说我有一些喜欢去调用或者利用的工具，可以直接找到相应这种延展 Agent 能力的东西。附上我的github链接/头像 https://github.com/zhangxinrui127-stack">复制 Prompt</button>
+    <pre class="prompt-card">我发现有几个核心的小问题。
+
+首先第一个问题是，我原来的那个 AI.md 文件里，其实是要求在点击&quot;Manual Research Readings&quot;这一部分时，我只想显示当时的提纲和 prompt。其实不需要把其他的那个 MD 文件里的交互写在跳转之后的页面里，就只写当时的提纲和 prompt。
+
+具体如下：
+&quot;问 Claude：我打算分几个 module 来拆分？&quot;
+
+只要这一部分就可以了。 我在原本的文件里还写了：有一些是无跳转但需要标注在框框旁边的内容，也可以在鼠标 hover 到整个框上面的时候，显示相应的一些提示文字。最后这个部分，就是&quot;其他 tips&quot;这里的最后一个部分。
+
+不要写&quot;找工具大于自己造轮子&quot;吧，稍微写得 soft 一点。可以只说我有一些喜欢去调用或者利用的工具，可以直接找到相应这种延展 Agent 能力的东西。附上我的github链接/头像 https://github.com/zhangxinrui127-stack</pre>
+  </div>
+  <div class="ai-summary"><strong>AI 产出：</strong>① A 子页改成硬编码"提纲 + 初始 Prompt"；② 新增 <code>.wf-node.has-tip</code> 组件 — 右上角 ⓘ + hover 弹出黑底 tooltip；③ Tips §5 软化为"一些喜欢调用的工具" + 圆形头像 GitHub 卡片（zhangxinrui127-stack）</div>
+</details>
+    </div>
+  </li>
+
+  <li>
+    <div class="t-mark">05</div>
+    <div class="t-body">
+      <h3>Step 5 · 一次性 6 条调整（含 sessionStorage 持久化）</h3>
+      <p class="t-meta">User · 内容归属 / 文案 / UX / 数据替换</p>
+      <p>这一轮最密集 — 一次给了 6 条，并要求"每条做完单独确认"。最重要的两条：<strong>把"迭代追加问题"从 A 搬到 C</strong>（因为那是 review 一稿后才形成的，不属于最初提纲）；<strong>工作流展开状态要持久化</strong>（点子页再返回不能塌回去）。</p>
+      <details class="prompt-detail">
+  <summary>📋 当时的 user prompt（点击展开 · 原文逐字）</summary>
+  <div class="prompt-wrap">
+    <button class="copy-btn prompt-copy" data-copy="把manual research reading 的html里面的这一段话 转移到human reads draft report的开头？这一段是看完报告之后review 的一些问题，不是最开始形成的；
+2）页面右上角的 mapping case改为agent mapping case；
+3）mapping case 完整工作流的 step2 sub-html页面里面，把下游分支的这一部分删掉（因为原本的工作流里面已经有跳转了；
+4）我每一次点击到sub-html再按返回的时候，原来的工作流就缩起来了，要重新点击才展开，比较麻烦，可以让它点击进去之后，再返回的时候仍然保持展开吗？
+5）output-多章节.md跳转之后的网页不太对，需要全部替换（仍然要保持格式），替换成 @&quot;Mapping_example/multi-md.png&quot; 图片（表示这是perplexity产出的中间文档）还有2.2c 4.agent 5.2c这三个文件的内容；
+6）output-long list excel里面的perplexity 链接需要换成 https://www.perplexity.ai/computer/tasks/16c2586d-8163-492f-9c0a-5fe89082bb63 。
+你做完之后每个任务确认一下都完成了">复制 Prompt</button>
+    <pre class="prompt-card">把manual research reading 的html里面的这一段话 转移到human reads draft report的开头？这一段是看完报告之后review 的一些问题，不是最开始形成的；
+2）页面右上角的 mapping case改为agent mapping case；
+3）mapping case 完整工作流的 step2 sub-html页面里面，把下游分支的这一部分删掉（因为原本的工作流里面已经有跳转了；
+4）我每一次点击到sub-html再按返回的时候，原来的工作流就缩起来了，要重新点击才展开，比较麻烦，可以让它点击进去之后，再返回的时候仍然保持展开吗？
+5）output-多章节.md跳转之后的网页不太对，需要全部替换（仍然要保持格式），替换成 @&quot;Mapping_example/multi-md.png&quot; 图片（表示这是perplexity产出的中间文档）还有2.2c 4.agent 5.2c这三个文件的内容；
+6）output-long list excel里面的perplexity 链接需要换成 https://www.perplexity.ai/computer/tasks/16c2586d-8163-492f-9c0a-5fe89082bb63 。
+你做完之后每个任务确认一下都完成了</pre>
+  </div>
+  <div class="ai-summary"><strong>AI 产出：</strong>① A→C 内容迁移；② 导航 "Mapping Case" → "Agent Mapping Case"；③ E 子页删"下游分支"段；④ <code>common.js</code> 新增 <code>bindWorkflowPersist()</code> + <code>expandFromHash()</code> 用 sessionStorage 记录 details 状态；⑤ F 子页全部替换为 multi-md.png + 章节 2/4/5；⑥ G 子页 Perplexity 链接换成新 task id</div>
+</details>
+    </div>
+  </li>
+
+  <li>
+    <div class="t-mark">06</div>
+    <div class="t-body">
+      <h3>Step 6 · F 子页去掉章节 2</h3>
+      <p class="t-meta">User · 单点删除</p>
+      <p>典型的"做完之后再看一眼，想再砍一刀"的微调。F 子页从 80 KB → 52 KB。</p>
+      <details class="prompt-detail">
+  <summary>📋 当时的 user prompt（点击展开 · 原文逐字）</summary>
+  <div class="prompt-wrap">
+    <button class="copy-btn prompt-copy" data-copy="file:///Users/liuzhiyuan/Documents/rb/idg/Website/subpages/F-mapping-deep-research.html 里面的 2 · 2C AI Agent 入口级产品赛道深度分析 这一个章节直接去掉">复制 Prompt</button>
+    <pre class="prompt-card">file:///Users/liuzhiyuan/Documents/rb/idg/Website/subpages/F-mapping-deep-research.html 里面的 2 · 2C AI Agent 入口级产品赛道深度分析 这一个章节直接去掉</pre>
+  </div>
+  <div class="ai-summary"><strong>AI 产出：</strong>改 <code>build.js</code> 中 F 子页拼装逻辑，删除章节 2 的 renderMd 调用与对应 <code>&lt;h2&gt;</code>，章节 4 / 5 保留</div>
+</details>
+    </div>
+  </li>
+
+  <li>
+    <div class="t-mark">07</div>
+    <div class="t-body">
+      <h3>Step 7 · 新增 J（三表模型 xlsx）+ K（meta 时间线）</h3>
+      <p class="t-meta">User · 两个新增子页</p>
+      <p>① CoreWeave 工作流里 <code>CRWV_3Statement_Model</code> 节点改为可跳转，新增 J 子页渲染 10 Tab 的三表模型 xlsx；② Tips 末尾新增第 6 条"本网页是如何制作的"，链接到 K 子页（即你正在看的这一页）。</p>
+      <details class="prompt-detail">
+  <summary>📋 当时的 user prompt（点击展开 · 原文逐字）</summary>
+  <div class="prompt-wrap">
+    <button class="copy-btn prompt-copy" data-copy="1）CRWV_3Statement_Model 的这个框也添加一个 sub-html 页面，@Coreweave_example/CRWV_3Statement_Model_Final_VF.xlsx 用这个渲染到 sub-html 页面里面去；
+2）在 tips 里面最后加一条，示意本网页是如何制作的，点击可以转向新增一个 html，将咱们这个 session 的交互部分（尤其是最开始 我输入了一个自然语言描述的 ai.md 需求，让 ai 生成一个 prd 以及后面交互修改的一些来回">复制 Prompt</button>
+    <pre class="prompt-card">1）CRWV_3Statement_Model 的这个框也添加一个 sub-html 页面，@Coreweave_example/CRWV_3Statement_Model_Final_VF.xlsx 用这个渲染到 sub-html 页面里面去；
+2）在 tips 里面最后加一条，示意本网页是如何制作的，点击可以转向新增一个 html，将咱们这个 session 的交互部分（尤其是最开始 我输入了一个自然语言描述的 ai.md 需求，让 ai 生成一个 prd 以及后面交互修改的一些来回</pre>
+  </div>
+  <div class="ai-summary"><strong>AI 产出：</strong>新增 <code>J-coreweave-3statement-model.html</code>（10 sheet 全部渲染） + <code>K-how-this-site-was-made.html</code>（v1 描述型时间线） + Tips §6 <code>.faq-link</code> 直跳卡片</div>
+</details>
+    </div>
+  </li>
+
+  <li>
+    <div class="t-mark">08</div>
+    <div class="t-body">
+      <h3>Step 8 · K 子页升级 · 嵌入原始 prompt + PRD 全文</h3>
+      <p class="t-meta">User · 当前轮 · meta 自我引用</p>
+      <p>用户提示 v1 的 K 子页只是"描述"，不够 meta — 要把<strong>真正的 user prompt 原文</strong>和 <strong>PRD.md 全文</strong>嵌进来，让读者直接看到 AI 协作的"输入原貌"，而不是经过总结的二手描述。</p>
+      <details class="prompt-detail">
+  <summary>📋 当时的 user prompt（点击展开 · 原文逐字）</summary>
+  <div class="prompt-wrap">
+    <button class="copy-btn prompt-copy" data-copy="根据我们交互的过程 不要只描述，要我的原本的 prompt 和 你生成的那个 prd 文件也嵌入进去">复制 Prompt</button>
+    <pre class="prompt-card">根据我们交互的过程 不要只描述，要我的原本的 prompt 和 你生成的那个 prd 文件也嵌入进去</pre>
+  </div>
+  <div class="ai-summary"><strong>AI 产出：</strong>① 顶部"两份原始文档"区块用 <code>.doc-embed</code> 折叠嵌入 ai.md + PRD.md 全文（带复制按钮 + 滚动条 + 跳源文件链接）；② 每个时间线 step 新增 <code>.prompt-detail</code> 折叠展示当时 user prompt 原文 + AI 产出说明 — 也就是你正在读的这一段</div>
+</details>
+    </div>
+  </li>
+</ol>
+
+<hr>
+
+<h2>这一页想传达什么</h2>
+<ul>
+  <li><strong>自然语言起手，PRD 收口</strong>：不要一上来就写 PRD，先用 <code>ai.md</code> 把所有"我想要什么"写出来，再让 AI 反过来产出一份结构化 PRD 给自己 review。这一步会强制把模糊点显化。</li>
+  <li><strong>每一轮反馈只动小范围</strong>：一次给 AI 6–7 条调整就到上限了，再多 context 会乱。每次让 AI 报告"每一条完成确认"，能保持节奏。</li>
+  <li><strong>把工具固化下来</strong>：<code>build.js</code> 是这次的"工具的工具" — 改 md / xlsx 后重跑就行，下次再用同一套 skill 做新网站直接复用。</li>
+  <li><strong>静态 + 预渲染 ≠ 落后</strong>：这个站点没有 npm、没有构建工具、没有后端，但有完整的工作流图、Excel 渲染、PDF 内嵌、状态持久化。"低工程复杂度 + 高交付质量" 是研究类网页的甜区。</li>
+  <li><strong>Meta 自我引用</strong>：把项目本身的协作过程也作为一个 case 沉淀下来 — 这是 AI 时代研究工作流可复用的关键。</li>
+</ul>
+
+    </article>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>← <a href="../index.html#tips">返回主页</a></span>
+    <span>本地静态站点 · 双击 index.html 即可访问</span>
+  </div>
+</footer>
+
+<script src="../assets/js/common.js"></script>
+</body>
+</html>

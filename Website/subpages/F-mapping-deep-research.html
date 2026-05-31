@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapping 案例：深度研究 .md 初稿 · AI Workflow Notes</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="brand-mark">●</span>AI Workflow Notes</a>
+    <nav class="nav-anchors">
+      <a href="../index.html#coreweave">CoreWeave Case</a>
+      <a href="../index.html#mapping">Agent Mapping Case</a>
+      <a href="../index.html#cognition">认知层</a>
+      <a href="../index.html#tips">Tips</a>
+    </nav>
+  </div>
+</header>
+
+<div class="subpage-meta">
+  <div class="container">
+    <div class="crumbs">
+      <a href="../index.html">主页</a>
+      <span class="sep">/</span>
+      <a href="../index.html#mapping">Mapping 案例</a><span class="sep">/</span><span>深度研究初稿</span>
+    </div>
+    <div class="source-tag">
+      <span>source · Mapping_example/multi-md.png · 4.* · 5.* .md</span>
+      
+    </div>
+  </div>
+</div>
+
+<section class="subpage-title">
+  <div class="container-read">
+    <div class="eyebrow">Mapping · Phase 3A · Deep Research</div>
+    <h1>Mapping 案例：深度研究 .md 初稿</h1>
+    <p class="subtitle">Perplexity 分 session deep research 产出的多章节 .md 中间文档。</p>
+  </div>
+</section>
+
+<main class="subpage-main">
+  <div class="container-read">
+    <article class="md-article">
+
+<p class="muted small">下图是 Perplexity 分 session deep research 后产出的<strong>中间文档清单</strong>（perplexity 侧的 md 文件原貌截图），每一份对应一个研究子问题。下方按顺序展开其中两份代表性章节。</p>
+
+<figure style="margin: 18px 0 32px;">
+  <img src="../../Mapping_example/multi-md.png" alt="Perplexity 产出的多份 md 文件清单" class="click-zoom" loading="lazy" style="display:block;width:100%;max-width:760px;margin:0 auto;border:1px solid var(--rule);border-radius:4px;">
+  <figcaption class="muted small" style="text-align:center;margin-top:10px;">Perplexity 产出的多章节中间文档 · 命名按"序号 + 主题"</figcaption>
+</figure>
+
+<hr>
+
+<h2>4 · Agent 成熟度指标体系与技术演进路线图</h2>
+<h1>Agent成熟度指标体系与技术演进路线图</h1>
+<blockquote>
+<p><strong>核心判断</strong>：截至2026年5月，前沿Agent的「任务时间域（Task Time Horizon）」约为12小时（50%成功率），以约每89天翻倍的速度增长；当前技术水位处于&quot;多小时级受监督自动化&quot;阶段，尚未进入&quot;工作日级全自主&quot;阶段，但这一跃迁预计将在2027年内发生。</p>
+</blockquote>
+<hr>
+<h2>一、成熟度指标的定义与选取</h2>
+<h3>1.1 为什么需要新的量化指标</h3>
+<p>传统AI评估体系（如MMLU准确率、BLEU分等）衡量的是模型的<strong>知识密度</strong>，对Agent而言根本性错位——Agent失败的原因不在于单步答错，而在于<strong>无法将数十步行动串联完成</strong>。需要一个能直接映射&quot;可委托工作量&quot;的指标。</p>
+<h3>1.2 核心指标：任务时间域（Task Time Horizon, TTH）</h3>
+<p><strong>定义</strong>：使AI Agent以 (p%) 概率成功完成任务所对应的&quot;人类专家完成该任务所需时长&quot;。</p>
+<p>[
+\text{TTH}<em>{p%} = \arg\max</em>{t} \left[ P(\text{agent success} \mid \text{human_time} = t) \geq p% \right]
+]</p>
+<ul>
+<li>由非营利机构METR（Model Evaluation &amp; Threat Research）提出并持续更新[^1]</li>
+<li>以<strong>人类完成时间</strong>作为任务难度的测量单位，而非AI的实际运行时长</li>
+<li>使用逻辑回归拟合成功率曲线，在任务集上取P50作为基准点[^2]</li>
+</ul>
+<p><strong>优势</strong>：</p>
+<ul>
+<li>与业务委托能力直接对应（&quot;能帮我做一件多长的事&quot;）</li>
+<li>历史可比性强，从2019年起连续追踪[^3]</li>
+<li>对AI速度无偏——不论AI运行快慢，衡量的是&quot;等价人类工作量&quot;</li>
+</ul>
+<h3>1.3 辅助指标矩阵</h3>
+<p>单一指标不足以刻画Agent全貌，建议配合以下辅助指标：</p>
+<table>
+<thead>
+<tr>
+<th>指标维度</th>
+<th>具体指标</th>
+<th>当前代表基准</th>
+<th>当前水位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>能力上限</strong></td>
+<td>TTH-50%（任务时间域）</td>
+<td>METR Time Horizons</td>
+<td>~12小时[^3]</td>
+</tr>
+<tr>
+<td><strong>可靠性</strong></td>
+<td>Pass^k（同一任务重复k次通过率）</td>
+<td>τ-bench Pass^8</td>
+<td>&lt;25%[^4]</td>
+</tr>
+<tr>
+<td><strong>工程能力</strong></td>
+<td>SWE-bench Verified解决率</td>
+<td>GitHub Issue修复</td>
+<td>~80%+（2026初）[^5]</td>
+</tr>
+<tr>
+<td><strong>通用能力</strong></td>
+<td>GAIA Level-3通过率</td>
+<td>多步推理+工具链</td>
+<td>待最新数据</td>
+</tr>
+<tr>
+<td><strong>计算机控制</strong></td>
+<td>OSWorld任务完成率</td>
+<td>真实OS跨应用操作</td>
+<td>~66%[^6]</td>
+</tr>
+<tr>
+<td><strong>流体智能</strong></td>
+<td>ARC-AGI-3通过率</td>
+<td>全新规则推理</td>
+<td>&lt;1%（人类100%）[^5]</td>
+</tr>
+<tr>
+<td><strong>企业可靠性</strong></td>
+<td>τ-bench单次通过率</td>
+<td>多轮工具+策略遵从</td>
+<td>&lt;50%[^4]</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>二、当前技术水位：精确定位</h2>
+<h3>2.1 任务时间域的实测数据</h3>
+<p>METR于2026年1月发布TH1.1更新（扩展至228个任务，增至31个8小时以上任务），确认以下关键数据：[^7]</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>TTH-50%（分钟）</th>
+<th>TTH-50%（小时）</th>
+<th>变化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Claude Opus 4.5</td>
+<td>320</td>
+<td>~5.3h</td>
+<td>+11% vs TH1</td>
+</tr>
+<tr>
+<td>GPT-5</td>
+<td>214</td>
+<td>~3.6h</td>
+<td>+55% vs TH1</td>
+</tr>
+<tr>
+<td>o3</td>
+<td>121 [^8]</td>
+<td>~2.0h</td>
+<td>+29% vs TH1</td>
+</tr>
+<tr>
+<td>Claude Opus 4.6*</td>
+<td>~719（718.8）</td>
+<td>~12h</td>
+<td>2026年2月</td>
+</tr>
+<tr>
+<td>GPT-4o</td>
+<td>5–6</td>
+<td>&lt;0.1h</td>
+<td>基准对照</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>*Claude Opus 4.6为METR公开仪表板截至2026年3月3日的最新数据[^3]</p>
+</blockquote>
+<p><strong>关键发现</strong>：</p>
+<ul>
+<li>前沿模型的TTH-50%约为12小时，即AI可以50%成功率完成一个人类专家需要约12小时的任务[^3]</li>
+<li>TTH-80%（即80%成功率）仅为~70分钟——生产环境部署所需的高可靠性阈值远低于P50表面数字[^3]</li>
+<li>基准评估漏洞真实存在：2026年研究发现SWE-bench等8个主流基准均可被无能力Agent利用评估机制刷满分[^9]</li>
+</ul>
+<h3>2.2 增长速度的历史演变</h3>
+<table>
+<thead>
+<tr>
+<th>统计区间</th>
+<th>倍增时间</th>
+<th>折算年增速</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2019–2025全期</td>
+<td>196天（~7个月）[^7]</td>
+<td>×2.7/年</td>
+</tr>
+<tr>
+<td>2023年至今</td>
+<td>131天（~4.4个月）[^7]</td>
+<td>×4.0/年</td>
+</tr>
+<tr>
+<td>2024年至今</td>
+<td>89天（~3个月）[^10][^11]</td>
+<td>×6.0/年</td>
+</tr>
+</tbody></table>
+<p>近期加速的主要驱动因素：强化学习（RL）推理时算力、长上下文窗口、工具调用稳定性改善。</p>
+<h3>2.3 能力-可靠性剪刀差</h3>
+<p>这是当前最重要的结构性矛盾：</p>
+<ul>
+<li><strong>能力数字（P50 TTH）</strong>：可媲美多小时人类工作，且快速增长</li>
+<li><strong>生产可靠性（Pass^k）</strong>：τ-bench显示顶级模型在同一零售任务重复8次，通过率仅约25%[^4]</li>
+<li><strong>部署落地率</strong>：LangChain调研显示57%的受访组织已有Agent在生产运行，但质量问题仍是首要阻断因素（32%引用）[^12]</li>
+<li><strong>生产失败率</strong>：88%的AI Agent项目无法进入生产[^13]</li>
+</ul>
+<p><strong>核心根因</strong>：长链行动中错误的指数级积累（hallucination accumulation），以及工具调用对异常环境的鲁棒性不足。[^14]</p>
+<h3>2.4 当前阶段定性评级</h3>
+<p>基于MIT AI Agent Index的五级自主性框架：[^15]</p>
+<table>
+<thead>
+<tr>
+<th>Agent类型</th>
+<th>当前自主等级</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>聊天型Agent</td>
+<td>L1–L3</td>
+<td>对话驱动，单轮或短序列</td>
+</tr>
+<tr>
+<td>浏览器Agent</td>
+<td>L4–L5</td>
+<td>有限干预的网络自主操作</td>
+</tr>
+<tr>
+<td>企业平台Agent</td>
+<td>设计L1–L2/部署L3–L5</td>
+<td>事件触发后无人值守执行</td>
+</tr>
+</tbody></table>
+<p><strong>综合定位</strong>：2026年5月，全球Agent技术水位处于<strong>L3–L4边界</strong>，即&quot;受监督的多步自动化&quot;向&quot;受限域内有限自主&quot;过渡，但距离&quot;全域可信自主（L5+）&quot;仍有显著距离。</p>
+<hr>
+<h2>三、技术演进将解锁的应用场景</h2>
+<h3>3.1 解锁逻辑框架</h3>
+<p>应用场景的可行性由两个核心门槛决定：</p>
+<ol>
+<li><strong>能力门槛</strong>：TTH-50%需覆盖该场景典型任务时长</li>
+<li><strong>可靠性门槛</strong>：Pass^k（k取决于业务容错率）需超过行业最低标准</li>
+</ol>
+<p><strong>分层映射表</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>应用层级</th>
+<th>所需TTH-50%</th>
+<th>所需Pass^8估算</th>
+<th>典型场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>规则执行层</td>
+<td>&lt;30分钟</td>
+<td>&gt;60%</td>
+<td>客服工单处理、IT故障排票、报表生成</td>
+</tr>
+<tr>
+<td>分析决策层</td>
+<td>30分钟–4小时</td>
+<td>&gt;40%</td>
+<td>数据分析报告、代码审查、市场研报草稿</td>
+</tr>
+<tr>
+<td>专业协作层</td>
+<td>4–24小时</td>
+<td>&gt;25%</td>
+<td>软件工程全流程、尽调辅助、医疗预授权</td>
+</tr>
+<tr>
+<td>项目自治层</td>
+<td>1天–1周</td>
+<td>&gt;15%</td>
+<td>完整软件模块开发、商业计划书起草</td>
+</tr>
+<tr>
+<td>战略自主层</td>
+<td>周~月</td>
+<td>&gt;10%</td>
+<td>科研助理、独立商业分析师、自主R&amp;D</td>
+</tr>
+</tbody></table>
+<h3>3.2 已解锁场景（2025–2026）</h3>
+<p>当前TTH-50%约12小时，OSWorld约66%，已进入实际生产的场景：</p>
+<p><strong>软件工程</strong></p>
+<ul>
+<li>SWE-bench Verified从2023年的1.96%跃升至2026年初约80%，Claude Code、Cursor、GitHub Copilot等工具使85%的开发者已日常使用AI编码辅助[^5][^6][^16]</li>
+<li>生产级表现：代码生成与调试显示25–50%的生产力提升[^17]</li>
+</ul>
+<p><strong>客户服务自动化</strong></p>
+<ul>
+<li>当前最常见的部署用例（26.5%），已有组织报告将80%以上的例行客服问题自动化解决[^18][^12]</li>
+<li>Gartner预测2029年前Agent自主解决80%常见客服问题、运营成本降低30%[^19]</li>
+</ul>
+<p><strong>文件处理与知识工作</strong></p>
+<ul>
+<li>研究与数据分析为第二大部署用例（24.4%）[^12]</li>
+<li>数据处理、报告生成、文档摘要等结构化任务已大规模部署</li>
+</ul>
+<p><strong>金融服务后台</strong></p>
+<ul>
+<li>欺诈检测（金融/保险行业56%部署）、KYC/AML工作流——McKinsey报告称生产率提升200%–2000%[^20]</li>
+<li>风险报告自动化、合规检查辅助</li>
+</ul>
+<h3>3.3 近期解锁场景（2026–2027）</h3>
+<p>预计TTH-50%达到24–48小时，倍增周期约3个月，约2026年末–2027年中触发：</p>
+<p><strong>完整软件产品开发周期</strong></p>
+<ul>
+<li>需求分析→架构设计→编码→测试→部署的端到端Agent流水线[^21]</li>
+<li>Sequoia认为2026年是&quot;长时间域Agent之年&quot;，可完成&quot;30分钟级任务&quot;已进入可信区间[^22]</li>
+</ul>
+<p><strong>专业研究助理</strong></p>
+<ul>
+<li>对标人类&quot;一天工作量&quot;的文献综述、竞品分析、技术尽调</li>
+<li>IBM预测2027年进入&quot;智能协作者时代&quot;，Agent开始承担跨系统流程编排[^23]</li>
+</ul>
+<p><strong>供应链与运营优化</strong></p>
+<ul>
+<li>多Agent协作改善任务表现达76%（前提是有定向通信与拓扑设计）[^24]</li>
+<li>制造行业：流程自动化（49%）、供应链优化（48%）、质量控制（47%）加速落地[^25]</li>
+</ul>
+<p><strong>医疗行政与辅助诊断</strong></p>
+<ul>
+<li>已有预授权、医疗编码、临床文档自动化（占医疗部署51%）[^26]</li>
+<li>诊断辅助接近实用：医疗Agent在AgentClinic MedQA上达60.3%，但在复杂情境下仍只有8.6%[^27]</li>
+</ul>
+<h3>3.4 中期解锁场景（2027–2028）</h3>
+<p>预计TTH-50%接近1工作周（40小时），关键里程碑：</p>
+<p><strong>自主软件工程师</strong></p>
+<ul>
+<li>从接收PRD到交付可部署代码的完整闭环，无需持续人工干预</li>
+<li>METR趋势外推：2027年可完成&quot;1工作日任务&quot;[^28]</li>
+</ul>
+<p><strong>数字原生商业运营</strong></p>
+<ul>
+<li>Gartner预测：2028年33%的企业应用将内置Agent能力（相比2024年&lt;1%）[^29][^19]</li>
+<li>至少15%的日常工作决策将由Agent自主完成[^30]</li>
+</ul>
+<p><strong>科学研究Agent</strong></p>
+<ul>
+<li>实验设计、数据分析、论文写作的部分自主化</li>
+<li>ARC-AGI系列的持续突破将标志通用流体推理的根本性进步</li>
+</ul>
+<p><strong>金融自主分析</strong></p>
+<ul>
+<li>自主投资分析报告生成、实时风险监控、个性化财富管理（目前金融服务AI Agent渗透率为12%）[^31]</li>
+</ul>
+<h3>3.5 长期愿景场景（2028–2030+）</h3>
+<p><strong>完全自主的知识型&quot;数字员工&quot;</strong></p>
+<ul>
+<li>IBM三阶段模型第三阶段：Agent替代传统工作流，而非辅助[^23]</li>
+<li>75%的招聘流程将测试AI能力熟练度（2027年预测）[^32]</li>
+</ul>
+<p><strong>跨组织Agent协作网络</strong></p>
+<ul>
+<li>Google A2A协议（2025年4月发布）已使Agent可跨团队、跨平台发现并委派[^26]</li>
+<li>多Agent生态将推动行业级自动化，市场规模从2024年约78亿美元增长至2033年约1953亿美元（CAGR ~43%）[^33]</li>
+</ul>
+<hr>
+<h2>四、时间窗口评估</h2>
+<h3>4.1 综合路线图</h3>
+<pre><code>TTH-50%基准线外推（每89天翻倍）
+────────────────────────────────────────────────────────────
+时间点        TTH-50%估算   主要能力跃迁           关键不确定因素
+────────────────────────────────────────────────────────────
+2026年Q2      ~12–15h      多小时受监督自动化       当前实测基准
+（当前）       [已解锁]     代码/客服/文档处理
+────────────────────────────────────────────────────────────
+2026年Q4      ~24–36h      工作日级别自主执行       加速倍增是否持续
+             [即将解锁]    软件工程闭环
+                          跨系统业务流程编排
+────────────────────────────────────────────────────────────
+2027年中       ~80–120h    1工作周级别任务          可靠性/安全治理
+             [解锁中]      自主研究助理             监管政策
+                          端到端产品开发
+────────────────────────────────────────────────────────────
+2028年        ~500–1000h   月级项目自主执行          AGI定义之争
+             [高潜力]      多数脑力劳动可委托         社会适应速度
+                          科研/战略分析自主化
+────────────────────────────────────────────────────────────
+</code></pre>
+<h3>4.2 影响时间窗口的关键变量</h3>
+<p><strong>加速因素</strong></p>
+<ol>
+<li><strong>RL推理时算力</strong>：2024–2025年TTH加速的主因，仍有巨大空间[^34]</li>
+<li><strong>多Agent协作效率</strong>：定向拓扑下协作提升76%任务表现[^24]</li>
+<li><strong>开源模型追赶</strong>：MMLU-Pro开源/闭源差距已压缩至1%；DeepSeek R1以1/10成本匹配前沿质量，将大幅降低部署成本[^24]</li>
+</ol>
+<p><strong>制约因素</strong></p>
+<ol>
+<li><strong>可靠性剪刀差</strong>：τ-bench Pass^8仍不足25%，高风险场景（医疗、金融决策）需要更高置信度[^4]</li>
+<li><strong>基准饱和与失真</strong>：主流基准存在系统性漏洞，实验室数字与生产落差达37%[^35][^9]</li>
+<li><strong>监管合规</strong>：EU AI Act对高风险系统强制要求人工监督、审计日志、合规证明；中国监管亦趋严[^36]</li>
+<li><strong>企业治理成熟度</strong>：全球仅11%的组织真正在生产中使用Agent，组织变革是最大瓶颈[^13]</li>
+</ol>
+<h3>4.3 分行业时间窗口</h3>
+<table>
+<thead>
+<tr>
+<th>行业</th>
+<th>当前渗透率</th>
+<th>关键解锁时间</th>
+<th>主要障碍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>软件开发</td>
+<td>85%使用AI工具[^16]</td>
+<td><strong>已解锁（2025–2026）</strong></td>
+<td>可靠性、安全审计</td>
+</tr>
+<tr>
+<td>金融服务</td>
+<td>91%采用率[^13]</td>
+<td><strong>2026–2027</strong></td>
+<td>监管合规、风险控制</td>
+</tr>
+<tr>
+<td>客户服务</td>
+<td>57%使用或计划中[^37]</td>
+<td><strong>2026–2027</strong></td>
+<td>品牌风险、边缘情况</td>
+</tr>
+<tr>
+<td>制造/供应链</td>
+<td>68%采用率[^13]</td>
+<td><strong>2026–2027</strong></td>
+<td>系统集成、数据质量</td>
+</tr>
+<tr>
+<td>医疗</td>
+<td>74%采用率[^13]</td>
+<td><strong>2027–2028</strong></td>
+<td>监管许可、责任划分</td>
+</tr>
+<tr>
+<td>法律/合规</td>
+<td>18%部署[^31]</td>
+<td><strong>2027–2028</strong></td>
+<td>责任框架、专业规范</td>
+</tr>
+<tr>
+<td>科研/战略</td>
+<td>较低</td>
+<td><strong>2028–2030</strong></td>
+<td>创造性边界、可验证性</td>
+</tr>
+</tbody></table>
+<h3>4.4 中国视角的特殊考量</h3>
+<ul>
+<li>全球30个主要Agent中，美国占21个，中国占5个，且中国Agent普遍缺乏公开安全框架文档[^15]</li>
+<li>SWE-bench Verified前7名中已有3个中国模型（MiniMax M2.5、GLM-5、Kimi K2.5），技术能力快速追赶[^24]</li>
+<li>中国工业智造场景（流程自动化、质检、供应链）与Agent能力高度匹配，预计2026–2027年形成规模化落地窗口</li>
+<li>政策导向（新一代AI发展规划）将加速行业应用推广，但数据安全法规（PIPL、数据出境规则）构成跨境Agent部署的结构性限制</li>
+</ul>
+<hr>
+<h2>五、战略启示</h2>
+<h3>当下即可行动（2026年）</h3>
+<ul>
+<li><strong>软件工程自动化</strong>：SWE-bench &gt;80%的成绩意味着代码生成、调试、测试等环节的ROI已经为正</li>
+<li><strong>知识工作辅助</strong>：研究整合、报告生成、数据分析——低错误代价场景优先</li>
+<li><strong>客服与运营流程</strong>：规则明确的高频任务，配合人工审核机制</li>
+</ul>
+<h3>布局窗口（2026–2027年）</h3>
+<ul>
+<li><strong>多Agent编排基础设施</strong>：MCP（工具标准化）、A2A（Agent间通信）将成为企业AI架构的核心</li>
+<li><strong>可观测性与治理</strong>：89%生产环境已部署可观测性，成为基础能力而非差异化[^12]</li>
+<li><strong>垂直领域微调</strong>：通用模型在专业场景仍有37%落差，行业数据+微调是近期护城河</li>
+</ul>
+<h3>战略判断（2027–2028年）</h3>
+<ul>
+<li><strong>数字员工经济学</strong>：当TTH-50%达到工作周量级，&quot;雇佣Agent完成项目&quot;将成为真实经济选项</li>
+<li><strong>竞争格局重构</strong>：Gartner预测40%的Agentic AI项目将在2027年前被取消，优胜者将是将治理与能力同步建设的组织[^38]</li>
+</ul>
+<hr>
+<h2>References</h2>
+<ol>
+<li><p><a href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/">Measuring AI Ability to Complete Long Tasks - METR</a> - However, we&#39;re fairly confident that the overall trend is roughly correct, at around 1-4 doublings p...</p>
+</li>
+<li><p><a href="https://epoch.ai/benchmarks/metr-time-horizons">METR Time Horizons - Epoch AI</a> - Duration for humans of software engineering tasks that AI performs with 50% success rate. Graph Sett...</p>
+</li>
+<li><p><a href="https://www.baristalabs.io/blog/metr-ai-task-horizons-7-month-doubling-2026">METR&#39;s Latest Time-Horizon Data Makes AI Capability…</a> - Time Horizon 1.1 also tightened the methodology. METR expanded the suite from 170 to 228 tasks, incr...</p>
+</li>
+<li><p><a href="https://sierra.ai/uk/blog/tau-bench-shaping-development-evaluation-agents">𝜏-bench | Sierra</a> - τ-bench has become a cornerstone of AI agent evaluation, cited in academic research as a critical st...</p>
+</li>
+<li><p><a href="https://www.marktechpost.com/2026/04/26/top-7-benchmarks-that-actually-matter-for-agentic-reasoning-in-large-language-models/">Top 7 Benchmarks That Actually Matter for Agentic Reasoning in ...</a> - In vendor-reported late-2025 and early-2026 results, top frontier models crossed the 80% range on SW...</p>
+</li>
+<li><p><a href="https://hai.stanford.edu/ai-index/2026-ai-index-report">The 2026 AI Index Report | Stanford HAI</a> - 1. AI capability is not plateauing. It is accelerating and reaching more people than ever. Industry ...</p>
+</li>
+<li><p><a href="https://metr.org/blog/2026-1-29-time-horizon-1-1/">Time Horizon 1.1 - METR</a> - We&#39;re releasing a new version of our time horizon estimates (TH1.1), using more tasks and a new eval...</p>
+</li>
+<li><p><a href="https://joget.com/agentic-ai-the-next-big-thing-in-ai/">Agentic AI: The Next Big Thing in AI - Joget</a> - Agentic AI is transforming businesses with autonomous agents that drive efficiency. Learn how Joget ...</p>
+</li>
+<li><p><a href="https://moogician.github.io/blog/2026/trustworthy-benchmarks-cont/">How We Broke Top AI Agent Benchmarks: And What Comes Next</a> - We built an automated scanning agent that systematically audited eight among the most prominent AI a...</p>
+</li>
+<li><p><a href="https://everydaycpe.com/ai-task-horizon-problem-metr-research/">AI Task Horizon: Understanding the METR Graph - EverydayCPE</a> - The core finding held: the seven-month doubling time over the full 2019–2025 period was confirmed. B...</p>
+</li>
+<li><p><a href="https://www.linkedin.com/posts/jalovell_the-stat-i-see-most-on-linkedin-about-ai-activity-7452806410394017792-vV5P">Jason Lovell&#39;s Post - LinkedIn</a> - The stat I see most on LinkedIn about AI agent capability is METR&#39;s &quot;doubling every 7 months&quot; for ta...</p>
+</li>
+<li><p><a href="https://www.langchain.com/state-of-agent-engineering">State of Agent Engineering - LangChain</a> - As we enter 2026, organizations are no longer asking whether to build agents, but rather how to depl...</p>
+</li>
+<li><p><a href="https://www.digitalapplied.com/blog/agentic-ai-statistics-2026-definitive-collection-150-data-points">Agentic AI Statistics 2026: 150+ Data Points Collection</a> - 88% of AI agents fail to reach production — but the survivors return 171% ROI: The failure rate is a...</p>
+</li>
+<li><p><a href="https://arxiv.org/html/2509.18970v1">LLM-based Agents Suffer from Hallucinations: A Survey of ... - arXiv</a> - This assessment helps prevent the accumulation and propagation of hallucinations in long-horizon tas...</p>
+</li>
+<li><p><a href="https://aiagentindex.mit.edu">The 2025 AI Agent Index</a> - Chat agents maintain lower autonomy (Level 1-3), browser agents operate at Level 4-5 with limited in...</p>
+</li>
+<li><p><a href="https://www.faros.ai/blog/best-ai-coding-agents-2026">Best AI Coding Agents for 2026: Real-World Developer Reviews</a> - By the end of 2025, roughly 85% of developers regularly use AI tools for coding—whether to speed up ...</p>
+</li>
+<li><p><a href="https://www.verdent.ai/guides/ai-coding-agent-2026">AI Coding Agents: Autonomous Development - Verdent AI</a> - 2026 guide to AI coding agents: how they work, top tools (Tonkotsu, Verdent, Cursor), benchmarks, an...</p>
+</li>
+<li><p><a href="https://www.zendesk.hk/blog/agentic-ai/">What is agentic AI, and how does it work? - Zendesk</a> - Agentic AI refers to autonomous software that takes initiative to accomplish service-related goals w...</p>
+</li>
+<li><p><a href="https://www.softwebsolutions.com/resources/use-cases-of-agentic-ai/">Agentic AI: Use Cases, Benefits &amp; Real-World Applications</a> - Learn how Agentic AI enables intelligent agents to act independently, make decisions, and optimize o...</p>
+</li>
+<li><p><a href="https://www.kore.ai/blog/what-is-agentic-ai">What is Agentic AI? Meaning, Use Cases &amp; How It Works (2026)</a> - Agentic AI means AI systems that autonomously plan and execute actions to achieve goals. Here&#39;s how ...</p>
+</li>
+<li><p><a href="https://www.timesofai.com/industry-insights/agentic-coding-in-software-development/">Agentic Coding in 2026: AI&#39;s Impact on Software Development</a> - An autonomous AI agent can interpret requirements, break them into smaller tasks, build solutions, v...</p>
+</li>
+<li><p><a href="https://sequoiacap.com/article/2026-this-is-agi/">2026: This is AGI | Sequoia Capital</a> - The AI applications of 2026 and 2027 will be doers. They will feel like colleagues. Usage will go fr...</p>
+</li>
+<li><p><a href="https://www.ibm.com/think/insights/ai-eras-assistant-collaborator-fully-autonomous">Upcoming AI eras: Assistant, Collaborator, Fully Autonomous | IBM</a> - First era: Enhanced assistance (current–2026). We are presently in the early stages of integrating a...</p>
+</li>
+<li><p><a href="https://www.facebook.com/groups/DeepNetGroup/posts/2742070289519169/">State of ai agents in 2026 - Facebook</a> - I put together a comprehensive deck on the state of AI agents as of February 2026. 200+ sourced slid...</p>
+</li>
+<li><p><a href="https://www.actuia.com/en/news/2025-the-year-of-maturity-for-enterprise-ai-agents/">2025: The Year of Maturity for Enterprise AI Agents? - Actu IA</a> - This hybrid model reflects a desire to adopt AI progressively while ensuring that agents evolve clos...</p>
+</li>
+<li><p><a href="https://cogitx.ai/blog/ai-agents-complete-overview-2026">AI Agents: Complete Overview (2026) - CogitX</a> - Learn what AI agents are, how they work, and where they&#39;re used. A complete guide covering agent arc...</p>
+</li>
+<li><p><a href="https://www.nature.com/articles/s41746-026-02443-6">Benchmarking large language model-based agent systems ... - Nature</a> - Through medical-domain fine-tuning, smaller models such as Med-PaLM 2 reached comparable performance...</p>
+</li>
+<li><p><a href="https://theaidigest.org/time-horizons">A new Moore&#39;s Law for AI agents - AI Digest</a> - The length of tasks that agents succeed at 50% of the time – the time horizon – is growing exponenti...</p>
+</li>
+<li><p><a href="https://www.skyflow.com/knowledge-hub/what-is-agentic-ai">What is Agentic AI? Definition, Case Studies, and Risks - Skyflow</a> - Agentic AI refers to AI-driven autonomous systems that execute complex, multi-step processes with mi...</p>
+</li>
+<li><p><a href="https://www.opentext.com/what-is/agentic-ai">What is Agentic AI? How OpenText Powers Enterprise Success</a> - Agentic AI is a new type of artificial intelligence that can act on its own, make autonomous decisio...</p>
+</li>
+<li><p><a href="https://masterofcode.com/blog/ai-agent-statistics">150+ AI Agent Statistics [2026] - Master of Code</a> - A majority—54% of executives—expect to begin deploying fully autonomous artificial intelligence CX a...</p>
+</li>
+<li><p><a href="https://pub.towardsai.net/the-agentic-ai-how-autonomous-ai-systems-are-rewriting-the-rules-of-work-business-and-technology-bbbc22ac24f7">The Agentic AI: How Autonomous AI Systems Are Rewriting the ...</a> - By 2027, 75% of hiring processes will test AI proficiency. By 2028, 33% of enterprise software will ...</p>
+</li>
+<li><p><a href="https://www.skyquestt.com/report/agentic-ai-market">Agentic AI Market Size, Share, Trends &amp; Forecast 2032</a> - Agentic AI Market size is projected to showcase a CAGR of over 43.84% from 2025 to 2032 and is antic...</p>
+</li>
+<li><p><a href="https://www.lesswrong.com/posts/EYb2K9acKfyG2bome/metr-time-horizons-now-10x-year">METR Time Horizons: Now 10x/Year - LessWrong</a> - One doubling every 3 months per the 2025-only trend, or once every 4 months per the 2024-5 trend. · ...</p>
+</li>
+<li><p><a href="https://kili-technology.com/blog/ai-benchmarks-guide-the-top-evaluations-in-2026-and-why-theyre-not-enough">AI Benchmarks 2026: Top Evaluations and Their Limits</a> - Research on enterprise AI agents found a 37% gap between lab benchmark scores and real-world deploym...</p>
+</li>
+<li><p><a href="https://mindra.co/blog/2026-enterprise-ai-agent-evaluation-matrix-architecture-zero-trust-regulatory">The 2026 Enterprise AI Agent Evaluation Matrix: Scoring Platforms ...</a> - This post provides a vendor-neutral evaluation matrix built from the five architectural pillars that...</p>
+</li>
+<li><p><a href="https://www.pwc.com/us/en/tech-effect/ai-analytics/ai-agent-survey.html">AI agent survey: PwC</a> - Of the 300 senior executives in our May 2025 survey, 88% say their team or business function plans t...</p>
+</li>
+<li><p><a href="https://www.linkedin.com/pulse/genai-agentic-ai-20262028-work-layer-shiftingcontrol-planes-agarwaal-kmkxc">GenAI + Agentic AI 2026–2028: The Work Layer Is Shifting—Control ...</a> - Set autonomy levels by workflow (assist / supervised / delegated) and make them enforceable with con...</p>
+</li>
+</ol>
+
+
+<hr>
+
+<h2>5 · 2C / 2B Agent 与 Agent OS：创业公司与模型厂的长期竞争格局</h2>
+<h1>2C/2B Agent与Agent OS：创业公司与模型厂的长期竞争格局分析</h1>
+<h2>执行摘要</h2>
+<p>当前AI行业正处于一个关键的结构性转折点：底层大模型能力快速趋同、成本持续下降，而应用层（Agent/Agent OS）成为价值争夺的主战场。然而，这一战场并非创业公司的安全港——模型厂正以&quot;黑洞效应&quot;系统性地向上吸收高价值、通用化的应用场景。理解这一竞争动态，以及在什么条件下创业公司能够建立可持续护城河，是当前最重要的战略问题之一。[^1]</p>
+<hr>
+<h2>一、竞争格局的本质：模型厂的&quot;平台引力&quot;</h2>
+<h3>1.1 模型厂的扩张逻辑</h3>
+<p>大型模型公司（OpenAI、Anthropic、Google、国内的字节跳动、百度、阿里等）并不满足于做纯粹的模型API供应商，它们正系统性地向应用层扩张。Google已构建涵盖71款AI工具的全栈生态，覆盖Cloud、Workspace、DeepMind等11个部门，明确将&quot;控制AI Agent的操作系统&quot;作为2026年核心战略。OpenAI推出Agent框架，Anthropic发布Claude Code与Cowork，这些动作不应被解读为常规产品更新，而应被视为对上游应用类别的主动压制信号。[^2][^1]</p>
+<p>模型厂的扩张遵循一套可预测的逻辑：通过分析API调用日志，识别最受欢迎的应用场景和工作流；一旦时机成熟，将这些功能直接内置于基础模型或官方平台中。这意味着，任何仅依赖&quot;巧妙编排通用大模型API&quot;的创业公司，本质上是功能而非公司，其存续依赖于平台方的&quot;恩赐&quot;。[^3]</p>
+<h3>1.2 &quot;父子局&quot;：共生与竞争的双重关系</h3>
+<p>大模型与Agent应用之间存在典型的&quot;平台与应用&quot;关系。平台方（模型厂）同时扮演技术供应商与最强竞争对手的双重角色——他们制定游戏规则（API定价、服务条款），同时随时可以下场参赛。短期内，创业公司与大模型厂商是合作关系，但长期看，模型厂处理完基础设施层后必然进军应用层，这只是时间问题。[^4][^3]</p>
+<p>这一&quot;父子局&quot;使创业公司面临双重挤压：高昂且不确定的可变成本（每次Agent调用都需烧钱），以及平台随时可能降价抢客、涨价压利、直接集成功能的风险。与传统SaaS的高毛利固定成本结构不同，AI Agent的单位经济模型从根本上更加脆弱。[^3][^4]</p>
+<h3>1.3 竞争格局：&quot;巨头环伺，新锐突围&quot;</h3>
+<p>当前AI Agent的竞争格局可概括为&quot;巨头环伺，新锐突围&quot;：[^5]</p>
+<ul>
+<li><strong>巨头主导通用层</strong>：大型科技平台凭借模型、数据、算力、生态优势主导通用Agent和平台生态构建</li>
+<li><strong>垂直领域有机会</strong>：垂直领域凭借深度领域知识和工作流整合仍有创新空间，但长期面临通用Agent的侵蚀压力[^5]</li>
+<li><strong>水平工具趋于商品化</strong>：水平化的AI能力日益成为商品，单纯依靠&quot;通用菜刀&quot;逻辑的产品将沦为红海[^3]</li>
+</ul>
+<hr>
+<h2>二、2C Agent：用户侧的竞争逻辑</h2>
+<h3>2.1 2C的致命弱点：分发与留存</h3>
+<p>2C Agent产品面临的核心挑战是分发被平台控制，而非技术能力本身。当操作系统（Android、iOS、Windows）原生集成AI感知能力——能看、能听、能在应用间推理——整类AI助手应用将失去存在依据。这种颠覆不会通过强制迁移来实现，而是通过用户默默接受的&quot;默认选项&quot;悄然发生。[^1]</p>
+<p>从历史案例看，Cursor（Anysphere）是为数不多在2C/开发者侧获得成功的案例。其ARR据报道已突破5亿美元，并在2025年11月完成23亿美元融资，四位联创成为亿万富翁。Cursor的成功并非依赖营销，而是极致的产品打磨（&quot;僧侣模式&quot;专注产品）加口碑传播，以及对开发者工作流的深度嵌入。[^6][^7][^8]</p>
+<h3>2.2 2C胜出的条件</h3>
+<p>2C Agent能够建立可持续地位的条件相对苛刻：</p>
+<table>
+<thead>
+<tr>
+<th>胜出条件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>高频刚需工作流</strong></td>
+<td>用户每天必须使用，形成习惯和肌肉记忆</td>
+</tr>
+<tr>
+<td><strong>工作流深度嵌入</strong></td>
+<td>如Cursor嵌入代码编写全流程，而非提供一次性建议</td>
+</tr>
+<tr>
+<td><strong>网络效应/社区效应</strong></td>
+<td>用户之间的分享、插件生态形成正反馈</td>
+</tr>
+<tr>
+<td><strong>平台分发独立性</strong></td>
+<td>不依赖单一App Store或模型厂分发渠道</td>
+</tr>
+<tr>
+<td><strong>数据飞轮</strong></td>
+<td>用户使用行为形成私有训练数据，持续优化</td>
+</tr>
+</tbody></table>
+<p>2C产品最大的风险不是技术被超越，而是被操作系统原生化或被更大的平台分发渠道&quot;归零&quot;。[^1]</p>
+<hr>
+<h2>三、2B Agent与Agent OS：企业侧的竞争逻辑</h2>
+<h3>3.1 为什么2B更具防御性</h3>
+<p>相比2C，2B Agent产品在结构上更具护城河潜力，原因在于：</p>
+<ul>
+<li><strong>企业数据壁垒</strong>：企业内部数据（ERP、CRM、合同、SOP）是公共互联网无法获取的专有资产[^3]</li>
+<li><strong>流程绑定与切换成本</strong>：一旦Agent深度嵌入企业核心工作流，替换成本极高——不仅是技术成本，更是大量&quot;默会知识&quot;（tacit knowledge）的重新积累[^9]</li>
+<li><strong>合规与监管壁垒</strong>：高风险行业（法律、医疗、金融）需要人类责任链，Agent无法独立获得执照或认证[^10]</li>
+<li><strong>企业信任建立周期长</strong>：大客户验收严格、进入门槛高，但一旦建立关系极难被替代[^9]</li>
+</ul>
+<p>Harvey AI的案例最具说明性：尽管其自研法律模型在GPT-4面世后被迫切换为OpenAI/Anthropic模型，但公司估值仍达50亿美元。真正的护城河不在于模型，而在于：率先拿下顶级律所、用户重新培训成本、以及海量律所真实工作方式的专有数据。[^11]</p>
+<h3>3.2 Agent OS的特殊价值</h3>
+<p>&quot;Agent OS&quot;的概念不仅指单一Agent，而是企业内部管理Agent、数据、权限、记忆、行动的统一工作流层。构建Agent OS的公司不只是提供智能——它成为用户发起工作、审批行动、触发下游系统、衡量结果的核心平台。这种工作流控制权带来的切换成本远超功能层面的竞争。[^12]</p>
+<p>企业不仅需要AI能力，更需要：统一的Agent管理界面、跨团队共享记忆、审计追踪与权限控制、与现有系统的稳定集成。这种对&quot;编排层&quot;而非单纯&quot;智能层&quot;的需求，正是Agent OS类产品的核心价值主张。[^12]</p>
+<h3>3.3 垂直化是最可靠的生存路径</h3>
+<p>当底层AI能力趋于商品化，竞争焦点转向更难被复制的维度。从价值捕获潜力来看，三类2B机会差异显著：[^13][^3]</p>
+<table>
+<thead>
+<tr>
+<th>2B机会类型</th>
+<th>描述</th>
+<th>潜在价值</th>
+<th>可持续性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>水平通用Agent</strong></td>
+<td>复制现有岗位职能（销售、客服、行政）</td>
+<td>数十亿美元级</td>
+<td>低，易被商品化</td>
+</tr>
+<tr>
+<td><strong>垂直领域OS</strong></td>
+<td>特定行业的端到端工作流平台</td>
+<td>数百亿美元级</td>
+<td>中高，需深度整合</td>
+</tr>
+<tr>
+<td><strong>垂直全栈解决方案</strong></td>
+<td>直接重构行业经济结构，含AI+软件+运营</td>
+<td>万亿美元级潜力</td>
+<td>最高，但建设难度最大</td>
+</tr>
+</tbody></table>
+<p>垂直化的优势在于：通过解决特定行业独特痛点、整合专有数据、与行业软件深度绑定，可建立极高的转换成本，这是通用大模型难以企及的。垂直AI Agent相比水平方案表现出3-5倍更高的客户留存率。[^14][^3]</p>
+<hr>
+<h2>四、创业公司核心成功要素</h2>
+<h3>4.1 真正可持续的护城河层次</h3>
+<p>研究表明，AI Agent领域真正的壁垒来自三大要素的叠加：[^5]</p>
+<ol>
+<li><strong>复杂工作流的可靠编排</strong>：不仅要能运行，还要在真实企业环境中稳定可靠运行。大多数Agent的失败不是模型问题，而是架构、治理、流程设计和可靠性问题[^15]</li>
+<li><strong>高质量且持续维护的工具集成能力</strong>：能接入企业现有系统（ERP、CRM等）并保持稳定，这需要大量工程投入和持续维护</li>
+<li><strong>难以通过通用模型获取的深度领域知识</strong>：包括行业的&quot;默会知识&quot;——哪些情况该升级给主管、哪些客户需特殊对待——这些只能从真实运营中积累[^9]</li>
+</ol>
+<h3>4.2 防御性策略框架</h3>
+<p>参考多方研究，以下是当前最有效的AI Agent防御性策略：[^16][^10]</p>
+<p><strong>结构性护城河（最难复制）：</strong></p>
+<ul>
+<li><strong>复杂行动系统</strong>：构建多用户队列、任务交接、升级路径和审批流程。如果去掉LLM仍然留下有价值的工作流产品，说明已接近防御[^10]</li>
+<li><strong>专有数据飞轮</strong>：不是静态数据，而是从运营中持续生成、复利增值的动态数据[^10]</li>
+<li><strong>监管护城河</strong>：在需要人类责任链的高风险场景中，合规要求本身即壁垒[^10]</li>
+<li><strong>上下文图谱</strong>：积累决策历史、异常处理记录和结果数据。通用Agent平台可以读取你的数据，但无法复制你的行动与决策历史[^10]</li>
+</ul>
+<p><strong>运营性护城河（有效但需持续维护）：</strong></p>
+<ul>
+<li><strong>工作流嵌入度</strong>：AI成为业务流程的核心骨架，而非边缘插件，替换成本随时间显著提高[^16]</li>
+<li><strong>人机协作协议</strong>：建立独特的人类与AI协同工作流程，积累竞争者无法快速复制的信任和判断[^16]</li>
+<li><strong>专业服务作为差异化手段</strong>：对于中高端企业客户，白手套实施服务既加速产品落地，又深化客户绑定[^17]</li>
+</ul>
+<h3>4.3 商业模式创新</h3>
+<p>传统SaaS的订阅模式（$/seat）正在被&quot;服务即软件&quot;（Service as Software）的按结果付费模式所替代——&quot;云公司卖软件，AI公司卖工作&quot;。这一转变对创业公司意义重大：[^13]</p>
+<ul>
+<li><strong>按结果收费</strong>（$/outcome）：将AI的价值与客户可衡量的业务结果挂钩，既增强了说服力，也与客户利益深度绑定</li>
+<li><strong>分佣模式</strong>：随着Agent的商业模式与人类Agency越来越相似，分成制（revenue share）将成为更普遍的选择[^4]</li>
+<li><strong>避免纯差价模式</strong>：在模型API成本与用户定价之间简单套利，是最脆弱的商业模式——模型厂降价即失客，涨价即失利[^4]</li>
+</ul>
+<h3>4.4 速度与时间窗口</h3>
+<p>&quot;时间就是最关键的资源&quot;是几乎所有成功2B/2C Agent创业者的共识。在模型厂完成基础设施层建设、转向应用层之前，创业公司的核心任务是：[^4]</p>
+<ul>
+<li><strong>尽快入市、获取用户</strong>：形成用户留存与数据沉淀，这是达摩克利斯之剑落下后的生死关键[^4]</li>
+<li><strong>先从中小公司或创业公司迭代</strong>：Agent在中小组织中跑起来积累的组织经验本身会形成价值[^9]</li>
+<li><strong>拿下早期标杆客户</strong>：Harvey案例表明，在顶级法律机构的早期市场份额，其价值远超技术差异化[^11]</li>
+</ul>
+<h3>4.5 中国市场的特殊考量</h3>
+<p>对于中国AI Agent创业公司，市场竞争动态有其特殊性：</p>
+<ul>
+<li><strong>出海窗口</strong>：国内竞争充分打磨的产品，在日本、东南亚、中东等市场具有先发优势，当地几乎没有同等水平的竞争对手[^18]</li>
+<li><strong>&quot;脏活累活&quot;才是护城河</strong>：技术壁垒本身并不可靠，真正稀缺的是&quot;将AI嵌入真实场景&quot;的能力，包括数据清洗、系统对接、客户教育等繁琐但不可绕过的工作[^18]</li>
+<li><strong>&quot;95% AI + 5% 人工&quot;的混合模式</strong>：在AI能力尚未完全成熟的场景，通过人工兜底提升交付质量，形成独特的竞争力[^18]</li>
+</ul>
+<hr>
+<h2>五、关键风险与反面案例</h2>
+<p>任何创业叙事都需要直面失败案例。Klarna是最具警示意义的案例之一：这家公司在2024年激进推行AI替代人工客服战略，但最终因服务质量下降被迫战略回撤，CEO承认对成本削减的过度关注已&quot;走得太远&quot;。这说明在服务质量直接影响用户体验的2C场景中，纯粹以成本为导向的Agent部署存在结构性陷阱。[^19]</p>
+<p>另一个系统性风险是&quot;负毛利问题&quot;：许多Agent存在完成任务的代价高于用户支付意愿的问题，这对创业者构成根本性的单位经济挑战。在没有解决unit economics之前，规模扩张只会加速亏损。[^20]</p>
+<p>此外，市场上已有明确声音指出：难以生存的AI wrapper公司，其核心弱点在于没有强差异化或护城河。即使是垂直AI提供商，也必须深度嵌入行业工作流，才能与基础模型做越来越多重复性工作的趋势相抗衡。[^21]</p>
+<hr>
+<h2>六、结语：竞争的本质是&quot;在模型无法染指的领域建立壁垒&quot;</h2>
+<p>AI Agent领域的长期竞争，本质上是一场关于&quot;谁控制工作流层&quot;的争夺战。模型厂的平台引力巨大，且仍在扩大；创业公司的生存空间，精确地存在于&quot;模型厂无法、或不愿轻易染指的领域&quot;——即高度垂直、深度整合、需要真实运营积累的专有场景。[^3]</p>
+<p>真正的胜出不依赖技术本身，而是那些在工程投入、领域专长、产品设计智慧和持续运营上建立叠加优势的团队。&quot;星辰大海最后都是红海，脏活累活才是护城河。&quot;——这也许是当前AI应用创业最冷峻也最实用的洞见。[^5][^18]</p>
+<hr>
+<h2>References</h2>
+<ol>
+<li><p><a href="https://sahilkapoor.com/2026-prediction-foundation-models-are-becoming-a-black-hole-for-ai-startups/">2026 Prediction: Foundation Models Are Becoming a Black Hole for ...</a> - Foundation models are no longer just platforms for AI startups. They are becoming gravity wells that...</p>
+</li>
+<li><p><a href="https://www.linkedin.com/posts/kjosephabraham_ai-radar-google-activity-7422666039747985408-I703">Google&#39;s 71 AI Tools vs OpenAI: The Operating System Play - LinkedIn</a> - Google quietly built 71 AI tools while everyone was watching OpenAI. That&#39;s not a typo. We mapped ev...</p>
+</li>
+<li><p><a href="https://www.eet-china.com/mp/a421983.html">大模型会吃掉90% 的Agent? 别做“通用菜刀”，要做“行业手术刀”</a> - 今天的AI Agent创业者同样享受着前所未有的便利，他们不需要从零开始训练模型，只需调用大模型几家巨头提供的API，就能快速构建出一个看似智能的应用。</p>
+</li>
+<li><p><a href="https://m.36kr.com/p/3786528811572481">在模型厂碾压之前，AI视频Agent产品是否只能挣波快钱？ - 36氪</a> - “短期来说，这类工具型公司与大模型厂商之间还是合作关系。创业公司的利润很大程度上由它们能接入哪些模型、能拿到多大API价格折扣来决定。”蔚来资本 ...</p>
+</li>
+<li><p><a href="https://pdf.dfcfw.com/pdf/H3_AP202505041667413598_1.pdf">[PDF] 2025 Agent元年，AI从L2向L3发展</a> - 3. Agent的竞争格局是“巨头环伺，新锐突破”： ①巨头环伺：大型科技平台（OpenAI, Google, 微软；国内BAT、字节、华为等）凭借模型、数据、. 算力、生态优势主导 ...</p>
+</li>
+<li><p><a href="https://www.forbes.com/sites/rashishrivastava/2025/11/13/four-cofounders-of-popular-ai-coding-tool-cursor-are-now-billionaires/">Four Cofounders Of Popular AI Coding Tool Cursor Are ... - Forbes</a> - The cofounders of popular AI coding tool Cursor are now billionaires after the company announced it ...</p>
+</li>
+<li><p><a href="https://www.intelligentfounder.ai/p/40-of-these-billion-dollar-ai-companies">Who&#39;s Profiting Most from AI Agents? Inside CB Insights&#39; Top 20 ...</a> - Recent success stories include Anysphere reaching $500 million ... Anysphere (Cursor) with users gen...</p>
+</li>
+<li><p><a href="https://www.businessinsider.com/cursor-ceo-ai-tool-go-to-coders-monk-mode-2025-9">Cursor&#39;s CEO Says 2 Strategies Made the AI Tool the Go-to for Coders</a> - The CEO behind Cursor attributes its success to two things: monk mode and word-of-mouth adoption. · ...</p>
+</li>
+<li><p><a href="https://www.tmtpost.com/8004512.html">“真Agent”创业怎么做？这8个问题讲清楚了 - 钛媒体</a> - Agent商业化的关键，是客户愿意为什么样的结果买单。大客户要求高、场景复杂、验收严格，进入门槛也高。对创业公司来说，服务大客户很辛苦，但它 ...</p>
+</li>
+<li><p><a href="https://www.linkedin.com/posts/patricksalyer_hundreds-of-ai-agent-startups-have-been-funded-activity-7434644510762115073-ISeT">Defensibility in AI Agent Companies: Top 10 Strategies - LinkedIn</a> - They&#39;re winning on proprietary data, workflow depth, and the semantic layer they&#39;ve built to teach A...</p>
+</li>
+<li><p><a href="https://www.linkedin.com/posts/viksrum_harvey-is-worth-5b-and-just-proved-that-activity-7384502867514011649-beMV">How Harvey&#39;s $5B shows vertical AI moats are crumbling - LinkedIn</a> - Harvey is worth $5B and just proved that vertical AI moats also do not hold as well as founders thin...</p>
+</li>
+<li><p><a href="https://startupik.com/why-startups-are-racing-to-build-ai-operating-systems/">Why Startups Are Racing to Build AI Operating Systems - Startupik</a> - Startups are racing to build AI operating systems because single-purpose AI features are getting com...</p>
+</li>
+<li><p><a href="https://blog.zactownsend.com/winning-the-ai-application-layer-will-require-vertical-business-models">Winning the AI application layer will require vertical business models</a> - Choosing between these two models depends on the magnitude of economic transformation, the inefficie...</p>
+</li>
+<li><p><a href="https://wearepresta.com/ai-agent-startup-ideas-2026-15-profitable-opportunities-to-launch-now/">15 AI Agent Startup Ideas That Made $1M+ in 2026 - Presta</a> - This guide provides a comprehensive analysis of 15 high-potential AI agent startup ideas, complete w...</p>
+</li>
+<li><p><a href="https://www.lyzr.ai/blog/enterprise-ai-agent-challenges/">The Honest Truth About Enterprise AI Agents: 10 Hard Problems ...</a> - Most AI agents fail because production systems require governance, testing, resilience, monitoring, ...</p>
+</li>
+<li><p><a href="https://www.linkedin.com/posts/crawford-del-prete-082221_ai-datamoat-machinelearning-activity-7429341320541888512-_9SG">Building AI Moats with Data Feedback Loops and Network Effects</a> - What Does a Real AI Moat Look Like in 2026? With the rapid evolution of AI, the old playbook for def...</p>
+</li>
+<li><p><a href="https://patricksalyer.substack.com/p/the-paradoxical-secret-weapon-of">Professional Services: The Secret to Scaling Enterprise (AI Agent ...</a> - Professional Services are a powerful tool for AI Agent startups targeting mid-market and enterprise ...</p>
+</li>
+<li><p><a href="https://www.21jingji.com/article/20250408/herald/95eba7e412e1a74f524aa8402f64e53a.html">AI应用创业的“红海突围”：中小创业者的新周期已至 - 21财经</a> - 中小创业者的逆袭法则. 在AI领域，大厂与创业公司的竞争本质是“资源错位战”。大厂热衷于训练更大、更贵的模型，追求技术参数的军备竞赛；而中小创业者 ...</p>
+</li>
+<li><p><a href="https://cresta.com/news/klarna-shifts-focus-back-from-ai-to-human-interaction">Klarna&#39;s AI experiment hits limits, reverts to human-first workflows as ...</a> - Klarna is scaling back its AI-first customer service strategy, acknowledging the need for human inte...</p>
+</li>
+<li><p><a href="https://hub.baai.ac.cn/view/51220">是个公司都在用AI Agent，但大家真的用明白了吗？？ - 智源社区</a> - “一个好Agent的衡量指标，包括可控性、可解释性以及持续稳定执行任务的能力。” “多数Agent存在负毛利问题，完成任务的代价高于用户支付意愿，这对创业者来说 ...</p>
+</li>
+<li><p><a href="https://news.crunchbase.com/venture/2026-tech-startup-trends-ipo-ai-ma/">6 Trends In Tech And Startups We&#39;re Watching In 2026, From An IPO ...</a> - OpenAI, Scale AI, Anthropic, Project Prometheus and xAI each raised more than $5 billion in 2025. Al...</p>
+</li>
+</ol>
+
+
+<hr>
+
+<section id="question-verification" style="margin-top:48px;">
+  <h2>观点稳健 &amp; 无重大漏洞？审阅图示</h2>
+  <p class="muted">质疑追问 + model council：把同一个观点放到不同模型里 cross-check，识别"漏掉的反方证据 / 弱论据"。下图为对照审阅时使用的对比卡：</p>
+  <img src="../../Mapping_example/question%26verification.png" alt="质疑与验证图示" class="click-zoom" loading="lazy">
+</section>
+
+    </article>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>← <a href="../index.html#mapping">返回主页</a></span>
+    <span>本地静态站点 · 双击 index.html 即可访问</span>
+  </div>
+</footer>
+
+<script src="../assets/js/common.js"></script>
+</body>
+</html>

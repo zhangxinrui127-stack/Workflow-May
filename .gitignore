@@ -1,0 +1,33 @@
+# OS junk
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Editor
+.vscode/
+.idea/
+*.iml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Node (none in this repo, but defensive)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Temp build / cache
+.cache/
+*.log
+.parcel-cache/
+/dist/
+
+# Generated verification reports (skill output)
+**/Number_Verification_Report_*.xlsx
+**/_verification_*.xlsx

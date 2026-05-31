@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapping 案例：Agent 行研最终报告 · AI Workflow Notes</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="brand-mark">●</span>AI Workflow Notes</a>
+    <nav class="nav-anchors">
+      <a href="../index.html#coreweave">CoreWeave Case</a>
+      <a href="../index.html#mapping">Agent Mapping Case</a>
+      <a href="../index.html#cognition">认知层</a>
+      <a href="../index.html#tips">Tips</a>
+    </nav>
+  </div>
+</header>
+
+<div class="subpage-meta">
+  <div class="container">
+    <div class="crumbs">
+      <a href="../index.html">主页</a>
+      <span class="sep">/</span>
+      <a href="../index.html#mapping">Mapping 案例</a><span class="sep">/</span><span>最终行研报告</span>
+    </div>
+    <div class="source-tag">
+      <span>source · Mapping_example/Agent_report.pdf</span>
+      <button class="copy-btn" data-copy="Mapping_example/Agent_report.pdf">复制路径</button>
+    </div>
+  </div>
+</div>
+
+<section class="subpage-title">
+  <div class="container-read">
+    <div class="eyebrow">Mapping · Phase 7 · Final Render</div>
+    <h1>Mapping 案例：Agent 行研最终报告</h1>
+    <p class="subtitle">把 md 内容映射到 docx 模板骨架，AI 辅助图表生成 & 数据可视化（Perplexity / Python / Flourish），最终产出投资报告。</p><div class="note-bar"><strong>渲染 docx 的 Prompt 卡片</strong>在下方，点击右上角"复制"按钮可直接复用。</div>
+  </div>
+</section>
+
+<main class="subpage-main">
+  <div class="container-read">
+    <article class="md-article">
+
+<h2>渲染 Prompt（严格复制版）</h2>
+<div class="prompt-wrap">
+  <button class="copy-btn prompt-copy" data-copy="Prompt：请帮我生成一个格式完整的研究分析投资报告（docx 文件）
+1. 读取当前目录下的【投资报告书标准模板.docx】作为固定文档骨架，模板里所有标题、段落、格式、文字、占位符都可以修改、删除、新增、调整顺序与层级，但不要参考任何内容，只把它当作排版框架使用。
+2. 生成一个 AI_agent_report.docx 文件，将 md 里面的提纲内容完整精准填入模板占位位置（但是字体修改成 STKaiti）
+3. 在完成这个任务之后，请重新 review 一遍生成的 docx 文件，检查其逻辑与 md 参考文件是否一致">复制 Prompt</button>
+  <pre class="prompt-card">Prompt：请帮我生成一个格式完整的研究分析投资报告（docx 文件）
+1. 读取当前目录下的【投资报告书标准模板.docx】作为固定文档骨架，模板里所有标题、段落、格式、文字、占位符都可以修改、删除、新增、调整顺序与层级，但不要参考任何内容，只把它当作排版框架使用。
+2. 生成一个 AI_agent_report.docx 文件，将 md 里面的提纲内容完整精准填入模板占位位置（但是字体修改成 STKaiti）
+3. 在完成这个任务之后，请重新 review 一遍生成的 docx 文件，检查其逻辑与 md 参考文件是否一致</pre>
+</div>
+
+<h2>报告 PDF 内嵌预览</h2>
+<p class="muted small">如果嵌入预览未加载（部分浏览器禁用本地 PDF iframe），可<a href="../../Mapping_example/Agent_report.pdf" target="_blank" rel="noopener">在新标签页打开 PDF →</a>。</p>
+<iframe class="pdf-frame" src="../../Mapping_example/Agent_report.pdf#toolbar=1&amp;navpanes=0" title="Agent Report PDF"></iframe>
+
+<h2>同时产出的可编辑 docx</h2>
+<p>如果需要拿到可编辑的 docx 版本：<a href="../../Mapping_example/Agent_report.docx" download>下载 Agent_report.docx →</a></p>
+
+<h2>背后的 multi-agent 思路</h2>
+<p class="muted">最后一步 "人 + 模型（新开 session）" 是一种 multi-agent 思路 — 把"质疑者"换一个干净的 context、不同的角色、不同的目标，才能跳出原 session 的认知惯性。</p>
+
+    </article>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>← <a href="../index.html#mapping">返回主页</a></span>
+    <span>本地静态站点 · 双击 index.html 即可访问</span>
+  </div>
+</footer>
+
+<script src="../assets/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8 Modules 初稿报告 · AI Workflow Notes</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="brand-mark">●</span>AI Workflow Notes</a>
+    <nav class="nav-anchors">
+      <a href="../index.html#coreweave">CoreWeave Case</a>
+      <a href="../index.html#mapping">Agent Mapping Case</a>
+      <a href="../index.html#cognition">认知层</a>
+      <a href="../index.html#tips">Tips</a>
+    </nav>
+  </div>
+</header>
+
+<div class="subpage-meta">
+  <div class="container">
+    <div class="crumbs">
+      <a href="../index.html">主页</a>
+      <span class="sep">/</span>
+      <a href="../index.html#coreweave">CoreWeave 案例</a><span class="sep">/</span><span>8 Modules 初稿</span>
+    </div>
+    <div class="source-tag">
+      <span>source · Coreweave_example/2. initial-report-8modules.md</span>
+      <button class="copy-btn" data-copy="Coreweave_example/2. initial-report-8modules.md">复制路径</button>
+    </div>
+  </div>
+</div>
+
+<section class="subpage-title">
+  <div class="container-read">
+    <div class="eyebrow">CoreWeave · Phase 2 · Parallel Research</div>
+    <h1>8 Modules 初稿报告</h1>
+    <p class="subtitle">Claude Session 2 并行研究：NLM API × 12 + Web × 10，~23,500 词 / 79 表。</p><div class="note-bar"><strong>可现场演示</strong>：Claude Session 2 并行研究、NotebookLM + web-access skill 的工作机制（登录态爬取 + source 管控）。报告全程沉淀为 md，方便后续审阅。</div>
+  </div>
+</section>
+
+<main class="subpage-main">
+  <div class="container-read">
+    <article class="md-article">
+<h1>CoreWeave (CRWV) 研究项目 — AI 协同工作流交互报告</h1>
+<blockquote>
+<p><strong>项目目的</strong>：使用 AI (Claude Code + NotebookLM) 构建机构级 CoreWeave 投资研究报告<br><strong>交互时间</strong>：2026-04-17 ~ 2026-04-18<br><strong>操作者</strong>：Zhang Xinrui<br><strong>AI 工具</strong>：Claude Code (Opus 4.6) + NotebookLM CLI + Web Search<br><strong>产出</strong>：8 个模块的研究 Markdown 文件，为 50-100 页 PPT 提供内容基础  </p>
+</blockquote>
+<hr>
+<h2>1. 项目启动与需求定义</h2>
+<h3>1.1 用户初始 Prompt</h3>
+<pre><code>参考@/Users/zhangxinrui/Downloads/CoreWeave_Research_Framework.md中的研究框架和问题清单，
+逐个问题做研究。在获取信息的时候，需要结合notebooklm和web搜索的方式，在开始获取信息前
+务必确认已经成功连接notebooklm。我希望可以把你的研究结果编写成一个50-100页的PPT，
+所以像三表模型这种内容，更应该放在Excel里，PPT中呈现关键假设和结果即可，所以在研究报告
+中不需要完整的model。在生成ppt之前需要先确定内容细节。你可以把研究结果以markdown文件
+的形式保存在@download文件夹供我查询。
+</code></pre>
+<h3>1.2 Prompt 工程要点分析</h3>
+<p>用户在初始 Prompt 中嵌入了多层 harness 指令：</p>
+<table>
+<thead>
+<tr>
+<th>指令层</th>
+<th>内容</th>
+<th>目的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>输入锚定</strong></td>
+<td><code>@/Users/zhangxinrui/Downloads/CoreWeave_Research_Framework.md</code></td>
+<td>用本地文件作为研究框架蓝图，确保 AI 有结构化的研究范围</td>
+</tr>
+<tr>
+<td><strong>工具链指定</strong></td>
+<td>&quot;结合 notebooklm 和 web 搜索&quot;</td>
+<td>明确双源信息获取策略 — NotebookLM 查询已导入的一手资料，Web 搜索补充最新公开数据</td>
+</tr>
+<tr>
+<td><strong>前置验证</strong></td>
+<td>&quot;在开始获取信息前务必确认已经成功连接 notebooklm&quot;</td>
+<td>防止 AI 在工具不可用时产生幻觉或跳过关键数据源</td>
+</tr>
+<tr>
+<td><strong>产出格式约束</strong></td>
+<td>&quot;50-100 页 PPT&quot; + &quot;三表模型放 Excel&quot; + &quot;PPT 呈现关键假设和结果&quot;</td>
+<td>控制输出粒度：避免 AI 在报告中展开完整 financial model，聚焦于 PPT 可用的高密度内容</td>
+</tr>
+<tr>
+<td><strong>中间产物</strong></td>
+<td>&quot;研究结果以 markdown 文件的形式保存在 download 文件夹&quot;</td>
+<td>建立审阅→确认→生成的两阶段工作流，而非一次性输出</td>
+</tr>
+<tr>
+<td><strong>节奏控制</strong></td>
+<td>&quot;在生成 ppt 之前需要先确定内容细节&quot;</td>
+<td>保留人类决策权——AI 做研究，人类审阅后再进入生产环节</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>2. 工具链搭建与验证</h2>
+<h3>2.1 Phase 1: 读取研究框架</h3>
+<p><strong>AI 动作</strong>：使用 <code>Read</code> 工具读取 <code>CoreWeave_Research_Framework.md</code>（301 行）</p>
+<p><strong>结果解析</strong>：AI 识别出 9 个模块（Module 0-8），包含约 80+ 个具体研究问题，涵盖：</p>
+<ul>
+<li>Module 0: 信息源分级 (T1/T2/T3)</li>
+<li>Module 1: 行业研究 — GPU Cloud / Neocloud</li>
+<li>Module 2: CoreWeave 公司深度</li>
+<li>Module 3: AI 发展对业务传导</li>
+<li>Module 4: Moat 分析</li>
+<li>Module 5: Financial Model 关键假设</li>
+<li>Module 6: Risk Framework</li>
+<li>Module 7: Management &amp; Governance</li>
+<li>Module 8: Investment Thesis</li>
+</ul>
+<h3>2.2 Phase 2: NotebookLM 连接验证</h3>
+<p><strong>AI 动作序列</strong>：</p>
+<ol>
+<li>使用 <code>Agent (Explore)</code> 检查 MCP 配置 → 发现 NotebookLM 未作为 MCP server 配置</li>
+<li>使用 <code>Bash</code> 运行 <code>notebooklm --help</code> → 确认 CLI 工具已安装 (v0.3.4)</li>
+<li>使用 <code>Bash</code> 运行 <code>notebooklm status</code> → &quot;No notebook selected&quot;</li>
+<li>使用 <code>Bash</code> 运行 <code>notebooklm list</code> → <strong>认证过期错误</strong></li>
+</ol>
+<p><strong>AI 判断</strong>：识别出需要交互式浏览器登录，无法代替用户完成 → 建议用户运行 <code>! notebooklm login</code></p>
+<h3>2.3 Phase 3: 用户手动认证</h3>
+<p>用户尝试 <code>notebooklm login</code> 4 次（前 3 次 Aborted），第 4 次成功后告知 AI &quot;已经连接了&quot;。</p>
+<p><strong>AI 验证</strong>：</p>
+<ol>
+<li><code>notebooklm list</code> → 成功列出 &quot;Corewave&quot; notebook (ID: <code>3243d4cc-...</code>)</li>
+<li><code>notebooklm use &lt;ID&gt;</code> → 设置为活跃 notebook</li>
+<li><code>notebooklm source list</code> → 列出 30 个已导入资料源（PDF、Web、Markdown）</li>
+</ol>
+<p><strong>确认的数据源清单</strong>（部分）：</p>
+<ul>
+<li><code>crwv-20251231</code> — 10-K 年报</li>
+<li><code>https://s205.q4...</code> — 4 个 SEC Filing PDF</li>
+<li><code>CoreWeave - Kerrisdale Capital</code> — 做空报告</li>
+<li><code>CoreWeave - AWS</code> — 竞争分析 PDF</li>
+<li><code>CoreWeave Training Benchmarks Whitepaper</code> — 技术白皮书</li>
+<li><code>Financials - Quarterly Results</code> — 财务数据页面</li>
+<li><code>WSJ.txt</code>, <code>events.txt</code>, <code>investor_perspective.txt</code> 等 — 用户自制笔记</li>
+<li>及 20+ 其他行业分析和新闻资料</li>
+</ul>
+<hr>
+<h2>3. 研究执行 — 逐模块工作流</h2>
+<h3>3.0 任务管理架构</h3>
+<p>AI 使用 <code>TaskCreate</code> 创建 8 个任务追踪研究进度，每个模块一个 task：</p>
+<pre><code>#2 Module 1: 行业研究 — GPU Cloud / Neocloud
+#4 Module 2: CoreWeave 公司深度研究  
+#7 Module 3: AI 发展对业务的传导路径
+#1 Module 4: Moat 分析
+#3 Module 5: Financial Model 关键假设
+#5 Module 6: Risk Framework
+#6 Module 7: Management &amp; Governance
+#8 Module 8: Investment Thesis 构建
+</code></pre>
+<p>每个 task 在开始时标记 <code>in_progress</code>，完成后标记 <code>completed</code>。</p>
+<hr>
+<h3>3.1 Module 1: 行业研究 — GPU Cloud / Neocloud</h3>
+<p><strong>研究方法</strong>：NotebookLM 查询 (2 次) + Web 搜索 (4 次) — 并行执行</p>
+<h4>Round 1：行业定义与价值链（并行 4 工具调用）</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>查询内容</th>
+<th>目的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>notebooklm ask</code></td>
+<td>&quot;What is the precise definition and boundary of &#39;Neocloud&#39;? How does it differ from traditional hyperscalers...&quot;</td>
+<td>从已导入一手资料中提取 Neocloud 定义</td>
+</tr>
+<tr>
+<td><code>notebooklm ask</code></td>
+<td>&quot;Describe the GPU cloud value chain in detail: upstream → midstream → downstream...&quot;</td>
+<td>价值链分析 + 各环节利润率</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>&quot;neocloud market size 2025 2026 GPU cloud infrastructure TAM forecast&quot;</td>
+<td>获取最新市场规模数据</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>&quot;neocloud vs hyperscaler definition GPU cloud market 2025 2026&quot;</td>
+<td>交叉验证行业定义</td>
+</tr>
+</tbody></table>
+<p><strong>NotebookLM 返回关键数据</strong>：</p>
+<ul>
+<li>Neocloud 的两层分类（基础 &quot;GPU hostel&quot; vs 垂直整合 AI Hyperscaler）</li>
+<li>CoreWeave MFU 51-52%（高出行业 18-28%）</li>
+<li>裸金属 + DPU 隔离 + SUNK 编排的技术栈详解</li>
+<li>中游 EBITDA margin：整体 60%，成熟合同 70% zone</li>
+</ul>
+<p><strong>Web 搜索返回关键数据</strong>：</p>
+<ul>
+<li>Synergy Research: 2025 neocloud 市场 &gt;$25B，Q4 单季 $9B (+223% YoY)</li>
+<li>Mordor Intelligence: 2026E $35.22B, 2031E $236.53B (CAGR 46.37%)</li>
+<li>全球 100-200 家 neocloud，10-15 家在美国有显著规模</li>
+<li>H100 价格从 $8/hr 降至 $2.85-$3.50/hr</li>
+</ul>
+<h4>Round 2：竞争格局与结构性压力（并行 4 工具调用）</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>查询内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>notebooklm ask</code></td>
+<td>竞争格局：Lambda Labs, Crusoe, Nebius, Together AI 对比</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>Lambda Labs / Crusoe / Nebius GPU cloud 2025 2026 revenue fleet size</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>GPU cloud pricing trends 2025 2026 H100 B200 rental price per hour</td>
+</tr>
+<tr>
+<td><code>notebooklm ask</code></td>
+<td>结构性压力：大客户自建、GPU 代际、电力瓶颈、历史类比</td>
+</tr>
+</tbody></table>
+<p><strong>额外 Web 搜索（Round 3，并行 2 次）</strong>：</p>
+<ul>
+<li>AI inference vs training compute demand growth 2025 2026</li>
+<li>Data center power constraint AI bottleneck 2025 2026</li>
+</ul>
+<p><strong>关键发现</strong>：</p>
+<ul>
+<li>Lambda ARR ~$760M, Crusoe ~$998M, Nebius $530M (2025)</li>
+<li>H100 供应商盈亏线 ~$1.65/hr</li>
+<li>推理占比：2023 ~33% → 2025 ~50% → 2026E ~67%</li>
+<li>全球 DC 电力消耗 2026E 达 1,100 TWh（= 日本全国用电量）</li>
+<li>电网接入等待期 7 年+</li>
+</ul>
+<p><strong>产出</strong>：<code>Write</code> → <code>/Users/zhangxinrui/Downloads/CRWV_Module1_Industry_Research.md</code></p>
+<hr>
+<h3>3.2 Module 2: CoreWeave 公司深度研究</h3>
+<p><strong>研究方法</strong>：NotebookLM 查询 (3 次并行) + Web 搜索 (2 次)</p>
+<h4>Round 1：商业模式 + 合同 + KPI（并行 4 工具调用）</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>查询内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>notebooklm ask</code></td>
+<td>收入模型分拆：GPU-as-a-Service vs Managed Services vs Inference；季度收入驱动因子</td>
+</tr>
+<tr>
+<td><code>notebooklm ask</code></td>
+<td>合同结构与 RPO：$88B backlog 分拆、take-or-pay 条款、提前终止权、RPO 转化率</td>
+</tr>
+<tr>
+<td><code>notebooklm ask</code></td>
+<td>KPI Dashboard：GPU fleet、DC 数量、利用率、ARPU、capex per GPU、回收期、D&amp;A 等 10 项指标</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>CoreWeave CRWV Q4 2025 earnings results revenue EBITDA guidance 2026</td>
+</tr>
+</tbody></table>
+<p><strong>NotebookLM 返回的关键结构化数据</strong>：</p>
+<ul>
+<li>收入分拆：98% 承诺合同 (take-or-pay) / 2% 按需</li>
+<li>存储业务 ARR &gt;$100M（Q3 2025）</li>
+<li>RPO $60.7B → 43%在24月内确认 / 38%在25-48月 / 19%在49-84月</li>
+<li>客户无便利终止权（仅 Magnetar 例外，12% 年化违约金）</li>
+<li>GPU 折旧：6 年（2023.01 从 5 年延长）</li>
+<li>平均现金回收期：~2.5 年</li>
+<li>员工数：881 (2024) → 2,189 (2025)</li>
+</ul>
+<h4>Round 2：客户集中度 + 资本结构（并行 2 工具调用）</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>查询内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>notebooklm ask</code></td>
+<td>客户集中度风险：MSFT 合同结构、敏感性分析、关联关系、分散化措施、客户名单</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>CoreWeave balance sheet debt structure interest expense convertible notes</td>
+</tr>
+</tbody></table>
+<p><strong>关键发现</strong>：</p>
+<ul>
+<li>Microsoft MSA 2023.02 签署，无固定到期日</li>
+<li>完整客户名单首次汇总：Anthropic, Jane Street, Morgan Stanley, Goldman Sachs, NASA JPL 等 30+ 客户</li>
+<li>总债务 ~$21.4B, D/E 640%, 含 9.25%/9.00%/9.75% 高息直债 + 1.75% 可转债 $6.25B</li>
+<li>Q4 2025 利息支出 $388M（YoY +160%）</li>
+</ul>
+<p><strong>产出</strong>：<code>Write</code> → <code>CRWV_Module2_Company_DeepDive.md</code></p>
+<hr>
+<h3>3.3 Module 3: AI 发展对业务的传导路径</h3>
+<p><strong>研究方法</strong>：NotebookLM 查询 (1 次) + Web 搜索 (2 次并行)</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>查询内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>notebooklm ask</code></td>
+<td>AI→P&amp;L 传导链分析：正向传导 2 条 + 反向传导 3 条；管理层战略方向；up-stack 策略</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>Anthropic OpenAI ARR revenue 2025 2026 GPU compute demand token consumption</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>Microsoft Meta Google AI capex 2025 2026 self-build vs outsource ratio</td>
+</tr>
+</tbody></table>
+<p><strong>突破性发现</strong>：</p>
+<ul>
+<li><strong>Anthropic ARR $30B (2026.04) 超越 OpenAI $24B</strong> — 14 个月从 $1B 增长 30 倍</li>
+<li>Claude Code 年化 $2.5B ARR；4% GitHub public commits 由 Claude Code 生成</li>
+<li>Token 消耗：全球日消耗从 100B (2024) → 180T (2026 Q1) = <strong>1,800 倍增长</strong></li>
+<li>Hyperscaler 2026 capex 合计 &gt;$600B (+36% YoY)</li>
+<li>Meta 明确表态 &quot;both building own infrastructure AND contracting with third-party&quot;</li>
+</ul>
+<p><strong>产出</strong>：<code>Write</code> → <code>CRWV_Module3_AI_Implications.md</code></p>
+<hr>
+<h3>3.4 Module 4 &amp; 5: Moat 分析 + Financial Model 关键假设</h3>
+<p><strong>研究方法</strong>：NotebookLM 查询 (2 次并行) + Web 搜索 (1 次) — 两个模块同时研究</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>查询内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>notebooklm ask</code></td>
+<td>Moat 6 大维度逐项评估：NVIDIA 关系、规模经济、合同锁定、技术栈、部署速度、最大威胁</td>
+</tr>
+<tr>
+<td><code>notebooklm ask</code></td>
+<td>财务深度：EBITDA margin by quarter、折旧政策、利息支出、GAAP 盈利时间、FCF、稀释、covenant</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>CoreWeave valuation EV/EBITDA comparable companies Equinix Digital Realty 2026</td>
+</tr>
+</tbody></table>
+<p><strong>NotebookLM 关键输出</strong>：</p>
+<ul>
+<li>&quot;Platinum tier&quot; 实际由 SemiAnalysis 评级，非 NVIDIA 官方</li>
+<li>2025 年 WACC 降 300bps → 年化节省 ~$700M</li>
+<li>Adj. EBITDA margin: Q1 62% → Q2 62% → Q3 61% → Q4 57%（部署成本先行）</li>
+<li>FY2025 SBC $630M（含 IPO 一次性 $177M）</li>
+<li>Net Leverage ~5.65x vs covenant 6.0x — 接近上限</li>
+<li>GAAP 净利润转正预计 2027-2029（乐观/基准/保守）</li>
+</ul>
+<p><strong>Web 搜索关键输出</strong>：</p>
+<ul>
+<li>Trailing EV/EBITDA: 36.43x（行业中位 10.83x）</li>
+<li>Forward EV/EBITDA: ~16x (Multiples.vc)</li>
+<li>New Constructs 警告：CoreWeave 隐含收入需达到 EQIX + DLR 合并收入的 1.1 倍才能 justify 估值</li>
+</ul>
+<p><strong>产出</strong>：<code>Write</code> → <code>CRWV_Module4_Moat_Analysis.md</code> + <code>CRWV_Module5_Financial_Assumptions.md</code></p>
+<hr>
+<h3>3.5 Module 6 &amp; 7: Risk Framework + Management（并行研究）</h3>
+<p><strong>研究方法</strong>：NotebookLM 查询 (2 次并行) + Web 搜索 (1 次)</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>查询内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>notebooklm ask</code></td>
+<td>10 项风险逐一分析：客户集中、AI 叙事逆转、流动性、GPU 供需、利率、执行、GPU 迭代、管理层、lockup、内控</td>
+</tr>
+<tr>
+<td><code>notebooklm ask</code></td>
+<td>管理层 9 项：Intrator 背景、Venturo/McBee 角色、CFO 来源、持股、董事会、薪酬、credibility、key person、关联交易</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>CoreWeave Kerrisdale Capital short report bear case risks 2026</td>
+</tr>
+</tbody></table>
+<p><strong>NotebookLM 关键输出</strong>：</p>
+<ul>
+<li>创始人均为前华尔街大宗商品交易员（非传统科技背景）</li>
+<li>IPO 后创始人控制 &gt;82% 投票权（10:1 Class B）</li>
+<li>NVIDIA 无董事会席位</li>
+<li>Magnetar 多重角色：&gt;5% 股东 + 主要贷方 + 客户（$230M MagAI 协议）</li>
+<li>Insider selling：CSO Venturo 在 Meta/Anthropic 大单前卖出 &gt;21% 持股</li>
+<li>Material weakness in internal controls — 已在 SEC 文件披露</li>
+</ul>
+<p><strong>Web 搜索关键输出</strong>：</p>
+<ul>
+<li>Kerrisdale 目标价 $10（暗示 90%+ 下跌）</li>
+<li>核心论点：&quot;undifferentiated, heavily levered GPU rental scheme&quot;</li>
+<li>Short interest 16.5%，上升 13.9%</li>
+<li>股价从 52 周高点 $187 下跌 ~36%</li>
+</ul>
+<p><strong>产出</strong>：<code>Write</code> → <code>CRWV_Module6_Risk_Framework.md</code> + <code>CRWV_Module7_Management_Governance.md</code></p>
+<hr>
+<h3>3.6 Module 8: Investment Thesis 构建</h3>
+<p><strong>研究方法</strong>：NotebookLM 查询 (1 次) + Web 搜索 (1 次)</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>查询内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>notebooklm ask</code></td>
+<td>Bull/Bear case 综合总结、历史类比、概率加权回报、6-12 月催化剂</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>CoreWeave CRWV stock price target analyst consensus April 2026</td>
+</tr>
+</tbody></table>
+<p><strong>构建的投资框架</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>概率</th>
+<th>隐含股价</th>
+<th>加权贡献</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bull</td>
+<td>25%</td>
+<td>$360</td>
+<td>$90</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>45%</td>
+<td>$185</td>
+<td>$83</td>
+</tr>
+<tr>
+<td>Bear</td>
+<td>25%</td>
+<td>$30</td>
+<td>$8</td>
+</tr>
+<tr>
+<td>Distress</td>
+<td>5%</td>
+<td>$0</td>
+<td>$0</td>
+</tr>
+<tr>
+<td><strong>加权目标价</strong></td>
+<td>100%</td>
+<td>—</td>
+<td><strong>$181 (+53%)</strong></td>
+</tr>
+</tbody></table>
+<p><strong>分析师共识</strong>：32 人覆盖，平均目标价 $120-$125，最高 $200，最低 $32</p>
+<p><strong>产出</strong>：<code>Write</code> → <code>CRWV_Module8_Investment_Thesis.md</code></p>
+<hr>
+<h2>4. 工具使用统计</h2>
+<h3>4.1 工具调用汇总</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>调用次数</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>notebooklm ask</code></td>
+<td><strong>12 次</strong></td>
+<td>查询已导入的一手资料（10-K、白皮书、研报等）</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td><strong>10 次</strong></td>
+<td>获取最新市场数据、竞对信息、分析师观点</td>
+</tr>
+<tr>
+<td><code>Write</code></td>
+<td><strong>8 次</strong></td>
+<td>保存 8 个模块的 Markdown 研究报告</td>
+</tr>
+<tr>
+<td><code>Read</code></td>
+<td>1 次</td>
+<td>读取研究框架文件</td>
+</tr>
+<tr>
+<td><code>Bash</code></td>
+<td>6 次</td>
+<td>NotebookLM CLI 操作（login 验证、notebook 设置、source 列表）</td>
+</tr>
+<tr>
+<td><code>Agent (Explore)</code></td>
+<td>1 次</td>
+<td>检查 MCP 配置</td>
+</tr>
+<tr>
+<td><code>Glob</code></td>
+<td>1 次</td>
+<td>验证产出文件</td>
+</tr>
+<tr>
+<td><code>TaskCreate</code></td>
+<td>8 次</td>
+<td>创建任务追踪</td>
+</tr>
+<tr>
+<td><code>TaskUpdate</code></td>
+<td>16 次</td>
+<td>更新任务状态</td>
+</tr>
+<tr>
+<td><strong>总计</strong></td>
+<td><strong>~63 次</strong></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3>4.2 NotebookLM vs Web 搜索的分工</h3>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>首选工具</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>公司财务数据 (revenue, EBITDA, capex)</td>
+<td>NotebookLM</td>
+<td>10-K/Earnings Call 已导入，数据精确</td>
+</tr>
+<tr>
+<td>合同条款、RPO、covenant</td>
+<td>NotebookLM</td>
+<td>SEC Filing 一手数据</td>
+</tr>
+<tr>
+<td>管理层背景、治理结构</td>
+<td>NotebookLM</td>
+<td>S-1/Proxy Statement 已导入</td>
+</tr>
+<tr>
+<td>技术架构 (MFU, SUNK, DPU)</td>
+<td>NotebookLM</td>
+<td>白皮书已导入</td>
+</tr>
+<tr>
+<td>市场规模、增速预测</td>
+<td>Web 搜索</td>
+<td>需要最新第三方研究机构数据</td>
+</tr>
+<tr>
+<td>竞对信息 (Lambda, Crusoe, Nebius)</td>
+<td>Web 搜索</td>
+<td>NotebookLM 中竞对信息有限</td>
+</tr>
+<tr>
+<td>GPU 价格趋势</td>
+<td>Web 搜索</td>
+<td>需要实时市场数据</td>
+</tr>
+<tr>
+<td>AI Lab ARR (Anthropic, OpenAI)</td>
+<td>Web 搜索</td>
+<td>非 CoreWeave SEC 文件范围</td>
+</tr>
+<tr>
+<td>Hyperscaler capex 计划</td>
+<td>Web 搜索</td>
+<td>需要各公司最新财报数据</td>
+</tr>
+<tr>
+<td>分析师目标价、做空报告</td>
+<td>Web 搜索</td>
+<td>需要最新卖方/买方观点</td>
+</tr>
+</tbody></table>
+<h3>4.3 并行执行策略</h3>
+<p>AI 在整个研究过程中大量使用并行工具调用以提高效率：</p>
+<ul>
+<li><strong>Round 1 典型模式</strong>：2 个 <code>notebooklm ask</code> + 2 个 <code>WebSearch</code> 同时发起</li>
+<li><strong>跨模块并行</strong>：Module 4 + 5 同时研究（3 个工具并行）；Module 6 + 7 同时研究（3 个工具并行）</li>
+<li><strong>写入并行</strong>：Module 4 和 5 的 <code>Write</code> 操作在同一 turn 完成</li>
+</ul>
+<hr>
+<h2>5. 信息架构与产出</h2>
+<h3>5.1 产出文件清单</h3>
+<pre><code>~/Downloads/
+├── CoreWeave_Research_Framework.md    ← 输入：研究框架（用户预制）
+├── CRWV_Module1_Industry_Research.md  ← 行业定义、价值链、市场规模、竞争格局、结构性压力
+├── CRWV_Module2_Company_DeepDive.md   ← 商业模式、unit economics、合同、客户、资本结构
+├── CRWV_Module3_AI_Implications.md    ← AI→P&amp;L 传导链、Token增长、Hyperscaler capex
+├── CRWV_Module4_Moat_Analysis.md      ← 5大壁垒评估、威胁矩阵、历史类比
+├── CRWV_Module5_Financial_Assumptions.md ← Revenue/profitability 假设、估值框架、情景分析
+├── CRWV_Module6_Risk_Framework.md     ← Tier 1-3 风险、Kerrisdale做空论点
+├── CRWV_Module7_Management_Governance.md ← 管理层评估、治理、薪酬、关联交易
+├── CRWV_Module8_Investment_Thesis.md  ← Bull/Bear/Base case、概率加权回报、监控清单
+└── initial-report-8modules.md         ← 本交互报告
+</code></pre>
+<h3>5.2 各模块内容密度</h3>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>估计字数</th>
+<th>表格数</th>
+<th>核心数据点</th>
+<th>PPT 页数估计</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>M1 行业研究</td>
+<td>~3,500</td>
+<td>12</td>
+<td>市场规模、竞争矩阵、价格趋势</td>
+<td>10-12</td>
+</tr>
+<tr>
+<td>M2 公司深度</td>
+<td>~4,000</td>
+<td>15</td>
+<td>季度 KPI、RPO 节奏、债务明细</td>
+<td>12-15</td>
+</tr>
+<tr>
+<td>M3 AI 传导</td>
+<td>~3,000</td>
+<td>8</td>
+<td>Token 增长、ARR 对比、capex</td>
+<td>8-10</td>
+</tr>
+<tr>
+<td>M4 Moat</td>
+<td>~2,500</td>
+<td>8</td>
+<td>壁垒评分、威胁矩阵</td>
+<td>6-8</td>
+</tr>
+<tr>
+<td>M5 Financial</td>
+<td>~2,500</td>
+<td>10</td>
+<td>假设表、估值场景</td>
+<td>8-10</td>
+</tr>
+<tr>
+<td>M6 Risk</td>
+<td>~3,000</td>
+<td>8</td>
+<td>风险矩阵、Kerrisdale 论点</td>
+<td>6-8</td>
+</tr>
+<tr>
+<td>M7 Management</td>
+<td>~2,500</td>
+<td>10</td>
+<td>管理层简历、治理评估</td>
+<td>5-7</td>
+</tr>
+<tr>
+<td>M8 Thesis</td>
+<td>~2,500</td>
+<td>8</td>
+<td>概率加权、催化剂、监控清单</td>
+<td>10-12</td>
+</tr>
+<tr>
+<td><strong>合计</strong></td>
+<td><strong>~23,500</strong></td>
+<td><strong>~79</strong></td>
+<td>—</td>
+<td><strong>65-82 页</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>6. Harness Engineering 方法论总结</h2>
+<h3>6.1 工作流设计模式</h3>
+<pre><code>┌─────────────┐     ┌──────────────┐     ┌─────────────┐     ┌──────────────┐
+│  用户提供    │     │  AI 解析     │     │  双源并行    │     │  结构化      │
+│  研究框架    │ ──→ │  研究范围    │ ──→ │  信息获取    │ ──→ │  Markdown    │
+│  (Checklist) │     │  + 任务拆分  │     │  (NLM + Web) │     │  报告产出    │
+└─────────────┘     └──────────────┘     └─────────────┘     └──────────────┘
+       │                    │                    │                    │
+   用户预制             AI 自动              并行最大化           人类审阅
+   80+ 问题             8 个 Task            ~4 工具/turn         后再 PPT
+</code></pre>
+<h3>6.2 关键设计决策</h3>
+<table>
+<thead>
+<tr>
+<th>决策</th>
+<th>选择</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>信息源策略</td>
+<td>NotebookLM (一手) + Web (补充)</td>
+<td>NotebookLM 提供 SEC Filing 级别精确数据；Web 提供实时市场数据</td>
+</tr>
+<tr>
+<td>并行粒度</td>
+<td>每 turn 3-4 个工具并行</td>
+<td>最大化吞吐量，减少 turn 数</td>
+</tr>
+<tr>
+<td>模块间依赖</td>
+<td>允许跨模块并行（M4+M5 同时；M6+M7 同时）</td>
+<td>模块间有主题重叠但无严格依赖</td>
+</tr>
+<tr>
+<td>产出格式</td>
+<td>Markdown（非 PPT）</td>
+<td>中间产物更易审阅和修改；PPT 为最终产出</td>
+</tr>
+<tr>
+<td>三表模型处理</td>
+<td>不在 Markdown 中展开完整 model</td>
+<td>用户明确指示放 Excel；报告聚焦假设和结果</td>
+</tr>
+<tr>
+<td>任务管理</td>
+<td>TaskCreate/TaskUpdate 跟踪</td>
+<td>对 8 模块进度提供可见性</td>
+</tr>
+</tbody></table>
+<h3>6.3 NotebookLM Prompt 设计模式</h3>
+<p>每个 NotebookLM 查询遵循以下模式：</p>
+<pre><code>notebooklm ask &quot;[Context Frame]: Provide detailed [topic].
+Specifically address:
+1) [Specific question with quantitative anchor]
+2) [Specific question with comparison frame]
+3) [Specific question with time series request]
+...
+N) [Specific question with source attribution request]&quot;
+</code></pre>
+<p><strong>设计原则</strong>：</p>
+<ul>
+<li>每个查询包含 5-10 个编号子问题 → 强制结构化输出</li>
+<li>包含定量锚点（如 &quot;$88B RPO&quot;、&quot;67% FY2025&quot;）→ 引导模型引用具体数据</li>
+<li>使用对比框架（&quot;vs hyperscaler&quot;、&quot;vs industry average&quot;）→ 生成可比分析</li>
+<li>请求时间序列（&quot;2023-2025 by quarter&quot;）→ 获取趋势数据</li>
+</ul>
+<h3>6.4 质量控制机制</h3>
+<table>
+<thead>
+<tr>
+<th>机制</th>
+<th>实施方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>交叉验证</strong></td>
+<td>NotebookLM 数据与 Web 搜索结果交叉对照（如市场规模、GPU 价格）</td>
+</tr>
+<tr>
+<td><strong>数据时效性</strong></td>
+<td>Web 搜索指定 &quot;2025 2026&quot; 确保获取最新数据</td>
+</tr>
+<tr>
+<td><strong>偏见识别</strong></td>
+<td>框架中标注 MS/JPM/GS 为承销商 → 报告中注明利益冲突</td>
+</tr>
+<tr>
+<td><strong>Bear case 纳入</strong></td>
+<td>主动搜索 Kerrisdale 做空报告和 Jim Chanos 观点 → 确保不是单向看多</td>
+</tr>
+<tr>
+<td><strong>产出验证</strong></td>
+<td>最终使用 <code>Glob</code> 确认 8 个文件全部生成</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. 后续工作规划</h2>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>内容</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>✅ Phase 1</td>
+<td>研究框架解析 + 工具链验证</td>
+<td>完成</td>
+</tr>
+<tr>
+<td>✅ Phase 2</td>
+<td>8 模块逐一研究 + Markdown 产出</td>
+<td>完成</td>
+</tr>
+<tr>
+<td>⬜ Phase 3</td>
+<td>用户审阅 Markdown 内容，提出修改意见</td>
+<td>待执行</td>
+</tr>
+<tr>
+<td>⬜ Phase 4</td>
+<td>PPT slide-by-slide 内容大纲设计</td>
+<td>待执行</td>
+</tr>
+<tr>
+<td>⬜ Phase 5</td>
+<td>PPT 生成（50-100 页）</td>
+<td>待执行</td>
+</tr>
+<tr>
+<td>⬜ Phase 6</td>
+<td>三表模型 Excel 构建</td>
+<td>待执行</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>本报告由 Claude Code (Opus 4.6) 自动生成，记录了 CoreWeave 投资研究项目的完整 AI 协同工作流。</em></p>
+
+    </article>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>← <a href="../index.html#coreweave">返回主页</a></span>
+    <span>本地静态站点 · 双击 index.html 即可访问</span>
+  </div>
+</footer>
+
+<script src="../assets/js/common.js"></script>
+</body>
+</html>
